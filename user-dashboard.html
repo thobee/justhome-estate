@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>User Dashboard - JustHome Real Estate</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: 'Poppins', sans-serif;
+      }
+      .glass-effect {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      .gradient-text {
+        background: linear-gradient(90deg, #1e40af, #3b82f6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .property-card-shadow {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Header -->
+    <header
+      class="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 px-6 py-3 flex justify-between items-center transition-all duration-300"
+    >
+      <div class="flex items-center gap-2">
+        <img src="images/1logo.png" alt="JustHome Logo" class="h-10 w-auto transition-transform duration-300 hover:scale-105" />
+        <span class="text-2xl font-bold gradient-text"
+          >Just<span class="text-blue-600">Home</span></span
+        >
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="relative">
+          <input
+            type="text"
+            class="w-32 pl-8 pr-2 py-1 border border-gray-200 rounded-md bg-white text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
+            placeholder="Search..."
+            aria-label="Quick search"
+          />
+          <i
+            class="fas fa-search absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 text-sm transition-colors duration-200 hover:text-blue-500"
+          ></i>
+        </div>
+        <div class="relative group">
+          <button
+            class="p-1 rounded-full hover:bg-gray-100 text-gray-700 transition-all duration-200"
+            aria-label="User profile"
+          >
+            <i class="fas fa-user-circle text-xl"></i>
+          </button>
+          <div
+            class="absolute right-0 mt-1 w-40 bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform -translate-y-1 group-hover:translate-y-0"
+          >
+            <a
+              href="#"
+              class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-blue-50 rounded-t-lg transition-colors duration-200"
+            >
+              <i class="fas fa-user"></i> Profile</a
+            >
+            <a
+              href="#"
+              class="flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-blue-50 rounded-b-lg transition-colors duration-200"
+            >
+              <i class="fas fa-sign-out-alt"></i> Logout</a
+            >
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="fixed top-16 left-0 h-screen w-64 bg-white shadow-md p-4 transition-all duration-300">
+      <nav>
+        <ul class="space-y-2">
+          <li>
+            <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-md text-gray-700 font-medium hover:bg-blue-50 transition-colors duration-200"
+              ><i class="fas fa-home"></i> Dashboard</a
+            >
+          </li>
+          <li>
+            <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-md text-gray-700 font-medium hover:bg-blue-50 transition-colors duration-200"
+              ><i class="fas fa-heart"></i> Saved Properties</a
+            >
+          </li>
+          <li>
+            <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-md text-gray-700 font-medium hover:bg-blue-50 transition-colors duration-200"
+              ><i class="fas fa-history"></i> Search History</a
+            >
+          </li>
+          <li>
+            <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-md text-gray-700 font-medium hover:bg-blue-50 transition-colors duration-200"
+              ><i class="fas fa-cog"></i> Settings</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="ml-64 pt-24 px-6 pb-6">
+      <div class="max-w-7xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">User Dashboard</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Saved Properties -->
+          <div class="bg-white p-6 rounded-xl property-card-shadow">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Saved Properties</h3>
+            <p class="text-2xl font-bold text-blue-600">3</p>
+            <a href="#" class="text-sm text-blue-600 hover:underline mt-2 inline-block">View All</a>
+          </div>
+          <!-- Search History -->
+          <div class="bg-white p-6 rounded-xl property-card-shadow">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Recent Searches</h3>
+            <p class="text-2xl font-bold text-blue-600">8</p>
+            <a href="#" class="text-sm text-blue-600 hover:underline mt-2 inline-block">View History</a>
+          </div>
+          <!-- Account Status -->
+          <div class="bg-white p-6 rounded-xl property-card-shadow">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Account Status</h3>
+            <p class="text-2xl font-bold text-blue-600">Active</p>
+            <a href="#" class="text-sm text-blue-600 hover:underline mt-2 inline-block">Manage Account</a>
+          </div>
+        </div>
+        <div class="mt-6 bg-white p-6 rounded-xl property-card-shadow">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Saved Properties</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex items-center gap-4">
+              <img src="images/img1.png" alt="Property" class="w-20 h-16 object-cover rounded-md" />
+              <div>
+                <h4 class="text-sm font-medium text-gray-800">Cozy 2-Bed Apartment</h4>
+                <p class="text-xs text-gray-500">New York, NY</p>
+                <p class="text-sm text-blue-600">₦1200/month</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <img src="images/img1.png" alt="Property" class="w-20 h-16 object-cover rounded-md" />
+              <div>
+                <h4 class="text-sm font-medium text-gray-800">Modern Villa</h4>
+                <p class="text-xs text-gray-500">Los Angeles, CA</p>
+                <p class="text-sm text-blue-600">₦2500/month</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>

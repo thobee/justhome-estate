@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Messages - Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+      .sidebar {
+        width: 280px;
+        transition: all 0.3s ease;
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          width: 0;
+          position: fixed;
+        }
+        .sidebar.active {
+          width: 280px;
+        }
+      }
+      .message-list {
+        height: calc(100vh - 200px);
+      }
+      .message-content {
+        height: calc(100vh - 200px);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Admin Header -->
+    <header class="bg-white border-b border-gray-200 fixed w-full z-30">
+      <div class="px-4 py-3 flex justify-between items-center">
+        <div class="flex items-center gap-4">
+          <button
+            id="sidebar-toggle"
+            class="p-2 rounded-lg hover:bg-gray-100 text-gray-600"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="flex items-center gap-2">
+            <img
+              src="../images/1logo.png"
+              alt="JustHome Logo"
+              class="h-8 w-auto"
+            />
+            <span class="text-xl font-bold text-gray-800">Messages</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <button
+            class="p-2 rounded-lg hover:bg-gray-100 text-gray-600 relative"
+          >
+            <i class="fas fa-bell"></i>
+            <span
+              class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"
+            ></span>
+          </button>
+          <div class="relative group">
+            <button
+              class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100"
+            >
+              <img
+                src="../images/1logo.png"
+                alt="Admin"
+                class="w-8 h-8 rounded-full object-cover"
+              />
+              <span class="text-sm font-medium text-gray-700">Admin</span>
+              <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
+            </button>
+            <div
+              class="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg py-2 hidden group-hover:block"
+            >
+              <a
+                href="#profile"
+                class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                <i class="fas fa-user w-5"></i>
+                Profile
+              </a>
+              <a
+                href="#settings"
+                class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                <i class="fas fa-cog w-5"></i>
+                Settings
+              </a>
+              <hr class="my-2 border-gray-100" />
+              <button
+                onclick="handleLogout()"
+                class="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+              >
+                <i class="fas fa-sign-out-alt w-5"></i>
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside
+      class="sidebar bg-white border-r border-gray-200 h-screen fixed top-0 left-0 pt-16 transition-all duration-300"
+    >
+      <nav class="p-4">
+        <div class="space-y-4">
+          <a
+            href="dashboard.html"
+            class="flex items-center gap-2 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg"
+          >
+            <i class="fas fa-home"></i>
+            <span>Dashboard</span>
+          </a>
+          <a
+            href="properties.html"
+            class="flex items-center gap-2 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg"
+          >
+            <i class="fas fa-building"></i>
+            <span>Properties</span>
+          </a>
+          <a
+            href="users.html"
+            class="flex items-center gap-2 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg"
+          >
+            <i class="fas fa-users"></i>
+            <span>Users</span>
+          </a>
+          <a
+            href="messages.html"
+            class="flex items-center gap-2 text-blue-600 bg-blue-50 px-4 py-2 rounded-lg"
+          >
+            <i class="fas fa-envelope"></i>
+            <span>Messages</span>
+          </a>
+          <a
+            href="reviews.html"
+            class="flex items-center gap-2 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg"
+          >
+            <i class="fas fa-star"></i>
+            <span>Reviews</span>
+          </a>
+          <hr class="border-gray-200" />
+          <a
+            href="settings.html"
+            class="flex items-center gap-2 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg"
+          >
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="ml-[280px] pt-16">
+      <div class="grid grid-cols-12 h-full">
+        <!-- Message List -->
+        <div class="col-span-4 border-r border-gray-200 bg-white">
+          <div class="p-4 border-b border-gray-200">
+            <div class="relative">
+              <input
+                type="text"
+                placeholder="Search messages..."
+                class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500"
+              />
+              <i
+                class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              ></i>
+            </div>
+          </div>
+          <div class="message-list overflow-y-auto">
+            <!-- Sample Messages -->
+            <div
+              class="border-b border-gray-100 p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+            >
+              <div class="flex items-center gap-3">
+                <img
+                  src="../images/1logo.png"
+                  alt="User"
+                  class="w-10 h-10 rounded-full object-cover"
+                />
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <p class="text-sm font-medium text-gray-900 truncate">
+                      John Doe
+                    </p>
+                    <span class="text-xs text-gray-500">5m ago</span>
+                  </div>
+                  <p class="text-sm text-gray-500 truncate">
+                    Interested in the property at...
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="border-b border-gray-100 p-4 cursor-pointer bg-blue-50">
+              <div class="flex items-center gap-3">
+                <img
+                  src="../images/1logo.png"
+                  alt="User"
+                  class="w-10 h-10 rounded-full object-cover"
+                />
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <p class="text-sm font-medium text-gray-900 truncate">
+                      Jane Smith
+                    </p>
+                    <span class="text-xs text-gray-500">2h ago</span>
+                  </div>
+                  <p class="text-sm text-gray-500 truncate">
+                    When can I schedule a viewing?
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message Content -->
+        <div class="col-span-8 bg-white flex flex-col">
+          <div class="p-4 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <img
+                  src="../images/1logo.png"
+                  alt="User"
+                  class="w-10 h-10 rounded-full object-cover"
+                />
+                <div>
+                  <h3 class="text-sm font-medium text-gray-900">Jane Smith</h3>
+                  <p class="text-xs text-gray-500">Online</p>
+                </div>
+              </div>
+              <div class="flex gap-2">
+                <button
+                  class="p-2 text-gray-600 hover:text-blue-600 transition-colors"
+                >
+                  <i class="fas fa-phone"></i>
+                </button>
+                <button
+                  class="p-2 text-gray-600 hover:text-blue-600 transition-colors"
+                >
+                  <i class="fas fa-video"></i>
+                </button>
+                <button
+                  class="p-2 text-gray-600 hover:text-blue-600 transition-colors"
+                >
+                  <i class="fas fa-ellipsis-v"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="message-content flex-1 overflow-y-auto p-4 space-y-4">
+            <!-- Message Bubbles -->
+            <div class="flex justify-start">
+              <div class="bg-gray-100 rounded-lg p-3 max-w-[80%]">
+                <p class="text-sm text-gray-800">
+                  Hi, I'm interested in scheduling a viewing for the property at
+                  123 Main St.
+                </p>
+                <span class="text-xs text-gray-500 mt-1">2:30 PM</span>
+              </div>
+            </div>
+
+            <div class="flex justify-end">
+              <div class="bg-blue-600 rounded-lg p-3 max-w-[80%]">
+                <p class="text-sm text-white">
+                  Hello! Of course, I can help you with that. What time would
+                  work best for you?
+                </p>
+                <span class="text-xs text-blue-200 mt-1">2:31 PM</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 border-t border-gray-200">
+            <div class="flex items-center gap-2">
+              <button
+                class="p-2 text-gray-600 hover:text-blue-600 transition-colors"
+              >
+                <i class="fas fa-paperclip"></i>
+              </button>
+              <input
+                type="text"
+                placeholder="Type a message..."
+                class="flex-1 px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500"
+              />
+              <button
+                class="p-2 text-blue-600 hover:text-blue-700 transition-colors"
+              >
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-auth-compat.js"></script>
+
+    <script>
+      // Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyBo5JRHCEmp3PftMAmHQxJspCPzX0RRPKY",
+        authDomain: "estatejs-7c477.firebaseapp.com",
+        projectId: "estatejs-7c477",
+        storageBucket: "estatejs-7c477.appspot.com",
+        messagingSenderId: "156544193291",
+        appId: "1:156544193291:web:96e317eb953cf7194fc80e",
+        measurementId: "G-T5HCCR6C7M",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const auth = firebase.auth();
+
+      // Auth guard for admin pages
+      auth.onAuthStateChanged(async (user) => {
+        if (!user) {
+          window.location.href = "../signin.html?redirect=admin/messages.html";
+          return;
+        }
+
+        try {
+          const userRef = db.collection("users").doc(user.uid);
+          const userSnap = await userRef.get();
+
+          if (!userSnap.exists() || userSnap.data().role !== "admin") {
+            alert("Access denied. Admin privileges required.");
+            await auth.signOut();
+            window.location.href = "../index.html";
+            return;
+          }
+        } catch (error) {
+          console.error("Error checking admin role:", error);
+          alert("Error verifying permissions. Please try again.");
+          window.location.href = "../index.html";
+        }
+      });
+
+      // Sidebar Toggle
+      document
+        .getElementById("sidebar-toggle")
+        .addEventListener("click", () => {
+          const sidebar = document.querySelector(".sidebar");
+          sidebar.classList.toggle("active");
+        });
+
+      // Handle Logout
+      async function handleLogout() {
+        try {
+          await auth.signOut();
+          window.location.href = "../index.html";
+        } catch (error) {
+          console.error('Error signing out:', error);
+          alert('Error signing out. Please try again.');
+        }
+      }
+    </script>
+  </body>
+</html>

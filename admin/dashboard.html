@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Dashboard - JustHome</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+      .sidebar {
+        width: 280px;
+        transition: all 0.3s ease;
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          width: 0;
+          position: fixed;
+        }
+        .sidebar.active {
+          width: 280px;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Admin Header -->
+    <header class="bg-white border-b border-gray-200 fixed w-full z-30">
+      <div class="px-4 py-3 flex justify-between items-center">
+        <div class="flex items-center gap-4">
+          <button
+            id="sidebar-toggle"
+            class="p-2 rounded-lg hover:bg-gray-100 text-gray-600"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="flex items-center gap-2">
+            <img
+              src="../images/1logo.png"
+              alt="JustHome Logo"
+              class="h-8 w-auto"
+            />
+            <span class="text-xl font-bold text-gray-800">Admin Panel</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <button
+            class="p-2 rounded-lg hover:bg-gray-100 text-gray-600 relative"
+          >
+            <i class="fas fa-bell"></i>
+            <span
+              class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"
+            ></span>
+          </button>
+          <div class="relative group">
+            <button
+              class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100"
+            >
+              <img
+                src="../images/1logo.png"
+                alt="Admin"
+                class="w-8 h-8 rounded-full object-cover"
+              />
+              <span class="text-sm font-medium text-gray-700">Admin</span>
+              <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
+            </button>
+            <div
+              class="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg py-2 hidden group-hover:block"
+            >
+              <a
+                href="#profile"
+                class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                <i class="fas fa-user w-5"></i>
+                Profile
+              </a>
+              <a
+                href="#settings"
+                class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                <i class="fas fa-cog w-5"></i>
+                Settings
+              </a>
+              <hr class="my-2 border-gray-100" />
+              <button
+                onclick="handleLogout()"
+                class="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+              >
+                <i class="fas fa-sign-out-alt w-5"></i>
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside
+      class="sidebar bg-white border-r border-gray-200 h-screen fixed top-0 left-0 pt-16 transition-all duration-300"
+    >
+      <nav class="p-4">
+        <div class="space-y-4">
+          <a
+            href="dashboard.html"
+            class="flex items-center gap-2 text-blue-600 bg-blue-50 px-4 py-2 rounded-lg"
+          >
+            <i class="fas fa-home"></i>
+            <span>Dashboard</span>
+          </a>
+          <a
+            href="properties.html"
+            class="flex items-center gap-2 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg"
+          >
+            <i class="fas fa-plus-circle"></i>
+            <span>Add Property</span>
+          </a>
+          <a
+            href="manage-properties.html"
+            class="flex items-center gap-2 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg"
+          >
+            <i class="fas fa-building"></i>
+            <span>Manage Properties</span>
+          </a>
+          <a
+            href="users.html"
+            class="flex items-center gap-2 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg"
+          >
+            <i class="fas fa-users"></i>
+            <span>Users</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="ml-[280px] pt-16 p-6">
+      <!-- Dashboard Overview -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+        <div class="bg-white rounded-xl p-6 shadow-sm">
+          <div class="flex items-center gap-4">
+            <div
+              class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center"
+            >
+              <i class="fas fa-building text-blue-600 text-xl"></i>
+            </div>
+            <div>
+              <p class="text-sm text-gray-600">Total Properties</p>
+              <p
+                id="totalProperties"
+                class="text-2xl font-semibold text-gray-800"
+              >
+                -
+              </p>
+            </div>
+          </div>
+          <div class="mt-4 flex items-center gap-2 text-sm">
+            <span id="propertyTrend" class="text-gray-600"> Loading... </span>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm">
+          <div class="flex items-center gap-4">
+            <div
+              class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center"
+            >
+              <i class="fas fa-users text-green-600 text-xl"></i>
+            </div>
+            <div>
+              <p class="text-sm text-gray-600">Total Users</p>
+              <p id="totalUsers" class="text-2xl font-semibold text-gray-800">
+                -
+              </p>
+            </div>
+          </div>
+          <div class="mt-4 flex items-center gap-2 text-sm">
+            <span id="userTrend" class="text-gray-600"> Loading... </span>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm">
+          <div class="flex items-center gap-4">
+            <div
+              class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center"
+            >
+              <i class="fas fa-home text-blue-600 text-xl"></i>
+            </div>
+            <div>
+              <p class="text-sm text-gray-600">Available Properties</p>
+              <p
+                id="availableProperties"
+                class="text-2xl font-semibold text-gray-800"
+              >
+                -
+              </p>
+            </div>
+          </div>
+          <div class="mt-4 flex items-center gap-2 text-sm">
+            <span id="availableTrend" class="text-gray-600"> Loading... </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activities & Quick Actions -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Recent Activities -->
+        <div class="lg:col-span-2 bg-white rounded-xl shadow-sm">
+          <div class="p-6 border-b border-gray-100">
+            <h2 class="text-lg font-semibold text-gray-800">
+              Recent Activities
+            </h2>
+          </div>
+          <div class="p-6">
+            <div class="space-y-6">
+              <div class="flex items-start gap-4">
+                <div
+                  class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0"
+                >
+                  <i class="fas fa-plus text-blue-600"></i>
+                </div>
+                <div>
+                  <p class="text-gray-800">New property listed</p>
+                  <p class="text-sm text-gray-500">
+                    Modern Apartment in Downtown
+                  </p>
+                  <p class="text-xs text-gray-400 mt-1">2 minutes ago</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4">
+                <div
+                  class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0"
+                >
+                  <i class="fas fa-user text-green-600"></i>
+                </div>
+                <div>
+                  <p class="text-gray-800">New user registered</p>
+                  <p class="text-sm text-gray-500">John Doe</p>
+                  <p class="text-xs text-gray-400 mt-1">15 minutes ago</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4">
+                <div
+                  class="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0"
+                >
+                  <i class="fas fa-star text-amber-600"></i>
+                </div>
+                <div>
+                  <p class="text-gray-800">New review</p>
+                  <p class="text-sm text-gray-500">
+                    5-star review for Luxury Villa
+                  </p>
+                  <p class="text-xs text-gray-400 mt-1">1 hour ago</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="bg-white rounded-xl shadow-sm">
+          <div class="p-6 border-b border-gray-100">
+            <h2 class="text-lg font-semibold text-gray-800">Quick Actions</h2>
+          </div>
+          <div class="p-6">
+            <div class="space-y-4">
+              <a
+                href="properties.html"
+                class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 justify-center"
+              >
+                <i class="fas fa-plus"></i>
+                Add New Property
+              </a>
+              <a
+                href="manage-properties.html"
+                class="w-full bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2 justify-center"
+              >
+                <i class="fas fa-building"></i>
+                Manage Properties
+              </a>
+              <a
+                href="users.html"
+                class="w-full bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2 justify-center"
+              >
+                <i class="fas fa-user-plus"></i>
+                Manage Users
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-auth-compat.js"></script>
+
+    <script>
+      // Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyBo5JRHCEmp3PftMAmHQxJspCPzX0RRPKY",
+        authDomain: "estatejs-7c477.firebaseapp.com",
+        projectId: "estatejs-7c477",
+        storageBucket: "estatejs-7c477.appspot.com",
+        messagingSenderId: "156544193291",
+        appId: "1:156544193291:web:96e317eb953cf7194fc80e",
+        measurementId: "G-T5HCCR6C7M",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const auth = firebase.auth();
+
+      // Auth guard for admin pages
+      auth.onAuthStateChanged(async (user) => {
+        if (!user) {
+          console.log("No user found, redirecting to login");
+          window.location.href = "../signin.html?redirect=admin/dashboard.html";
+          return;
+        }
+
+        console.log("User authenticated:", user.email);
+
+        try {
+          const userRef = db.collection("users").doc(user.uid);
+          const userSnap = await userRef.get();
+
+          console.log("User document exists:", userSnap.exists);
+          if (userSnap.exists) {
+            console.log("User data:", userSnap.data());
+          }
+
+          if (!userSnap.exists) {
+            console.log("Creating admin user document");
+            // Create user document with admin role if it doesn't exist
+            await userRef.set({
+              email: user.email,
+              role: "admin",
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            });
+            console.log("Admin user document created successfully");
+            return;
+          }
+
+          const userData = userSnap.data();
+          if (userData.role !== "admin") {
+            console.log("User is not an admin:", userData.role);
+            alert("Access denied. Admin privileges required.");
+            await auth.signOut();
+            window.location.href = "../index.html";
+            return;
+          }
+
+          console.log("Admin access granted");
+        } catch (error) {
+          console.error("Error checking admin role:", error);
+          alert("Error verifying permissions. Please try again.");
+          window.location.href = "../index.html";
+        }
+      });
+
+      // Sidebar Toggle
+      document
+        .getElementById("sidebar-toggle")
+        .addEventListener("click", () => {
+          const sidebar = document.querySelector(".sidebar");
+          sidebar.classList.toggle("active");
+        });
+
+      // Load dashboard data
+      async function loadDashboardData() {
+        try {
+          // Get total properties
+          const propertiesSnapshot = await db.collection("properties").get();
+          const totalProperties = propertiesSnapshot.size;
+          document.getElementById("totalProperties").textContent =
+            totalProperties;
+
+          // Get available properties
+          const availableSnapshot = await db
+            .collection("properties")
+            .where("status", "==", "available")
+            .get();
+          const availableProperties = availableSnapshot.size;
+          document.getElementById("availableProperties").textContent =
+            availableProperties;
+
+          // Get total users
+          const usersSnapshot = await db.collection("users").get();
+          const totalUsers = usersSnapshot.size;
+          document.getElementById("totalUsers").textContent = totalUsers;
+
+          // Calculate trends (comparing with last month)
+          const lastMonth = new Date();
+          lastMonth.setMonth(lastMonth.getMonth() - 1);
+
+          const lastMonthProperties = await db
+            .collection("properties")
+            .where("createdAt", "<", lastMonth)
+            .get();
+
+          const propertyGrowth = (
+            ((totalProperties - lastMonthProperties.size) /
+              (lastMonthProperties.size || 1)) *
+            100
+          ).toFixed(1);
+          document.getElementById("propertyTrend").innerHTML = `
+            <span class="${
+              propertyGrowth >= 0 ? "text-green-600" : "text-red-600"
+            }">
+              <i class="fas fa-arrow-${
+                propertyGrowth >= 0 ? "up" : "down"
+              }"></i>
+              ${Math.abs(propertyGrowth)}%
+            </span>
+            <span class="text-gray-500">from last month</span>
+          `;
+
+          const availableGrowth = (
+            (availableProperties / totalProperties) *
+            100
+          ).toFixed(1);
+          document.getElementById("availableTrend").innerHTML = `
+            <span class="text-blue-600">${availableGrowth}%</span>
+            <span class="text-gray-500">of total properties</span>
+          `;
+
+          // Set up real-time listeners for changes
+          db.collection("properties").onSnapshot((snapshot) => {
+            document.getElementById("totalProperties").textContent =
+              snapshot.size;
+            loadDashboardData(); // Refresh all stats
+          });
+
+          db.collection("users").onSnapshot((snapshot) => {
+            document.getElementById("totalUsers").textContent = snapshot.size;
+          });
+        } catch (error) {
+          console.error("Error loading dashboard data:", error);
+          alert("Error loading dashboard data. Please try again.");
+        }
+      }
+
+      // Handle Logout
+      async function handleLogout() {
+        try {
+          await auth.signOut();
+          window.location.href = "../index.html";
+        } catch (error) {
+          console.error("Error signing out:", error);
+          alert("Error signing out. Please try again.");
+        }
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        loadDashboardData();
+
+        // Sidebar toggle
+        document
+          .getElementById("sidebar-toggle")
+          .addEventListener("click", () => {
+            document.querySelector(".sidebar").classList.toggle("active");
+          });
+      });
+    </script>
+  </body>
+</html>

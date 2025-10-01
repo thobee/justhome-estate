@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard - JustHome Real Estate</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f8fafc;
+      }
+      .gradient-text {
+        background: linear-gradient(90deg, #1e40af, #3b82f6);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .dashboard-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      .dashboard-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      }
+      .stat-card {
+        background: linear-gradient(135deg, #fff 0%, #f1f5f9 100%);
+      }
+
+      /* Toggle Switch Styles */
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 48px;
+        height: 24px;
+      }
+
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: 0.4s;
+      }
+
+      input:checked + .slider {
+        background-color: #2563eb;
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(24px);
+      }
+
+      .slider.round {
+        border-radius: 24px;
+      }
+
+      .slider.round:before {
+        border-radius: 50%;
+      }
+
+      /* Mobile Menu Styles */
+      .mobile-menu {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+        opacity: 0;
+      }
+
+      .mobile-menu.active {
+        max-height: 500px;
+        opacity: 1;
+        transition: max-height 0.3s ease-in, opacity 0.3s ease-in;
+      }
+
+      .hamburger {
+        cursor: pointer;
+        width: 24px;
+        height: 20px;
+        position: relative;
+        transition: 0.3s;
+      }
+
+      .hamburger span {
+        display: block;
+        position: absolute;
+        height: 2px;
+        width: 100%;
+        background: #4b5563;
+        border-radius: 2px;
+        opacity: 1;
+        left: 0;
+        transition: 0.25s ease-in-out;
+      }
+
+      .hamburger span:nth-child(1) {
+        top: 0px;
+      }
+
+      .hamburger span:nth-child(2) {
+        top: 9px;
+      }
+
+      .hamburger span:nth-child(3) {
+        top: 18px;
+      }
+
+      .hamburger.active span:nth-child(1) {
+        top: 9px;
+        transform: rotate(135deg);
+      }
+
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+        left: -60px;
+      }
+
+      .hamburger.active span:nth-child(3) {
+        top: 9px;
+        transform: rotate(-135deg);
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .desktop-nav {
+          display: none;
+        }
+      }
+
+      @media (min-width: 769px) {
+        .mobile-menu-toggle {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm fixed w-full z-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-4">
+          <!-- Logo and Desktop Nav -->
+          <div class="flex items-center space-x-8">
+            <h1 class="text-xl sm:text-2xl font-bold gradient-text">JustHome</h1>
+            <div class="hidden md:flex space-x-6 desktop-nav">
+              <a
+                href="index.html"
+                class="text-gray-600 hover:text-blue-600 flex items-center transition-colors"
+              >
+                <i class="fas fa-home mr-2"></i> Home
+              </a>
+              <a
+                href="properties.html"
+                class="text-gray-600 hover:text-blue-600 flex items-center transition-colors"
+              >
+                <i class="fas fa-building mr-2"></i> Properties
+              </a>
+              <a
+                href="#saved"
+                class="text-gray-600 hover:text-blue-600 flex items-center transition-colors"
+              >
+                <i class="fas fa-heart mr-2"></i> Saved
+              </a>
+            </div>
+          </div>
+
+          <!-- Right Side Icons -->
+          <div class="flex items-center space-x-3 sm:space-x-6">
+            <!-- Notifications -->
+            <button
+              id="notifications-btn"
+              class="text-gray-600 hover:text-blue-600 relative transition-colors"
+            >
+              <i class="fas fa-bell text-lg sm:text-xl"></i>
+              <span
+                class="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center absolute -top-2 -right-2"
+                >2</span
+              >
+            </button>
+
+            <!-- User Menu (Desktop) -->
+            <div class="hidden sm:block relative group">
+              <button
+                id="user-menu-btn"
+                class="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition-colors"
+              >
+                <div
+                  id="nav-profile-image"
+                  class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center"
+                >
+                  <i class="fas fa-user text-blue-500"></i>
+                </div>
+                <span class="hidden md:inline">Account</span>
+                <i class="fas fa-chevron-down text-xs"></i>
+              </button>
+              <div
+                id="user-menu-dropdown"
+                class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden group-hover:block"
+              >
+                <a
+                  href="#profile"
+                  class="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors"
+                  >View Profile</a
+                >
+                <a
+                  href="admin/dashboard.html"
+                  id="admin-dashboard-link"
+                  class="hidden block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors"
+                >
+                  <i class="fas fa-cogs mr-2"></i>Admin Dashboard
+                </a>
+                <hr class="my-2 border-gray-200" />
+                <button
+                  id="logout-btn"
+                  class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors"
+                >
+                  Sign Out
+                </button>
+              </div>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button
+              id="mobile-menu-toggle"
+              class="mobile-menu-toggle md:hidden focus:outline-none"
+              aria-label="Toggle menu"
+            >
+              <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu md:hidden pb-4">
+          <div class="space-y-2">
+            <a
+              href="index.html"
+              class="flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
+            >
+              <i class="fas fa-home mr-3 w-5"></i> Home
+            </a>
+            <a
+              href="properties.html"
+              class="flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
+            >
+              <i class="fas fa-building mr-3 w-5"></i> Properties
+            </a>
+            <a
+              href="#saved"
+              class="flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
+            >
+              <i class="fas fa-heart mr-3 w-5"></i> Saved
+            </a>
+            <hr class="my-2 border-gray-200" />
+            <a
+              href="#profile"
+              class="flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors sm:hidden"
+            >
+              <i class="fas fa-user mr-3 w-5"></i> View Profile
+            </a>
+            <button
+              id="mobile-logout-btn"
+              class="flex items-center w-full px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors sm:hidden"
+            >
+              <i class="fas fa-sign-out-alt mr-3 w-5"></i> Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-8 px-4">
+      <div class="max-w-7xl mx-auto">
+        <!-- Welcome Message -->
+        <div class="mb-8">
+          <h2 class="text-2xl font-bold text-gray-800" id="welcome-message">
+            Welcome back!
+          </h2>
+          <p class="text-gray-600">Here's what's happening with your account</p>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div class="dashboard-card stat-card p-6 rounded-xl shadow-sm">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-medium text-gray-500">
+                  My Bookings
+                </p>
+                <h3
+                  class="text-2xl font-bold text-gray-800 mt-1"
+                  id="bookings-count"
+                >
+                  0
+                </h3>
+              </div>
+              <div
+                class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center"
+              >
+                <i class="fas fa-calendar-check text-green-600 text-xl"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-card stat-card p-6 rounded-xl shadow-sm">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-medium text-gray-500">
+                  Saved Properties
+                </p>
+                <h3
+                  class="text-2xl font-bold text-gray-800 mt-1"
+                  id="saved-count"
+                >
+                  0
+                </h3>
+              </div>
+              <div
+                class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center"
+              >
+                <i class="fas fa-heart text-blue-600 text-xl"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-card stat-card p-6 rounded-xl shadow-sm">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-medium text-gray-500">Recent Views</p>
+                <h3
+                  class="text-2xl font-bold text-gray-800 mt-1"
+                  id="views-count"
+                >
+                  0
+                </h3>
+              </div>
+              <div
+                class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center"
+              >
+                <i class="fas fa-eye text-purple-600 text-xl"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-card stat-card p-6 rounded-xl shadow-sm">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-medium text-gray-500">Notifications</p>
+                <h3
+                  class="text-2xl font-bold text-gray-800 mt-1"
+                  id="notifications-count"
+                >
+                  2
+                </h3>
+              </div>
+              <div
+                class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center"
+              >
+                <i class="fas fa-bell text-yellow-600 text-xl"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- Profile Card -->
+          <div class="dashboard-card bg-white rounded-xl shadow-sm p-6">
+            <div class="flex flex-col items-center">
+              <div
+                id="profile-image"
+                class="w-24 h-24 rounded-full bg-blue-100 mb-4 flex items-center justify-center"
+              >
+                <i class="fas fa-user text-4xl text-blue-500"></i>
+              </div>
+              <h2 id="user-name" class="text-xl font-semibold mb-2">
+                Loading...
+              </h2>
+              <p id="user-email" class="text-gray-600 mb-6">Loading...</p>
+              <div class="w-full space-y-3">
+                <button
+                  id="edit-profile"
+                  class="w-full px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
+                >
+                  <i class="fas fa-user-edit mr-2"></i> Edit Profile
+                </button>
+                <button
+                  id="view-preferences"
+                  class="w-full px-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center"
+                >
+                  <i class="fas fa-cog mr-2"></i> Preferences
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Content Area -->
+          <div class="lg:col-span-2 space-y-8">
+            <!-- My Bookings -->
+            <div class="dashboard-card bg-white rounded-xl shadow-sm p-6">
+              <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-semibold text-gray-800">
+                  My Bookings
+                </h3>
+                <a
+                  href="#all-bookings"
+                  class="text-blue-600 hover:text-blue-700 text-sm"
+                  >View All</a
+                >
+              </div>
+              <div id="my-bookings" class="space-y-4">
+                <!-- Will be populated by JS -->
+                <div class="text-gray-500 text-center py-8">
+                  <i class="fas fa-calendar-check text-4xl text-gray-300 mb-2"></i>
+                  <p>No bookings yet</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Saved Properties -->
+            <div class="dashboard-card bg-white rounded-xl shadow-sm p-6">
+              <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-semibold text-gray-800">
+                  Saved Properties
+                </h3>
+                <a
+                  href="#all-saved"
+                  class="text-blue-600 hover:text-blue-700 text-sm"
+                  >View All</a
+                >
+              </div>
+              <div
+                id="saved-properties"
+                class="grid grid-cols-1 md:grid-cols-2 gap-4"
+              >
+                <!-- Will be populated by JS -->
+                <div class="text-gray-500 text-center py-8">
+                  <i class="fas fa-home text-4xl text-gray-300 mb-2"></i>
+                  <p>No saved properties yet</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="dashboard-card bg-white rounded-xl shadow-sm p-6">
+              <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-semibold text-gray-800">
+                  Recent Activity
+                </h3>
+                <a
+                  href="#all-activity"
+                  class="text-blue-600 hover:text-blue-700 text-sm"
+                  >View All</a
+                >
+              </div>
+              <div id="recent-activity" class="space-y-4">
+                <!-- Will be populated by JS -->
+                <div
+                  class="flex items-center p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <div
+                    class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-4"
+                  >
+                    <i class="fas fa-eye text-blue-600"></i>
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-sm text-gray-600">
+                      You viewed
+                      <span class="font-medium text-gray-900"
+                        >Modern Apartment in Downtown</span
+                      >
+                    </p>
+                    <p class="text-xs text-gray-500">2 minutes ago</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Welcome Modal -->
+      <div
+        id="welcome-modal"
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50"
+      >
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl">
+          <div class="text-center mb-8">
+            <div
+              class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6"
+            >
+              <i class="fas fa-home text-4xl text-blue-600"></i>
+            </div>
+            <h2 class="text-3xl font-bold mb-4 gradient-text">
+              Welcome to JustHome!
+            </h2>
+            <p class="text-gray-600">
+              Thank you for joining our community. Let's help you get started
+              with your journey.
+            </p>
+          </div>
+
+          <div class="space-y-4 mb-8">
+            <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+              <div
+                class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4"
+              >
+                <i class="fas fa-search text-blue-600"></i>
+              </div>
+              <div>
+                <h3 class="font-medium">Browse Properties</h3>
+                <p class="text-sm text-gray-500">Explore our latest listings</p>
+              </div>
+            </div>
+
+            <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+              <div
+                class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-4"
+              >
+                <i class="fas fa-heart text-purple-600"></i>
+              </div>
+              <div>
+                <h3 class="font-medium">Save Favorites</h3>
+                <p class="text-sm text-gray-500">
+                  Keep track of properties you love
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+              <div
+                class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-4"
+              >
+                <i class="fas fa-bell text-green-600"></i>
+              </div>
+              <div>
+                <h3 class="font-medium">Get Notifications</h3>
+                <p class="text-sm text-gray-500">
+                  Stay updated on new listings
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <button
+            id="welcome-close"
+            class="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all transform hover:scale-[1.02] focus:ring-4 focus:ring-blue-100 flex items-center justify-center"
+          >
+            <span class="mr-2">Get Started</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <script src="js/dashboard.js" type="module"></script>
+
+    <script>
+      // User Menu Dropdown Toggle (Mobile & Desktop)
+      (function() {
+        const userMenuBtn = document.getElementById('user-menu-btn');
+        const dropdown = document.getElementById('user-menu-dropdown');
+
+        if (!userMenuBtn || !dropdown) return;
+
+        // Toggle dropdown on click/tap
+        userMenuBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+
+          // Toggle visibility
+          const isVisible = dropdown.classList.contains('block');
+          if (isVisible) {
+            dropdown.classList.remove('block');
+            dropdown.classList.add('hidden');
+          } else {
+            dropdown.classList.remove('hidden');
+            dropdown.classList.add('block');
+          }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+          if (!userMenuBtn.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.classList.remove('block');
+            dropdown.classList.add('hidden');
+          }
+        });
+
+        // Close dropdown when clicking a link inside
+        dropdown.querySelectorAll('a, button').forEach(function(link) {
+          link.addEventListener('click', function() {
+            dropdown.classList.remove('block');
+            dropdown.classList.add('hidden');
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>

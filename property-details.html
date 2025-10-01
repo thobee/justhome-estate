@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Property Details - JustHome Real Estate</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Add Swiper's CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+      .gradient-text {
+        background: linear-gradient(90deg, #1e40af, #3b82f6);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .gallery-container {
+        position: relative;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .swiper {
+        width: 100%;
+        border-radius: 1rem;
+        overflow: hidden;
+      }
+      .gallery-top {
+        width: 100%;
+        aspect-ratio: 16/9;
+        margin-bottom: 0.5rem; /* Reduced margin to align with smaller thumbs */
+      }
+      .gallery-top .swiper-slide {
+        width: 100%;
+        height: 100%;
+        position: relative;
+      }
+      .gallery-top .swiper-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background-color: rgb(249, 250, 251);
+      }
+      .gallery-thumbs {
+        height: 60px; /* Reduced height for smaller thumbnails */
+        box-sizing: border-box;
+        padding: 5px 0; /* Reduced padding */
+      }
+      .gallery-thumbs .swiper-slide {
+        height: 100%;
+        cursor: pointer;
+      }
+      .gallery-thumbs .swiper-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .gallery-thumbs .swiper-slide {
+        width: 20%; /* Slightly smaller width for each thumb */
+        height: 100%;
+        opacity: 0.4;
+        cursor: pointer;
+        border-radius: 0.375rem; /* Slightly smaller border-radius */
+        overflow: hidden;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+      }
+      .gallery-thumbs .swiper-slide-thumb-active {
+        opacity: 1;
+        border-color: #3b82f6;
+      }
+      .swiper-button-next,
+      .swiper-button-prev {
+        color: white;
+        background: rgba(0, 0, 0, 0.3);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        backdrop-filter: blur(3px);
+      }
+      .swiper-button-next:after,
+      .swiper-button-prev:after {
+        font-size: 16px;
+      }
+      #map {
+        height: 300px;
+        width: 100%;
+        border-radius: 1rem;
+        z-index: 1;
+      }
+      .property-badge {
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      .feature-card {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        background-color: #f9fafb;
+        transition: background-color 0.2s;
+      }
+      .feature-card:hover {
+        background-color: #f3f4f6;
+      }
+      .feature-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 9999px;
+        background-color: #dbeafe;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .marker-pin {
+        width: 30px;
+        height: 30px;
+        border-radius: 50% 50% 50% 0;
+        background: #3b82f6;
+        position: absolute;
+        transform: rotate(-45deg);
+        left: 50%;
+        top: 50%;
+        margin: -15px 0 0 -15px;
+        animation: bounce 0.5s ease-out;
+      }
+      .marker-pin::after {
+        content: "";
+        width: 20px;
+        height: 20px;
+        margin: 5px 0 0 5px;
+        background: #fff;
+        position: absolute;
+        border-radius: 50%;
+      }
+      @keyframes bounce {
+        0% {
+          transform: translateY(-40px) rotate(-45deg);
+        }
+        100% {
+          transform: translateY(0) rotate(-45deg);
+        }
+      }
+      .glass-blur {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      .swiper-button-next,
+      .swiper-button-prev {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .swiper:hover .swiper-button-next,
+      .swiper:hover .swiper-button-prev {
+        opacity: 1;
+      }
+      /* Profile Button Styles */
+      #profile-button i.fa-chevron-down {
+        transition: transform 0.3s ease;
+      }
+      #profile-button:hover i.fa-chevron-down {
+        transform: rotate(180deg);
+      }
+      #profile-button .group-hover\:bg-blue-50 {
+        transition: all 0.3s ease;
+      }
+      #profile-dropdown {
+        transform-origin: top right;
+        transition: all 0.2s ease-out;
+      }
+      /* Mobile menu animation */
+.mobile-menu {
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+}
+      /* UI Improvements */
+      .fade-in-up {
+        animation: fadeInUp 0.8s ease-out;
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .property-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      }
+      .btn-gradient {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        transition: all 0.3s ease;
+      }
+      .btn-gradient:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+      }
+      .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+      }
+      .loading-overlay.hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+      <div class="text-center">
+        <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
+        <p class="text-gray-600 text-lg">Loading property details...</p>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <header class="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-2.5">
+          <!-- Logo and Brand -->
+          <div class="flex items-center gap-2">
+            <img
+              src="images/1logo.png"
+              alt="JustHome Logo"
+              class="h-8 w-auto transition-transform duration-300 hover:scale-105"
+            />
+            <span class="text-xl font-bold">
+              <span class="bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">Just</span>
+              <span class="text-blue-600">Home</span>
+            </span>
+          </div>
+
+          <!-- Desktop Navigation -->
+          <nav aria-label="Main navigation" class="hidden lg:flex">
+            <ul class="flex gap-1">
+              <li>
+                <a
+                  href="index.html"
+                  class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 font-medium transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 hover:shadow-sm"
+                  ><i class="fas fa-home text-xs"></i> Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="properties.html"
+                  class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 font-medium transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 hover:shadow-sm"
+                  ><i class="fas fa-building text-xs"></i> Properties</a
+                >
+              </li>
+              <li>
+                <a
+                  href="about.html"
+                  class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 font-medium transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 hover:shadow-sm"
+                  ><i class="fas fa-info-circle text-xs"></i> About</a
+                >
+              </li>
+              <li>
+                <a
+                  href="contact.html"
+                  class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 font-medium transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 hover:shadow-sm"
+                  ><i class="fas fa-envelope text-xs"></i> Contact</a
+                >
+              </li>
+            </ul>
+          </nav>
+
+          <!-- Right Side Actions -->
+          <div class="flex items-center gap-3">
+            <!-- User Profile / Auth Buttons -->
+            <div id="userSection" class="relative group hidden">
+              <button
+                id="user-profile-btn"
+                class="flex items-center gap-1.5 p-1.5 rounded-full hover:bg-gray-100 text-gray-800 transition-all duration-200 hover:shadow-sm"
+                aria-label="User profile"
+              >
+                <i class="fas fa-user-circle text-lg"></i>
+                <span class="text-xs font-medium hidden sm:inline">My Account</span>
+                <i class="fas fa-chevron-down text-xs"></i>
+              </button>
+              <div
+                id="user-dropdown"
+                class="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform -translate-y-1 group-hover:translate-y-0"
+              >
+                <a
+                  href="dashboard.html"
+                  class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 rounded-t-xl transition-colors duration-200"
+                >
+                  <i class="fas fa-user w-4"></i> Profile</a
+                >
+                <a
+                  href="#"
+                  class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 transition-colors duration-200"
+                >
+                  <i class="fas fa-heart w-4"></i> Favorites</a
+                >
+                <a
+                  href="admin/dashboard.html"
+                  id="admin-dashboard-link"
+                  class="hidden flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 transition-colors duration-200"
+                >
+                  <i class="fas fa-cogs w-4"></i> Admin Dashboard</a
+                >
+                <a
+                  href="#"
+                  class="flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 rounded-b-xl transition-colors duration-200"
+                  onclick="handleLogout()"
+                >
+                  <i class="fas fa-sign-out-alt w-4"></i> Logout</a
+                >
+              </div>
+            </div>
+
+            <!-- Guest Auth Buttons -->
+            <div id="guestSection" class="flex items-center gap-2">
+              <button
+                onclick="handleLogin()"
+                class="px-3 py-1.5 text-blue-600 hover:text-blue-700 text-xs font-medium transition-all duration-200 hover:bg-blue-50 rounded-md"
+              >
+                Login
+              </button>
+              <button
+                onclick="handleSignup()"
+                class="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-md text-xs font-medium transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-lg"
+              >
+                Sign Up
+              </button>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button
+              class="lg:hidden p-1.5 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors duration-200 "
+              id="mobile-menu-button"
+            >
+              <i class="fas fa-bars text-base"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div
+        class="lg:hidden mobile-menu bg-white border-t border-gray-100 -mx-4 px-4"
+        id="mobile-menu"
+      >
+        <nav class="space-y-2 py-4">
+            <a href="index.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
+              <i class="fas fa-home"></i> Home</a>
+            <a href="properties.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
+              <i class="fas fa-building"></i> Properties</a>
+            <a href="about.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
+              <i class="fas fa-info-circle"></i> About</a>
+            <a href="contact.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
+              <i class="fas fa-envelope"></i> Contact</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-20 px-6 pb-12 fade-in-up">
+      <div class="max-w-7xl mx-auto">
+        <!-- Breadcrumb Navigation -->
+        <nav class="mb-6" aria-label="Breadcrumb">
+          <ol class="flex items-center space-x-2 text-sm text-gray-600">
+            <li>
+              <a href="index.html" class="hover:text-blue-600 transition-colors flex items-center">
+                <i class="fas fa-home mr-1"></i>
+                <span>Home</span>
+              </a>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
+              <a href="properties.html" class="hover:text-blue-600 transition-colors">
+                Properties
+              </a>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
+              <span id="breadcrumb-property-title" class="text-gray-800 font-medium">Property Details</span>
+            </li>
+          </ol>
+        </nav>
+
+        <!-- Property Title and Quick Info -->
+        <div class="mb-6">
+          <h1 id="property-title" class="text-3xl font-bold text-gray-800 mb-2">
+            Loading...
+          </h1>
+          <div class="flex items-center gap-4 text-gray-600">
+            <span class="flex items-center gap-1">
+              <i class="fas fa-map-marker-alt text-blue-600"></i>
+              <span id="property-location">Loading...</span>
+            </span>
+            <span class="flex items-center gap-1">
+              <i class="fas fa-calendar text-blue-600"></i>
+              <span id="property-listed-date">Listed: Loading...</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Image Gallery -->
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-8 p-4 property-card">
+          <div class="gallery-container">
+            <!-- Main Slider -->
+            <div class="swiper gallery-top">
+              <div class="swiper-wrapper" id="main-gallery">
+                <!-- Images will be loaded here -->
+              </div>
+              <div class="swiper-button-next"></div>
+              <div class="swiper-button-prev"></div>
+            </div>
+            <!-- Thumbs Slider -->
+            <div class="swiper gallery-thumbs">
+              <div class="swiper-wrapper" id="thumb-gallery">
+                <!-- Thumbnails will be loaded here -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Property Details Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- Main Content -->
+          <div class="lg:col-span-2 space-y-8">
+            <!-- Quick Stats -->
+            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-8">
+              <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <i class="fas fa-chart-pie text-blue-600"></i>
+                Property Overview
+              </h2>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="text-center p-6 bg-blue-50 rounded-2xl hover:bg-blue-100 transition-colors duration-300">
+                  <div class="bg-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3 shadow-md">
+                    <i class="fas fa-bed text-blue-600 text-xl"></i>
+                  </div>
+                  <p class="text-sm font-medium text-gray-600 mb-1">Bedrooms</p>
+                  <p id="property-bedrooms" class="text-2xl font-bold text-gray-800">-</p>
+                </div>
+                <div class="text-center p-6 bg-blue-50 rounded-2xl hover:bg-blue-100 transition-colors duration-300">
+                  <div class="bg-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3 shadow-md">
+                    <i class="fas fa-bath text-blue-600 text-xl"></i>
+                  </div>
+                  <p class="text-sm font-medium text-gray-600 mb-1">Bathrooms</p>
+                  <p id="property-bathrooms" class="text-2xl font-bold text-gray-800">-</p>
+                </div>
+                <div class="text-center p-6 bg-blue-50 rounded-2xl hover:bg-blue-100 transition-colors duration-300">
+                  <div class="bg-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3 shadow-md">
+                    <i class="fas fa-car text-blue-600 text-xl"></i>
+                  </div>
+                  <p class="text-sm font-medium text-gray-600 mb-1">Parking</p>
+                  <p id="property-parking" class="text-2xl font-bold text-gray-800">-</p>
+                </div>
+                <div class="text-center p-6 bg-blue-50 rounded-2xl hover:bg-blue-100 transition-colors duration-300">
+                  <div class="bg-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3 shadow-md">
+                    <i class="fas fa-ruler-combined text-blue-600 text-xl"></i>
+                  </div>
+                  <p class="text-sm font-medium text-gray-600 mb-1">Property Type</p>
+                  <p id="property-type" class="text-2xl font-bold text-gray-800">-</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-8">
+              <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <i class="fas fa-align-left text-blue-600"></i>
+                Description
+              </h2>
+              <div class="prose prose-blue max-w-none">
+                <p id="property-description" class="text-gray-600 leading-relaxed text-lg">
+                  Loading...
+                </p>
+              </div>
+            </div>
+
+            <!-- Features -->
+            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-8">
+              <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <i class="fas fa-star text-blue-600"></i>
+                Property Features
+              </h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-blue-50 rounded-xl p-6 transform hover:scale-105 transition-all duration-300">
+                  <div class="bg-white rounded-full w-12 h-12 flex items-center justify-center mb-4 shadow-md">
+                    <i class="fas fa-couch text-blue-600 text-xl"></i>
+                  </div>
+                  <h3 class="font-bold text-gray-800 mb-2">Furnishing</h3>
+                  <p id="furnished-status" class="text-gray-600">
+                    Furnished/Unfurnished
+                  </p>
+                </div>
+                <div class="bg-blue-50 rounded-xl p-6 transform hover:scale-105 transition-all duration-300">
+                  <div class="bg-white rounded-full w-12 h-12 flex items-center justify-center mb-4 shadow-md">
+                    <i class="fas fa-wifi text-blue-600 text-xl"></i>
+                  </div>
+                  <h3 class="font-bold text-gray-800 mb-2">Internet</h3>
+                  <p class="text-gray-600">High-speed fiber optic</p>
+                </div>
+                <div class="bg-blue-50 rounded-xl p-6 transform hover:scale-105 transition-all duration-300">
+                  <div class="bg-white rounded-full w-12 h-12 flex items-center justify-center mb-4 shadow-md">
+                    <i class="fas fa-car text-blue-600 text-xl"></i>
+                  </div>
+                  <h3 class="font-bold text-gray-800 mb-2">Parking</h3>
+                  <p id="parking-availability" class="text-gray-600">
+                    Available
+                  </p>
+                </div>
+                <div class="bg-blue-50 rounded-xl p-6 transform hover:scale-105 transition-all duration-300">
+                  <div class="bg-white rounded-full w-12 h-12 flex items-center justify-center mb-4 shadow-md">
+                    <i class="fas fa-bolt text-blue-600 text-xl"></i>
+                  </div>
+                  <h3 class="font-bold text-gray-800 mb-2">Utilities</h3>
+                  <p class="text-gray-600">
+                    Electricity & Water included
+                  </p>
+                </div>
+                <div class="bg-blue-50 rounded-xl p-6 transform hover:scale-105 transition-all duration-300">
+                  <div class="bg-white rounded-full w-12 h-12 flex items-center justify-center mb-4 shadow-md">
+                    <i class="fas fa-shield-alt text-blue-600 text-xl"></i>
+                  </div>
+                  <h3 class="font-bold text-gray-800 mb-2">Security</h3>
+                  <p class="text-gray-600">24/7 surveillance</p>
+                </div>
+                <div class="bg-blue-50 rounded-xl p-6 transform hover:scale-105 transition-all duration-300">
+                  <div class="bg-white rounded-full w-12 h-12 flex items-center justify-center mb-4 shadow-md">
+                    <i class="fas fa-temperature-low text-blue-600 text-xl"></i>
+                  </div>
+                  <h3 class="font-bold text-gray-800 mb-2">Air Conditioning</h3>
+                  <p class="text-gray-600">Central AC system</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Location -->
+            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-8">
+              <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <i class="fas fa-map-marker-alt text-blue-600"></i>
+                Location & Nearby
+              </h2>
+              <div class="mb-6 bg-blue-50 p-4 rounded-xl">
+                <p class="text-gray-700 flex items-center gap-3 text-lg">
+                  <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-location-dot text-blue-600"></i>
+                  </div>
+                  <span id="property-full-address" class="font-medium">Loading address...</span>
+                </p>
+              </div>
+              <div id="map" class="shadow-lg rounded-xl overflow-hidden mb-6">
+                <!-- Map will be loaded here -->
+              </div>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-blue-50 p-4 rounded-xl text-center transform hover:scale-105 transition-transform duration-300">
+                  <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-md">
+                    <i class="fas fa-shopping-cart text-blue-600 text-xl"></i>
+                  </div>
+                  <p class="font-medium text-gray-800 mb-1">Shopping Mall</p>
+                  <p class="text-blue-600 font-bold">0.5 km</p>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-xl text-center transform hover:scale-105 transition-transform duration-300">
+                  <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-md">
+                    <i class="fas fa-hospital text-blue-600 text-xl"></i>
+                  </div>
+                  <p class="font-medium text-gray-800 mb-1">Hospital</p>
+                  <p class="text-blue-600 font-bold">1.2 km</p>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-xl text-center transform hover:scale-105 transition-transform duration-300">
+                  <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-md">
+                    <i class="fas fa-graduation-cap text-blue-600 text-xl"></i>
+                  </div>
+                  <p class="font-medium text-gray-800 mb-1">School</p>
+                  <p class="text-blue-600 font-bold">0.8 km</p>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-xl text-center transform hover:scale-105 transition-transform duration-300">
+                  <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-md">
+                    <i class="fas fa-bus text-blue-600 text-xl"></i>
+                  </div>
+                  <p class="font-medium text-gray-800 mb-1">Bus Stop</p>
+                  <p class="text-blue-600 font-bold">0.3 km</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sidebar -->
+          <div class="space-y-6 lg:sticky lg:top-24">
+            <!-- Price Card -->
+            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-8">
+              <div class="text-center mb-6">
+                <p class="text-lg font-medium text-gray-600 mb-2">Monthly Rent</p>
+                <p id="property-price" class="text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent"></p>
+              </div>
+              <div class="space-y-3">
+                <button
+                  class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-4 rounded-xl font-medium text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+                  data-action="book-now"
+                >
+                  <i class="fas fa-calendar-check mr-2"></i> Book Now
+                </button>
+                <button
+                  class="w-full bg-white border-2 border-blue-600 text-blue-600 py-4 rounded-xl font-medium text-lg hover:bg-blue-50 hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-300"
+                  data-action="contact-agent"
+                >
+                  <i class="fas fa-comment-alt mr-2"></i> Contact Agent
+                </button>
+              </div>
+            </div>
+
+            <!-- Agent Card -->
+            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-8">
+              <div class="text-center">
+                <div class="relative inline-block">
+                  <img
+                    id="agent-image"
+                    src="images/1logo.png"
+                    alt="Agent"
+                    class="w-24 h-24 rounded-full mx-auto mb-4 ring-4 ring-blue-100"
+                  />
+                  <span class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full ring-2 ring-white"></span>
+                </div>
+                <h3 id="agent-name" class="text-xl font-bold text-gray-800 mb-1">
+                  
+                </h3>
+                <p id="agent-title" class="text-blue-600 font-medium">
+                  Real Estate Agent
+                </p>
+              </div>
+            </div>
+
+            <!-- Similar Properties -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+              <h2 class="text-xl font-semibold text-gray-800 mb-4">
+                Similar Properties
+              </h2>
+              <div id="similar-properties" class="space-y-4">
+                <!-- Similar properties will be loaded here -->
+                <p class="text-gray-500 text-center">
+                  Loading similar properties...
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <h3 class="text-lg font-semibold mb-4">JustHome</h3>
+            <p class="text-gray-400">
+              Finding your perfect home has never been easier.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+            <ul class="space-y-2">
+              <li>
+                <a href="properties.html" class="text-gray-400 hover:text-white"
+                  >Properties</a
+                >
+              </li>
+              <li>
+                <a href="about.html" class="text-gray-400 hover:text-white"
+                  >About Us</a
+                >
+              </li>
+              <li>
+                <a href="contact.html" class="text-gray-400 hover:text-white"
+                  >Contact</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+            <ul class="space-y-2">
+              <li class="text-gray-400">
+                <i class="fas fa-map-marker-alt mr-2"></i> 123 Main St, City
+              </li>
+              <li class="text-gray-400">
+                <i class="fas fa-phone mr-2"></i> (555) 123-4567
+              </li>
+              <li class="text-gray-400">
+                <i class="fas fa-envelope mr-2"></i> info@justhome.com
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Follow Us</h3>
+            <div class="flex gap-4">
+              <a href="#" class="text-gray-400 hover:text-white">
+                <i class="fab fa-facebook text-xl"></i>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-white">
+                <i class="fab fa-twitter text-xl"></i>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-white">
+                <i class="fab fa-instagram text-xl"></i>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-white">
+                <i class="fab fa-linkedin text-xl"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+          <p class="text-gray-400">
+            © 2025 JustHome Real Estate. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Mobile Menu Toggle
+      (function() {
+        const btn = document.getElementById('mobile-menu-button');
+        const menu = document.getElementById('mobile-menu');
+    
+        if (!btn || !menu) return;
+    
+        // Initially hide the menu
+        menu.style.maxHeight = '0';
+        menu.style.opacity = '0';
+    
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          
+          // Toggle menu visibility
+          if (menu.style.maxHeight === '0px' || menu.style.maxHeight === '') {
+            menu.style.maxHeight = '600px';
+            menu.style.opacity = '1';
+          } else {
+            menu.style.maxHeight = '0';
+            menu.style.opacity = '0';
+          }
+        });
+    
+        // Close menu when clicking a link
+        menu.querySelectorAll('a, button').forEach(function(link) {
+          link.addEventListener('click', function() {
+            menu.style.maxHeight = '0';
+            menu.style.opacity = '0';
+          });
+        });
+    
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+          if (!menu.contains(e.target) && !btn.contains(e.target)) {
+            menu.style.maxHeight = '0';
+            menu.style.opacity = '0';
+          }
+        });
+    
+        // Reset on window resize (desktop)
+        window.addEventListener('resize', function() {
+          if (window.innerWidth >= 1024) {
+            menu.style.maxHeight = '0';
+            menu.style.opacity = '0';
+          }
+        });
+      })();
+
+      // User Profile Dropdown Toggle (Mobile & Desktop)
+      (function() {
+        const profileBtn = document.getElementById('user-profile-btn');
+        const dropdown = document.getElementById('user-dropdown');
+
+        if (!profileBtn || !dropdown) return;
+
+        // Toggle dropdown on click/tap
+        profileBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          
+          // Toggle visibility
+          const isVisible = dropdown.classList.contains('opacity-100');
+          
+          if (isVisible) {
+            dropdown.classList.remove('opacity-100', 'visible');
+            dropdown.classList.add('opacity-0', 'invisible');
+          } else {
+            dropdown.classList.remove('opacity-0', 'invisible');
+            dropdown.classList.add('opacity-100', 'visible');
+          }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+          if (!profileBtn.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.classList.remove('opacity-100', 'visible');
+            dropdown.classList.add('opacity-0', 'invisible');
+          }
+        });
+
+        // Close dropdown when clicking a link inside
+        dropdown.querySelectorAll('a').forEach(function(link) {
+          link.addEventListener('click', function() {
+            dropdown.classList.remove('opacity-100', 'visible');
+            dropdown.classList.add('opacity-0', 'invisible');
+          });
+        });
+      })();
+    </script> 
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Paystack SDK -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script src="js/property-details.js" type="module"></script>
+  </body>
+</html>

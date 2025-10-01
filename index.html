@@ -1,0 +1,1975 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JustHome - Real Estate</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #3b82f6;
+        border-radius: 3px;
+      }
+
+      .glass-effect {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+
+      .gradient-text {
+        background: linear-gradient(90deg, #1e40af, #3b82f6);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .gradient-hover {
+        background-size: 200% auto;
+        transition: background-position 0.3s ease;
+      }
+
+      .gradient-hover:hover {
+        background-position: right center;
+      }
+
+      /* Enhanced Animations */
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .animate-float {
+        animation: float 3s ease-in-out infinite;
+      }
+
+      .animate-pulse-slow {
+        animation: pulse 4s ease-in-out infinite;
+      }
+
+      .animate-slide-up {
+        animation: slideUp 0.6s ease-out forwards;
+      }
+
+      .animate-fade-in {
+        animation: fadeIn 0.8s ease-out forwards;
+      }
+
+      /* Interactive Hover Effects */
+      .hover-lift {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .hover-lift:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .stat-card {
+        transition: all 0.3s ease;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 8px 16px rgba(59, 130, 246, 0.1);
+        border-color: rgba(59, 130, 246, 0.5);
+      }
+
+      .stat-icon {
+        transition: all 0.3s ease;
+      }
+
+      .stat-card:hover .stat-icon {
+        transform: scale(1.1) rotate(5deg);
+        background-color: #dbeafe;
+        color: #2563eb;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header
+      class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-lg shadow-sm border-b border-gray-100/20"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-2.5">
+          <!-- Logo and Brand -->
+          <div class="flex items-center gap-2">
+            <img
+              src="images/1logo.png"
+              alt="JustHome Logo"
+              class="h-8 w-auto transition-transform duration-300 hover:scale-105"
+            />
+            <span class="text-xl font-bold">
+              <span
+                class="bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent"
+                >Just</span
+              >
+              <span class="text-blue-600">Home</span>
+            </span>
+          </div>
+
+          <!-- Desktop Navigation -->
+          <nav aria-label="Main navigation" class="hidden lg:flex">
+            <ul class="flex gap-6">
+              <li>
+                <a
+                  href="index.html"
+                  class="flex items-center gap-1.5 text-sm font-medium text-blue-600 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-blue-600/80 after:rounded-full"
+                  ><i class="fas fa-home text-[13px]"></i> Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="properties.html"
+                  class="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-blue-600/0 after:rounded-full hover:after:bg-blue-600/80 after:transition-all after:duration-200"
+                  ><i class="fas fa-building text-[13px]"></i> Properties</a
+                >
+              </li>
+              <li>
+                <a
+             
+                  class="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-blue-600/0 after:rounded-full hover:after:bg-blue-600/80 after:transition-all after:duration-200"
+                  ><i class="fas fa-info-circle text-[13px]"></i> About</a
+                >
+              </li>
+              <li>
+                <a
+                 
+                  class="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-blue-600/0 after:rounded-full hover:after:bg-blue-600/80 after:transition-all after:duration-200"
+                  ><i class="fas fa-envelope text-[13px]"></i> Contact</a
+                >
+              </li>
+            </ul>
+          </nav>
+
+          <!-- Right Side Actions -->
+          <div class="flex items-center gap-4">
+            <!-- User Profile / Auth Buttons -->
+            <div id="userSection" class="relative group hidden">
+              <button
+                id="user-profile-btn"
+                class="flex items-center gap-2 p-2 rounded-full hover:bg-gray-100 text-gray-800 transition-all duration-200 hover:shadow-sm"
+                aria-label="User profile"
+              >
+                <i class="fas fa-user-circle text-2xl"></i>
+                <span class="text-sm font-medium">My Account</span>
+                <i class="fas fa-chevron-down text-xs"></i>
+              </button>
+              <div
+                id="user-dropdown"
+                class="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform -translate-y-1 group-hover:translate-y-0"
+              >
+                <a
+                  href="dashboard.html"
+                  class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 rounded-t-xl transition-colors duration-200"
+                >
+                  <i class="fas fa-user w-4"></i> Profile</a
+                >
+                <a
+                  href="#"
+                  class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 transition-colors duration-200"
+                >
+                  <i class="fas fa-heart w-4"></i> Favorites</a
+                >
+                <a
+                  href="admin/dashboard.html"
+                  id="admin-dashboard-link"
+                  class="hidden flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 transition-colors duration-200"
+                >
+                  <i class="fas fa-cogs w-4"></i> Admin Dashboard</a
+                >
+                <a
+                  href="#"
+                  class="flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 rounded-b-xl transition-colors duration-200"
+                  onclick="handleLogout()"
+                >
+                  <i class="fas fa-sign-out-alt w-4"></i> Logout</a
+                >
+              </div>
+            </div>
+
+            <!-- Guest Auth Buttons -->
+            <div id="guestSection" class="flex items-center gap-2">
+              <button
+                onclick="handleLogin()"
+                class="px-4 py-1.5 text-blue-600 hover:text-blue-700 text-sm font-medium transition-all duration-200 hover:bg-blue-50/50 rounded-full border border-transparent hover:border-blue-100"
+              >
+                Login
+              </button>
+              <button
+                onclick="handleSignup()"
+                class="px-4 py-1.5 bg-blue-600/90 hover:bg-blue-600 text-white rounded-full text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md hover:shadow-blue-200"
+              >
+                Sign Up
+              </button>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button
+              class="lg:hidden p-1.5 rounded-full hover:bg-gray-100/80 text-gray-700 transition-all duration-200 border border-transparent hover:border-gray-200"
+              id="mobile-menu-button"
+            >
+              <i class="fas fa-bars text-lg"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div
+          class="lg:hidden hidden bg-white/95 backdrop-blur-lg border-t border-gray-100/20 mt-2.5 -mx-4 px-4 py-3"
+          id="mobile-menu"
+        >
+          <nav class="space-y-1.5">
+            <a
+              href="index.html"
+              class="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-50/80 text-blue-600 text-sm font-medium backdrop-blur-sm"
+            >
+              <i class="fas fa-home text-[13px]"></i> Home</a
+            >
+            <a
+              href="properties.html"
+              class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:bg-blue-50/50 hover:text-blue-600 text-sm font-medium transition-colors duration-200"
+            >
+              <i class="fas fa-building text-[13px]"></i> Properties</a
+            >
+            <a
+              href="about.html"
+              class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:bg-blue-50/50 hover:text-blue-600 text-sm font-medium transition-colors duration-200"
+            >
+              <i class="fas fa-info-circle text-[13px]"></i> About</a
+            >
+            <a
+              href="contact.html"
+              class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:bg-blue-50/50 hover:text-blue-600 text-sm font-medium transition-colors duration-200"
+            >
+              <i class="fas fa-envelope text-[13px]"></i> Contact</a
+            >
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section
+      class="relative min-h-screen flex flex-col justify-center items-center"
+    >
+      <!-- Background Image with Overlay -->
+      <div class="absolute inset-0 z-0">
+        <div
+          class="absolute inset-0 bg-gradient-to-b from-white/95 via-white/80 to-white/95"
+        ></div>
+        <img
+          src="images/unsplash4.jpg"
+          alt="Background"
+          class="w-full h-full object-cover"
+        />
+      </div>
+
+      <div class="relative z-10 pt-32 pb-16 px-8 w-full animate-fade-in">
+        <div
+          class="text-center max-w-3xl mx-auto mb-12 animate-slide-up"
+          style="animation-delay: 0.2s"
+        >
+          <h1
+            class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+          >
+            <span
+              class="bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent"
+            >
+              Find Your Perfect
+            </span>
+            <span
+              class="block mt-2 bg-gradient-to-r from-amber-500 to-amber-600 bg-clip-text text-transparent"
+            >
+              Dream Home
+            </span>
+          </h1>
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            Discover thousands of properties with our advanced search tools.
+            From cozy apartments to luxury estates, we'll help you find the
+            perfect place to call home.
+          </p>
+        </div>
+
+        <!-- Search Filter -->
+        <div
+          id="search-form"
+          class="bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-lg max-w-5xl mx-auto w-full border border-gray-100 hover-lift animate-slide-up"
+          style="animation-delay: 0.4s"
+        >
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="relative">
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Location</label
+              >
+              <div class="relative">
+                <i
+                  class="fas fa-map-marker-alt absolute left-4 top-1/2 -translate-y-1/2 text-blue-600"
+                ></i>
+                <select
+                  aria-label="Location"
+                  class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl bg-white appearance-none cursor-pointer hover:border-blue-500 transition-all focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                >
+                  <option value="">Any Location</option>
+                  <option value="new-york">Lagos, NG</option>
+                  <option value="los-angeles">Abuja, NG</option>
+                  <option value="chicago">Kano, NG</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="relative">
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Property Type</label
+              >
+              <div class="relative">
+                <i
+                  class="fas fa-home absolute left-4 top-1/2 -translate-y-1/2 text-blue-600"
+                ></i>
+                <select
+                  aria-label="Property type"
+                  class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl bg-white appearance-none cursor-pointer hover:border-blue-500 transition-all focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                >
+                  <option value="">Any Type</option>
+                  <option value="apartment">Apartment</option>
+                  <option value="villa">Villa</option>
+                  <option value="office">Office</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="relative">
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Price Range</label
+              >
+              <div class="relative">
+                
+                <i
+                ₦  class="fas absolute left-4 top-1/2 -translate-y-1/2 text-blue-600"
+                >
+              </i>
+                <select
+                  aria-label="Budget"
+                  class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl bg-white appearance-none cursor-pointer hover:border-blue-500 transition-all focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                >
+                  <option value="">Any Price</option>
+                  <option value="0-500">0 - N500</option>
+                  <option value="501-1000">N50,000 - N100,000</option>
+                  <option value="1001+">N100,001 - N1,000,000+</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="relative flex items-end">
+              <button
+                class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-xl font-medium flex items-center justify-center gap-2 transition-all duration-300 shadow-sm hover:shadow-lg transform hover:-translate-y-1 hover:scale-105"
+                aria-label="Search properties"
+              >
+                <i class="fas fa-search"></i>
+                <span>Search Now</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statistics Section -->
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto px-8 mt-8"
+      >
+        <div
+          class="stat-card bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-gray-100 text-center animate-slide-up"
+          style="animation-delay: 0.6s"
+        >
+          <div
+            class="stat-icon inline-flex items-center justify-center w-12 h-12 mb-4 rounded-lg bg-blue-50 text-blue-600"
+          >
+            <i class="fas fa-home text-2xl"></i>
+          </div>
+          <div>
+            <span class="text-3xl font-bold text-gray-800 block mb-1"
+              >2,500+</span
+            >
+            <span class="text-sm text-gray-600 font-medium"
+              >Properties Listed</span
+            >
+          </div>
+        </div>
+
+        <div
+          class="stat-card bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-gray-100 text-center animate-slide-up"
+          style="animation-delay: 0.7s"
+        >
+          <div
+            class="stat-icon inline-flex items-center justify-center w-12 h-12 mb-4 rounded-lg bg-blue-50 text-blue-600"
+          >
+            <i class="fas fa-smile text-2xl"></i>
+          </div>
+          <div>
+            <span class="text-3xl font-bold text-gray-800 block mb-1"
+              >1,200+</span
+            >
+            <span class="text-sm text-gray-600 font-medium">Happy Clients</span>
+          </div>
+        </div>
+
+        <div
+          class="stat-card bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-gray-100 text-center animate-slide-up"
+          style="animation-delay: 0.8s"
+        >
+          <div
+            class="stat-icon inline-flex items-center justify-center w-12 h-12 mb-4 rounded-lg bg-blue-50 text-blue-600"
+          >
+            <i class="fas fa-award text-2xl"></i>
+          </div>
+          <div>
+            <span class="text-3xl font-bold text-gray-800 block mb-1">15+</span>
+            <span class="text-sm text-gray-600 font-medium"
+              >Years Experience</span
+            >
+          </div>
+        </div>
+
+        <div
+          class="stat-card bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-gray-100 text-center animate-slide-up"
+          style="animation-delay: 0.9s"
+        >
+          <div
+            class="stat-icon inline-flex items-center justify-center w-12 h-12 mb-4 rounded-lg bg-blue-50 text-blue-600"
+          >
+            <i class="fas fa-chart-line text-2xl"></i>
+          </div>
+          <div>
+            <span class="text-3xl font-bold text-gray-800 block mb-1">98%</span>
+            <span class="text-sm text-gray-600 font-medium">Success Rate</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Properties Section -->
+    <section class="py-20 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-8">
+        <!-- Section Header -->
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            <span
+              class="bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent"
+              >Featured Properties</span
+            >
+          </h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            Discover our hand-picked selection of premium properties. Each
+            listing is verified for quality and value.
+          </p>
+        </div>
+
+        <!-- Properties Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          <!-- Property Card 1 -->
+          <article
+            class="property-card group bg-white rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 max-w-xs animate-fade-in-up"
+            style="animation-delay: 0s"
+          >
+            <div class="relative overflow-hidden">
+              <!-- Image with zoom effect -->
+              <div class="aspect-w-16 aspect-h-12 overflow-hidden">
+                <img
+                  src="images/pexels-al-amin.jpg"
+                  alt="Luxury Apartment in Downtown"
+                  class="property-image w-full h-60 object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+              </div>
+              <!-- Gradient overlays -->
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-80"
+              ></div>
+              <div
+                class="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent"
+              ></div>
+
+              <!-- Status tags with glass effect -->
+              <div class="absolute top-4 left-4 flex flex-col gap-2">
+                <span
+                  class="status-badge bg-green-500 bg-opacity-90 backdrop-blur-md text-white text-xs font-medium px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5"
+                >
+                  <span
+                    class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"
+                  ></span>
+                  Available
+                </span>
+                <span
+                  class="px-3 py-1.5 text-xs rounded-full bg-green-500 bg-opacity-90 backdrop-blur-md text-white font-medium shadow-lg flex items-center gap-1.5"
+                >
+                  <i class="fas fa-key text-[10px]"></i> FOR RENT
+                </span>
+              </div>
+
+              <!-- Action Buttons with glass effect -->
+              <div class="absolute top-4 right-4 flex gap-2">
+                <button
+                  onclick="shareProperty('1')"
+                  class="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
+                  title="Share property"
+                >
+                  <i
+                    class="fas fa-share-alt text-gray-700 group-hover:text-blue-600 transition-colors duration-300"
+                  ></i>
+                </button>
+                <button
+                  onclick="toggleFavorite('1')"
+                  class="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
+                  title="Add to favorites"
+                >
+                  <i
+                    class="fas fa-heart transition-all duration-300 text-gray-700 group-hover:text-red-500"
+                  ></i>
+                </button>
+              </div>
+
+              <!-- Price tag with glass effect -->
+              <div class="absolute bottom-4 left-4">
+                <div
+                  class="bg-blue-600/90 backdrop-blur-md text-white font-bold px-4 py-2 rounded-xl shadow-lg flex items-center gap-1"
+                >
+                  <i class="fas fa-tag text-xs"></i>
+                  <span>₦850,000</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6">
+              <!-- Property Info -->
+              <div class="mb-4">
+                <h3
+                  class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors duration-200"
+                >
+                  Luxury Apartment in lekki
+                </h3>
+                <div class="flex items-center gap-2 text-gray-600">
+                  <div
+                    class="flex items-center gap-1.5 bg-blue-50 px-2 py-1 rounded-lg"
+                  >
+                    <i class="fas fa-map-marker-alt text-blue-500 text-xs"></i>
+                    <span class="text-sm font-medium line-clamp-1"
+                      >Lagos, Nigeria</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- Property Features with enhanced design -->
+              <div
+                class="grid grid-cols-3 gap-2 py-4 border-t border-b border-gray-100"
+              >
+                <div
+                  class="flex flex-col items-center p-2 bg-gray-50 rounded-xl hover:bg-blue-50 transition-colors duration-200"
+                >
+                  <i class="fas fa-bed text-blue-500 mb-1"></i>
+                  <span class="text-sm font-medium text-gray-700">4 Beds</span>
+                </div>
+                <div
+                  class="flex flex-col items-center p-2 bg-gray-50 rounded-xl hover:bg-blue-50 transition-colors duration-200"
+                >
+                  <i class="fas fa-bath text-blue-500 mb-1"></i>
+                  <span class="text-sm font-medium text-gray-700">3 Baths</span>
+                </div>
+                <div
+                  class="flex flex-col items-center p-2 bg-gray-50 rounded-xl hover:bg-blue-50 transition-colors duration-200"
+                >
+                  <i class="fas fa-home text-blue-500 mb-1"></i>
+                  <span class="text-sm font-medium text-gray-700"
+                    >Apartment</span
+                  >
+                </div>
+              </div>
+
+              <!-- Action Buttons with enhanced design -->
+              <div class="flex justify-center items-center mt-4">
+                <a
+              
+                  class="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-sm font-medium rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5"
+                >
+                  <i class="fas fa-search text-xs"></i> View Details
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Property Card 2 -->
+          <article
+            class="property-card group bg-white rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 max-w-xs animate-fade-in-up"
+            style="animation-delay: 0.1s"
+          >
+            <div class="relative overflow-hidden">
+              <!-- Image with zoom effect -->
+              <div class="aspect-w-16 aspect-h-12 overflow-hidden">
+                <img
+                  src="images/unsplash4.jpg"
+                  alt="Modern Villa with Pool"
+                  class="property-image w-full h-60 object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+              </div>
+              <!-- Gradient overlays -->
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-80"
+              ></div>
+              <div
+                class="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent"
+              ></div>
+
+              <!-- Status tags with glass effect -->
+              <div class="absolute top-4 left-4 flex flex-col gap-2">
+                <span
+                  class="status-badge bg-green-500 bg-opacity-90 backdrop-blur-md text-white text-xs font-medium px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5"
+                >
+                  <span
+                    class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"
+                  ></span>
+                  Available
+                </span>
+                <span
+                  class="px-3 py-1.5 text-xs rounded-full bg-green-500 bg-opacity-90 backdrop-blur-md text-white font-medium shadow-lg flex items-center gap-1.5"
+                >
+                  <i class="fas fa-key text-[10px]"></i> FOR RENT
+                </span>
+              </div>
+
+              <!-- Action Buttons with glass effect -->
+              <div class="absolute top-4 right-4 flex gap-2">
+                <button
+                  onclick="shareProperty('2')"
+                  class="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
+                  title="Share property"
+                >
+                  <i
+                    class="fas fa-share-alt text-gray-700 group-hover:text-blue-600 transition-colors duration-300"
+                  ></i>
+                </button>
+                <button
+                  onclick="toggleFavorite('2')"
+                  class="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
+                  title="Add to favorites"
+                >
+                  <i
+                    class="fas fa-heart transition-all duration-300 text-gray-700 group-hover:text-red-500"
+                  ></i>
+                </button>
+              </div>
+
+              <!-- Price tag with glass effect -->
+              <div class="absolute bottom-4 left-4">
+                <div
+                  class="bg-blue-600/90 backdrop-blur-md text-white font-bold px-4 py-2 rounded-xl shadow-lg flex items-center gap-1"
+                >
+                  <i class="fas fa-tag text-xs"></i>
+                  <span>₦700,000</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6">
+              <!-- Property Info -->
+              <div class="mb-4">
+                <h3
+                  class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors duration-200"
+                >
+                  Modern Villa with Pool
+                </h3>
+                <div class="flex items-center gap-2 text-gray-600">
+                  <div
+                    class="flex items-center gap-1.5 bg-blue-50 px-2 py-1 rounded-lg"
+                  >
+                    <i class="fas fa-map-marker-alt text-blue-500 text-xs"></i>
+                    <span class="text-sm font-medium line-clamp-1"
+                      >456 iwo, ibadan, Nigeria</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- Property Features with enhanced design -->
+              <div
+                class="grid grid-cols-3 gap-2 py-4 border-t border-b border-gray-100"
+              >
+                <div
+                  class="flex flex-col items-center p-2 bg-gray-50 rounded-xl hover:bg-blue-50 transition-colors duration-200"
+                >
+                  <i class="fas fa-bed text-blue-500 mb-1"></i>
+                  <span class="text-sm font-medium text-gray-700">5 Beds</span>
+                </div>
+                <div
+                  class="flex flex-col items-center p-2 bg-gray-50 rounded-xl hover:bg-blue-50 transition-colors duration-200"
+                >
+                  <i class="fas fa-bath text-blue-500 mb-1"></i>
+                  <span class="text-sm font-medium text-gray-700">4 Baths</span>
+                </div>
+                <div
+                  class="flex flex-col items-center p-2 bg-gray-50 rounded-xl hover:bg-blue-50 transition-colors duration-200"
+                >
+                  <i class="fas fa-home text-blue-500 mb-1"></i>
+                  <span class="text-sm font-medium text-gray-700">Villa</span>
+                </div>
+              </div>
+
+              <!-- Action Buttons with enhanced design -->
+              <div class="flex justify-center items-center mt-4">
+                <a
+                
+                  class="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-sm font-medium rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5"
+                >
+                  <i class="fas fa-search text-xs"></i> View Details
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Property Card 3 -->
+          <article
+            class="property-card group bg-white rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 max-w-xs animate-fade-in-up"
+            style="animation-delay: 0.2s"
+          >
+            <div class="relative overflow-hidden">
+              <!-- Image with zoom effect -->
+              <div class="aspect-w-16 aspect-h-12 overflow-hidden">
+                <img
+                  src="images/unsplash3.jpg"
+                  alt="Luxury Penthouse Suite"
+                  class="property-image w-full h-60 object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+              </div>
+              <!-- Gradient overlays -->
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-80"
+              ></div>
+              <div
+                class="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent"
+              ></div>
+
+              <!-- Status tags with glass effect -->
+              <div class="absolute top-4 left-4 flex flex-col gap-2">
+                <span
+                  class="status-badge bg-green-500 bg-opacity-90 backdrop-blur-md text-white text-xs font-medium px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5"
+                >
+                  <span
+                    class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"
+                  ></span>
+                  Available
+                </span>
+                <span
+                  class="px-3 py-1.5 text-xs rounded-full bg-green-500 bg-opacity-90 backdrop-blur-md text-white font-medium shadow-lg flex items-center gap-1.5"
+                >
+                  <i class="fas fa-key text-[10px]"></i> FOR RENT
+                </span>
+              </div>
+
+              <!-- Action Buttons with glass effect -->
+              <div class="absolute top-4 right-4 flex gap-2">
+                <button
+                  onclick="shareProperty('3')"
+                  class="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
+                  title="Share property"
+                >
+                  <i
+                    class="fas fa-share-alt text-gray-700 group-hover:text-blue-600 transition-colors duration-300"
+                  ></i>
+                </button>
+                <button
+                  onclick="toggleFavorite('3')"
+                  class="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
+                  title="Add to favorites"
+                >
+                  <i
+                    class="fas fa-heart transition-all duration-300 text-gray-700 group-hover:text-red-500"
+                  ></i>
+                </button>
+              </div>
+
+              <!-- Price tag with glass effect -->
+              <div class="absolute bottom-4 left-4">
+                <div
+                  class="bg-blue-600/90 backdrop-blur-md text-white font-bold px-4 py-2 rounded-xl shadow-lg flex items-center gap-1"
+                >
+                  <i class="fas fa-tag text-xs"></i>
+                  <span>₦1,200,000</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6">
+              <!-- Property Info -->
+              <div class="mb-4">
+                <h3
+                  class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors duration-200"
+                >
+                  Luxury Penthouse Suite
+                </h3>
+                <div class="flex items-center gap-2 text-gray-600">
+                  <div
+                    class="flex items-center gap-1.5 bg-blue-50 px-2 py-1 rounded-lg"
+                  >
+                    <i class="fas fa-map-marker-alt text-blue-500 text-xs"></i>
+                    <span class="text-sm font-medium line-clamp-1"
+                      >789 cityview Estate,ibadan, Nigeria</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- Property Features with enhanced design -->
+              <div
+                class="grid grid-cols-3 gap-2 py-4 border-t border-b border-gray-100"
+              >
+                <div
+                  class="flex flex-col items-center p-2 bg-gray-50 rounded-xl hover:bg-blue-50 transition-colors duration-200"
+                >
+                  <i class="fas fa-bed text-blue-500 mb-1"></i>
+                  <span class="text-sm font-medium text-gray-700">3 Beds</span>
+                </div>
+                <div
+                  class="flex flex-col items-center p-2 bg-gray-50 rounded-xl hover:bg-blue-50 transition-colors duration-200"
+                >
+                  <i class="fas fa-bath text-blue-500 mb-1"></i>
+                  <span class="text-sm font-medium text-gray-700"
+                    >3.5 Baths</span
+                  >
+                </div>
+                <div
+                  class="flex flex-col items-center p-2 bg-gray-50 rounded-xl hover:bg-blue-50 transition-colors duration-200"
+                >
+                  <i class="fas fa-home text-blue-500 mb-1"></i>
+                  <span class="text-sm font-medium text-gray-700"
+                    >Duplex</span
+                  >
+                </div>
+              </div>
+
+              <!-- Action Buttons with enhanced design -->
+              <div class="flex justify-center items-center mt-4">
+                <a
+                  href="property-details.html"
+                  class="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-sm font-medium rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5"
+                >
+                  <i class="fas fa-search text-xs"></i> View Details
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- View All Button -->
+        <div class="text-center">
+          <a
+            href="properties.html"
+            class="inline-flex items-center gap-2 px-8 py-4 bg-white text-blue-600 font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200 hover:border-blue-600 hover:text-blue-700"
+          >
+            <span>View All Properties</span>
+            <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="py-20 bg-white">
+      <div class="max-w-7xl mx-auto px-8">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            <span
+              class="bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent"
+            >
+              Why Choose JustHome
+            </span>
+          </h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            We're committed to providing the best real estate experience with
+            our comprehensive services and dedicated team.
+          </p>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <!-- Feature 1 -->
+          <div
+            class="group p-8 bg-white rounded-2xl border border-gray-100 hover:border-blue-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+          >
+            <div
+              class="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-blue-50 text-blue-600 mb-6 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300"
+            >
+              <i class="fas fa-shield-alt text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">
+              Trusted by Thousands
+            </h3>
+            <p class="text-gray-600">
+              Over 10,000+ clients trust us with their property needs. Join our
+              growing community of satisfied customers.
+            </p>
+          </div>
+
+          <!-- Feature 2 -->
+          <div
+            class="group p-8 bg-white rounded-2xl border border-gray-100 hover:border-blue-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+          >
+            <div
+              class="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-blue-50 text-blue-600 mb-6 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300"
+            >
+              <i class="fas fa-hand-holding-usd text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">
+              Best Price Guarantee
+            </h3>
+            <p class="text-gray-600">
+              We ensure you get the best value for your property. Our expert
+              agents negotiate the best deals for you.
+            </p>
+          </div>
+
+          <!-- Feature 3 -->
+          <div
+            class="group p-8 bg-white rounded-2xl border border-gray-100 hover:border-blue-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+          >
+            <div
+              class="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-blue-50 text-blue-600 mb-6 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300"
+            >
+              <i class="fas fa-clock text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">
+              Fast & Easy Process
+            </h3>
+            <p class="text-gray-600">
+              Our streamlined process ensures quick turnaround times. Get your
+              dream property without the hassle.
+            </p>
+          </div>
+
+          <!-- Feature 4 -->
+          <div
+            class="group p-8 bg-white rounded-2xl border border-gray-100 hover:border-blue-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+          >
+            <div
+              class="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-blue-50 text-blue-600 mb-6 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300"
+            >
+              <i class="fas fa-headset text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">24/7 Support</h3>
+            <p class="text-gray-600">
+              Our dedicated support team is available round the clock to assist
+              you with any queries or concerns.
+            </p>
+          </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="mt-16 text-center">
+          <a
+            href="about.html"
+            class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+          >
+            <span>Learn More About Us</span>
+            <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="py-20 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-8">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            <span
+              class="bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent"
+            >
+              Our Services
+            </span>
+          </h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            Comprehensive real estate services tailored to meet all your
+            property needs. From buying to management, we've got you covered.
+          </p>
+        </div>
+
+        <!-- Services Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Service Card 1 -->
+          <div
+            class="group relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+          >
+            <div
+              class="absolute right-0 top-0 -mt-4 -mr-4 w-24 h-24 bg-blue-50 rounded-full group-hover:bg-blue-600/10 transition-all duration-500"
+            ></div>
+            <div class="relative">
+              <div
+                class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 text-white mb-6 group-hover:scale-110 transition-all duration-300"
+              >
+                <i class="fas fa-home text-2xl"></i>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-4">
+                Property Sales
+              </h3>
+              <ul class="space-y-3 text-gray-600">
+                <li class="flex items-center gap-2">
+                  <i class="fas fa-check text-green-500"></i>
+                  Market analysis and valuation
+                </li>
+                <li class="flex items-center gap-2">
+                  <i class="fas fa-check text-green-500"></i>
+                  Professional photography
+                </li>
+                <li class="flex items-center gap-2">
+                  <i class="fas fa-check text-green-500"></i>
+                  Negotiation assistance
+                </li>
+                <li class="flex items-center gap-2">
+                  <i class="fas fa-check text-green-500"></i>
+                  Closing support
+                </li>
+              </ul>
+              <a
+                href="#"
+                class="inline-flex items-center gap-2 mt-6 text-blue-600 font-medium hover:text-blue-700"
+              >
+                Learn More
+                <i
+                  class="fas fa-arrow-right text-sm transition-transform group-hover:translate-x-1"
+                ></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Service Card 2 -->
+          <div
+            class="group relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+          >
+            <div
+              class="absolute right-0 top-0 -mt-4 -mr-4 w-24 h-24 bg-blue-50 rounded-full group-hover:bg-blue-600/10 transition-all duration-500"
+            ></div>
+            <div class="relative">
+              <div
+                class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 text-white mb-6 group-hover:scale-110 transition-all duration-300"
+              >
+                <i class="fas fa-key text-2xl"></i>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-4">
+                Property Rentals
+              </h3>
+              <ul class="space-y-3 text-gray-600">
+                <li class="flex items-center gap-2">
+                  <i class="fas fa-check text-green-500"></i>
+                  Tenant screening
+                </li>
+                <li class="flex items-center gap-2">
+                  <i class="fas fa-check text-green-500"></i>
+                  Lease preparation
+                </li>
+                <li class="flex items-center gap-2">
+                  <i class="fas fa-check text-green-500"></i>
+                  Property inspection
+                </li>
+                <li class="flex items-center gap-2">
+                  <i class="fas fa-check text-green-500"></i>
+                  Rent collection
+                </li>
+              </ul>
+              <a
+                href="#"
+                class="inline-flex items-center gap-2 mt-6 text-blue-600 font-medium hover:text-blue-700"
+              >
+                Learn More
+                <i
+                  class="fas fa-arrow-right text-sm transition-transform group-hover:translate-x-1"
+                ></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Service Card 3 -->
+          <div
+            class="group relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden"
+          >
+            <div
+              class="absolute right-0 top-0 -mt-4 -mr-4 w-24 h-24 bg-blue-50 rounded-full group-hover:bg-blue-600/10 transition-all duration-500"
+            ></div>
+            <div class="relative">
+              <div
+                class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 text-white mb-6 group-hover:scale-110 transition-all duration-300"
+              >
+                <i class="fas fa-chart-line text-2xl"></i>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-4">
+                Property Management
+              </h3>
+              <ul class="space-y-3 text-gray-600">
+                <li class="flex items-center gap-2">
+                  <i class="fas fa-check text-green-500"></i>
+                  Maintenance coordination
+                </li>
+                <li class="flex items-center gap-2">
+                  <i class="fas fa-check text-green-500"></i>
+                  Financial reporting
+                </li>
+                <li class="flex items-center gap-2">
+                  <i class="fas fa-check text-green-500"></i>
+                  24/7 emergency support
+                </li>
+                <li class="flex items-center gap-2">
+                  <i class="fas fa-check text-green-500"></i>
+                  Regular inspections
+                </li>
+              </ul>
+              <a
+                href="#"
+                class="inline-flex items-center gap-2 mt-6 text-blue-600 font-medium hover:text-blue-700"
+              >
+                Learn More
+                <i
+                  class="fas fa-arrow-right text-sm transition-transform group-hover:translate-x-1"
+                ></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service Contact -->
+        <div class="mt-16 text-center">
+          <a
+           
+            class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+          >
+            <i class="fas fa-phone-alt"></i>
+            <span>Contact Us for Services</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20 bg-white">
+      <div class="max-w-7xl mx-auto px-8">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            <span
+              class="bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent"
+            >
+              What Our Clients Say
+            </span>
+          </h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            Hear directly from our valued clients about their experience working
+            with JustHome.
+          </p>
+        </div>
+
+        <!-- Testimonials Carousel -->
+        <div class="relative" x-data="{ currentSlide: 0 }">
+          <!-- Testimonials Container -->
+          <div class="overflow-hidden">
+            <div
+              class="flex transition-transform duration-500"
+              :style="'transform: translateX(-' + (currentSlide * 100) + '%)'"
+            >
+              <!-- Testimonial 1 -->
+              <div class="w-full flex-shrink-0 px-4">
+                <div class="bg-gray-50 rounded-2xl p-8 md:p-10">
+                  <div
+                    class="flex flex-col md:flex-row gap-6 items-center md:items-start"
+                  >
+                    <div
+                      class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden flex-shrink-0 border-4 border-white shadow-lg"
+                    >
+                      <img
+                        src="images/img1.png"
+                        alt="Sarah Johnson"
+                        class="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div class="flex-1">
+                      <blockquote
+                        class="text-gray-600 text-lg leading-relaxed mb-6"
+                      >
+                        "Working with JustHome was an absolute pleasure. They
+                        made the entire process of finding and purchasing our
+                        dream home seamless. Their attention to detail and
+                        professional approach exceeded our expectations."
+                      </blockquote>
+                      <div class="text-center md:text-left">
+                        <p class="font-bold text-gray-900 text-lg">
+                          Sarah Johnson
+                        </p>
+                        <p class="text-blue-600">First-time Homebuyer</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Testimonial 2 -->
+              <div class="w-full flex-shrink-0 px-4">
+                <div class="bg-gray-50 rounded-2xl p-8 md:p-10">
+                  <div
+                    class="flex flex-col md:flex-row gap-6 items-center md:items-start"
+                  >
+                    <div
+                      class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden flex-shrink-0 border-4 border-white shadow-lg"
+                    >
+                      <img
+                        src="images/img1.png"
+                        alt="Michael Chen"
+                        class="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div class="flex-1">
+                      <blockquote
+                        class="text-gray-600 text-lg leading-relaxed mb-6"
+                      >
+                        "The property management services provided by JustHome
+                        are outstanding. They take care of everything, making
+                        being a landlord completely stress-free. I highly
+                        recommend their services."
+                      </blockquote>
+                      <div class="text-center md:text-left">
+                        <p class="font-bold text-gray-900 text-lg">
+                          Michael Chen
+                        </p>
+                        <p class="text-blue-600">Property Investor</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Testimonial 3 -->
+              <div class="w-full flex-shrink-0 px-4">
+                <div class="bg-gray-50 rounded-2xl p-8 md:p-10">
+                  <div
+                    class="flex flex-col md:flex-row gap-6 items-center md:items-start"
+                  >
+                    <div
+                      class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden flex-shrink-0 border-4 border-white shadow-lg"
+                    >
+                      <img
+                        src="images/img1.png"
+                        alt="Emily Martinez"
+                        class="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div class="flex-1">
+                      <blockquote
+                        class="text-gray-600 text-lg leading-relaxed mb-6"
+                      >
+                        "I sold my property through JustHome and was impressed
+                        by their market knowledge and negotiation skills. They
+                        secured a great deal and made the process smooth and
+                        transparent."
+                      </blockquote>
+                      <div class="text-center md:text-left">
+                        <p class="font-bold text-gray-900 text-lg">
+                          Emily Martinez
+                        </p>
+                        <p class="text-blue-600">Property Seller</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation Arrows -->
+          <button
+            class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-12 h-12 rounded-full bg-white shadow-lg border border-gray-100 flex items-center justify-center text-blue-600 hover:text-blue-700 hover:shadow-xl transition-all duration-300 focus:outline-none"
+            @click="currentSlide = (currentSlide - 1 + 3) % 3"
+            aria-label="Previous testimonial"
+          >
+            <i class="fas fa-chevron-left"></i>
+          </button>
+
+          <button
+            class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-12 h-12 rounded-full bg-white shadow-lg border border-gray-100 flex items-center justify-center text-blue-600 hover:text-blue-700 hover:shadow-xl transition-all duration-300 focus:outline-none"
+            @click="currentSlide = (currentSlide + 1) % 3"
+            aria-label="Next testimonial"
+          >
+            <i class="fas fa-chevron-right"></i>
+          </button>
+
+          <!-- Dots Navigation -->
+          <div class="flex justify-center gap-3 mt-8">
+            <button
+              class="w-3 h-3 rounded-full transition-all duration-300 focus:outline-none"
+              :class="currentSlide === 0 ? 'bg-blue-600' : 'bg-gray-300 hover:bg-gray-400'"
+              @click="currentSlide = 0"
+              aria-label="Go to testimonial 1"
+            ></button>
+            <button
+              class="w-3 h-3 rounded-full transition-all duration-300 focus:outline-none"
+              :class="currentSlide === 1 ? 'bg-blue-600' : 'bg-gray-300 hover:bg-gray-400'"
+              @click="currentSlide = 1"
+              aria-label="Go to testimonial 2"
+            ></button>
+            <button
+              class="w-3 h-3 rounded-full transition-all duration-300 focus:outline-none"
+              :class="currentSlide === 2 ? 'bg-blue-600' : 'bg-gray-300 hover:bg-gray-400'"
+              @click="currentSlide = 2"
+              aria-label="Go to testimonial 3"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section
+      class="py-20 bg-gradient-to-r from-blue-600 to-blue-800 relative overflow-hidden"
+    >
+      <!-- Decorative Elements -->
+      <div
+        class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none"
+      >
+        <div
+          class="absolute top-0 left-1/4 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 blur-2xl"
+        ></div>
+        <div
+          class="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-400/10 rounded-full translate-y-1/2 blur-3xl"
+        ></div>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-8 relative">
+        <div
+          class="flex flex-col lg:flex-row items-center justify-between gap-12"
+        >
+          <!-- Left Content -->
+          <div class="flex-1 text-center lg:text-left">
+            <h2
+              class="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight"
+            >
+              Ready to Sell Your Property?<br />
+              <span class="text-amber-400">Let's Make It Happen!</span>
+            </h2>
+            <p class="text-blue-100 text-lg mb-8 max-w-xl mx-auto lg:mx-0">
+              List your property with JustHome and get access to thousands of
+              potential buyers. Our expert agents will guide you through every
+              step of the process.
+            </p>
+            <div
+              class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+            >
+              <a
+               
+                class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-blue-600 font-semibold rounded-xl hover:bg-amber-400 hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                <i class="fas fa-home"></i>
+                <span>List Your Property</span>
+              </a>
+              <a
+               
+                class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-blue-700 text-white font-semibold rounded-xl hover:bg-blue-900 transition-all duration-300 border border-blue-400"
+              >
+                <i class="fas fa-phone"></i>
+                <span>Talk to an Agent</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right Content - Benefits -->
+          <div class="lg:w-1/2">
+            <div
+              class="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/10"
+            >
+              <h3 class="text-xl font-semibold text-white mb-6">
+                Why List With Us?
+              </h3>
+              <div class="space-y-4">
+                <div class="flex items-start gap-4">
+                  <div
+                    class="w-12 h-12 rounded-xl bg-amber-400 flex items-center justify-center flex-shrink-0"
+                  >
+                    <i class="fas fa-globe text-white text-xl"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-white font-medium mb-1">
+                      Wide Market Reach
+                    </h4>
+                    <p class="text-blue-100">
+                      Access to thousands of verified buyers and investors
+                    </p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-4">
+                  <div
+                    class="w-12 h-12 rounded-xl bg-amber-400 flex items-center justify-center flex-shrink-0"
+                  >
+                    <i class="fas fa-chart-line text-white text-xl"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-white font-medium mb-1">Maximum Value</h4>
+                    <p class="text-blue-100">
+                      Get the best price for your property with our market
+                      analysis
+                    </p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-4">
+                  <div
+                    class="w-12 h-12 rounded-xl bg-amber-400 flex items-center justify-center flex-shrink-0"
+                  >
+                    <i class="fas fa-shield-alt text-white text-xl"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-white font-medium mb-1">Secure Process</h4>
+                    <p class="text-blue-100">
+                      End-to-end support with legal and documentation assistance
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Success Stats -->
+        <div
+          class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 pt-8 border-t border-blue-400/30"
+        >
+          <div class="text-center">
+            <div class="text-3xl font-bold text-white mb-2">15k+</div>
+            <p class="text-blue-100">Properties Sold</p>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-white mb-2">98%</div>
+            <p class="text-blue-100">Success Rate</p>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-white mb-2">24/7</div>
+            <p class="text-blue-100">Expert Support</p>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-white mb-2">30k+</div>
+            <p class="text-blue-100">Happy Clients</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Latest Blog Posts Section -->
+    <section class="py-20 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-8">
+        <!-- Section Header -->
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            <span
+              class="bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent"
+            >
+              Latest From Our Blog
+            </span>
+          </h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            Stay informed with the latest trends, tips, and insights about the
+            real estate market.
+          </p>
+        </div>
+
+        <!-- Blog Posts Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          <!-- Blog Post 1 -->
+          <article
+            class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+          >
+            <a  class="block">
+              <div class="relative">
+                <img
+                  src="images/img1.png"
+                  alt="Investment Tips"
+                  class="w-full h-48 object-cover"
+                />
+                <div class="absolute top-4 left-4">
+                  <span
+                    class="px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-full"
+                  >
+                    Investment
+                  </span>
+                </div>
+              </div>
+              <div class="p-6">
+                <div class="flex items-center gap-2 text-sm text-gray-500 mb-3">
+                  <i class="fas fa-calendar-alt text-blue-600"></i>
+                  <span>September 25, 2025</span>
+                  <span class="mx-2">•</span>
+                  <i class="fas fa-clock text-blue-600"></i>
+                  <span>5 min read</span>
+                </div>
+                <h3
+                  class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600"
+                >
+                  Top 10 Property Investment Tips for 2025
+                </h3>
+                <p class="text-gray-600 mb-4 line-clamp-3">
+                  Discover the most effective strategies for real estate
+                  investment in today's market. Learn how to maximize returns
+                  while minimizing risks.
+                </p>
+                <div class="flex items-center gap-3">
+                  <img
+                    src="images/img1.png"
+                    alt="Author"
+                    class="w-10 h-10 rounded-full object-cover"
+                  />
+                  <div>
+                    <p class="font-medium text-gray-900">John Smith</p>
+                    <p class="text-sm text-gray-500">Real Estate Analyst</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <!-- Blog Post 2 -->
+          <article
+            class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+          >
+            <a class="block">
+              <div class="relative">
+                <img
+                  src="images/img1.png"
+                  alt="Market Trends"
+                  class="w-full h-48 object-cover"
+                />
+                <div class="absolute top-4 left-4">
+                  <span
+                    class="px-3 py-1.5 bg-green-500 text-white text-xs font-medium rounded-full"
+                  >
+                    Market Trends
+                  </span>
+                </div>
+              </div>
+              <div class="p-6">
+                <div class="flex items-center gap-2 text-sm text-gray-500 mb-3">
+                  <i class="fas fa-calendar-alt text-blue-600"></i>
+                  <span>September 23, 2025</span>
+                  <span class="mx-2">•</span>
+                  <i class="fas fa-clock text-blue-600"></i>
+                  <span>4 min read</span>
+                </div>
+                <h3
+                  class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600"
+                >
+                  Real Estate Market Trends to Watch in Q4 2025
+                </h3>
+                <p class="text-gray-600 mb-4 line-clamp-3">
+                  Analysis of emerging real estate trends and their impact on
+                  buyers and sellers. Get insights into market dynamics and
+                  future predictions.
+                </p>
+                <div class="flex items-center gap-3">
+                  <img
+                    src="images/img1.png"
+                    alt="Author"
+                    class="w-10 h-10 rounded-full object-cover"
+                  />
+                  <div>
+                    <p class="font-medium text-gray-900">Sarah Johnson</p>
+                    <p class="text-sm text-gray-500">Market Researcher</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <!-- Blog Post 3 -->
+          <article
+            class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+          >
+            <a  class="block">
+              <div class="relative">
+                <img
+                  src="images/img1.png"
+                  alt="Home Renovation"
+                  class="w-full h-48 object-cover"
+                />
+                <div class="absolute top-4 left-4">
+                  <span
+                    class="px-3 py-1.5 bg-amber-500 text-white text-xs font-medium rounded-full"
+                  >
+                    Home Improvement
+                  </span>
+                </div>
+              </div>
+              <div class="p-6">
+                <div class="flex items-center gap-2 text-sm text-gray-500 mb-3">
+                  <i class="fas fa-calendar-alt text-blue-600"></i>
+                  <span>September 20, 2025</span>
+                  <span class="mx-2">•</span>
+                  <i class="fas fa-clock text-blue-600"></i>
+                  <span>6 min read</span>
+                </div>
+                <h3
+                  class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600"
+                >
+                  Budget-Friendly Renovation Ideas That Add Value
+                </h3>
+                <p class="text-gray-600 mb-4 line-clamp-3">
+                  Explore cost-effective renovation projects that can
+                  significantly increase your property's value. Expert tips for
+                  smart home improvements.
+                </p>
+                <div class="flex items-center gap-3">
+                  <img
+                    src="images/img1.png"
+                    alt="Author"
+                    class="w-10 h-10 rounded-full object-cover"
+                  />
+                  <div>
+                    <p class="font-medium text-gray-900">Mike Anderson</p>
+                    <p class="text-sm text-gray-500">Interior Designer</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </article>
+        </div>
+
+        <!-- View All Button -->
+        <div class="text-center">
+          <a
+          
+            class="inline-flex items-center gap-2 px-8 py-4 bg-white text-blue-600 font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200 hover:border-blue-600 hover:text-blue-700"
+          >
+            <span>View All Articles</span>
+            <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter Subscription Section -->
+    <section class="py-20 bg-white">
+      <div class="max-w-7xl mx-auto px-8">
+        <div
+          class="flex flex-col lg:flex-row items-center justify-between gap-12"
+        >
+          <!-- Left Content -->
+          <div class="lg:w-1/2">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">
+              <span
+                class="bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent"
+              >
+                Stay Updated with
+              </span>
+              <span class="text-gray-900"> Real Estate Insights </span>
+            </h2>
+            <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+              Subscribe to our newsletter and receive the latest property
+              listings, market insights, and exclusive offers directly in your
+              inbox.
+            </p>
+            <div class="space-y-4 mb-8">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0"
+                >
+                  <i class="fas fa-check text-blue-600"></i>
+                </div>
+                <span class="text-gray-700"
+                  >Weekly curated property listings</span
+                >
+              </div>
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0"
+                >
+                  <i class="fas fa-check text-blue-600"></i>
+                </div>
+                <span class="text-gray-700"
+                  >Expert market analysis and trends</span
+                >
+              </div>
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0"
+                >
+                  <i class="fas fa-check text-blue-600"></i>
+                </div>
+                <span class="text-gray-700"
+                  >Early access to premium properties</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Content - Subscription Form -->
+          <div class="lg:w-1/2">
+            <div
+              class="bg-gray-50 rounded-2xl p-8 md:p-10 shadow-lg border border-gray-100"
+            >
+              <form
+                class="space-y-6"
+                id="newsletter-form"
+                onsubmit="return handleNewsletterSubmit(event)"
+              >
+                <div>
+                  <label
+                    for="name"
+                    class="block text-sm font-medium text-gray-700 mb-2"
+                    >Full Name</label
+                  >
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                    placeholder="Enter your full name"
+                  />
+                </div>
+                <div>
+                  <label
+                    for="email"
+                    class="block text-sm font-medium text-gray-700 mb-2"
+                    >Email Address</label
+                  >
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                    placeholder="Enter your email address"
+                  />
+                </div>
+                <div>
+                  <label
+                    for="interests"
+                    class="block text-sm font-medium text-gray-700 mb-2"
+                    >Interests</label
+                  >
+                  <select
+                    id="interests"
+                    name="interests"
+                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                  >
+                    <option value="">Select your interests</option>
+                    <option value="buying">Buying Property</option>
+                    <option value="selling">Selling Property</option>
+                    <option value="renting">Renting</option>
+                    <option value="investing">Real Estate Investment</option>
+                    <option value="market-news">Market News</option>
+                  </select>
+                </div>
+                <div class="flex items-start">
+                  <div class="flex items-center h-5">
+                    <input
+                      type="checkbox"
+                      id="privacy"
+                      name="privacy"
+                      required
+                      class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300"
+                    />
+                  </div>
+                  <label for="privacy" class="ml-2 text-sm text-gray-600">
+                    I agree to receive newsletters and accept the
+                    <a href="#" class="text-blue-600 hover:underline"
+                      >Privacy Policy</a
+                    >
+                  </label>
+                </div>
+                <button
+                  type="submit"
+                  class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg flex items-center justify-center gap-2"
+                >
+                  <i class="fas fa-paper-plane"></i>
+                  <span>Subscribe Now</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Floating Action Button -->
+    <button class="fixed bottom-8 right-8 group" aria-label="Chat with us">
+      <div
+        class="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-amber-500 rounded-full blur opacity-0 group-hover:opacity-100 transition duration-300"
+      ></div>
+      <div
+        class="relative flex items-center justify-center w-14 h-14 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-full shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+      >
+        <i class="fas fa-comments text-2xl"></i>
+      </div>
+    </button>
+
+    <footer class="bg-gray-800 text-white py-12">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <h3 class="text-lg font-semibold mb-4">JustHome</h3>
+            <p class="text-gray-400">
+              Finding your perfect home has never been easier.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+            <ul class="space-y-2">
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white"
+                  >Properties</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white"
+                  >About Us</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white"
+                  >Contact</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+            <ul class="space-y-2">
+              <li class="text-gray-400">
+                <i class="fas fa-map-marker-alt mr-2"></i> 123 Main St, City
+              </li>
+              <li class="text-gray-400">
+                <i class="fas fa-phone mr-2"></i> (555) 123-4567
+              </li>
+              <li class="text-gray-400">
+                <i class="fas fa-envelope mr-2"></i> info@justhome.com
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Follow Us</h3>
+            <div class="flex gap-4">
+              <a href="#" class="text-gray-400 hover:text-white">
+                <i class="fab fa-facebook text-xl"></i>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-white">
+                <i class="fab fa-twitter text-xl"></i>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-white">
+                <i class="fab fa-instagram text-xl"></i>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-white">
+                <i class="fab fa-linkedin text-xl"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+          <p class="text-gray-400">
+            © 2025 JustHome Real Estate. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script src="js/home.js"></script>
+    <script src="js/testimonials.js"></script>
+
+    <script>
+      // User Profile Dropdown Toggle (Mobile & Desktop)
+      (function() {
+        const profileBtn = document.getElementById('user-profile-btn');
+        const dropdown = document.getElementById('user-dropdown');
+
+        if (!profileBtn || !dropdown) return;
+
+        // Toggle dropdown on click/tap
+        profileBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+
+          // Toggle visibility
+          const isVisible = dropdown.classList.contains('opacity-100');
+
+          if (isVisible) {
+            dropdown.classList.remove('opacity-100', 'visible');
+            dropdown.classList.add('opacity-0', 'invisible');
+          } else {
+            dropdown.classList.remove('opacity-0', 'invisible');
+            dropdown.classList.add('opacity-100', 'visible');
+          }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+          if (!profileBtn.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.classList.remove('opacity-100', 'visible');
+            dropdown.classList.add('opacity-0', 'invisible');
+          }
+        });
+
+        // Close dropdown when clicking a link inside
+        dropdown.querySelectorAll('a').forEach(function(link) {
+          link.addEventListener('click', function() {
+            dropdown.classList.remove('opacity-100', 'visible');
+            dropdown.classList.add('opacity-0', 'invisible');
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,292 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Agent Dashboard - JustHome Real Estate</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+      .glass-effect {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      .gradient-text {
+        background: linear-gradient(90deg, #1e40af, #3b82f6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .property-card-shadow {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      }
+      .gradient-hover {
+        background-size: 200% auto;
+        transition: background-position 0.3s ease;
+      }
+      .gradient-hover:hover {
+        background-position: right center;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100">
+    <!-- Header -->
+    <header
+      class="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 px-6 py-4 flex justify-between items-center transition-all duration-300"
+    >
+      <div class="flex items-center gap-3">
+        <img
+          src="images/1logo.png"
+          alt="JustHome Logo"
+          class="h-12 w-auto transition-transform duration-300 hover:scale-105"
+        />
+        <span class="text-3xl font-bold gradient-text"
+          >Just<span class="text-blue-600">Home</span></span
+        >
+      </div>
+      <nav aria-label="Agent navigation" class="flex items-center gap-10">
+        <ul class="flex gap-6">
+          <li>
+            <a
+              href="#"
+              class="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-700 font-semibold hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+              ><i class="fas fa-home"></i> Dashboard</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-700 font-semibold hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+              ><i class="fas fa-building"></i> Manage Properties</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-700 font-semibold hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+              ><i class="fas fa-users"></i> Clients</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-700 font-semibold hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+              ><i class="fas fa-chart-line"></i> Performance</a
+            >
+          </li>
+        </ul>
+        <div class="flex items-center gap-4 ml-10">
+          <div class="relative">
+            <input
+              type="text"
+              class="w-40 pl-10 pr-3 py-2 border border-gray-200 rounded-lg bg-white text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
+              placeholder="Search properties or clients..."
+              aria-label="Quick search"
+            />
+            <i
+              class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-base transition-colors duration-200 hover:text-blue-500"
+            ></i>
+          </div>
+          <div class="relative group">
+            <button
+              class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all duration-200"
+              aria-label="Agent profile"
+            >
+              <i class="fas fa-user-circle text-2xl"></i>
+            </button>
+            <div
+              class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform -translate-y-1 group-hover:translate-y-0"
+            >
+              <a
+                href="#"
+                class="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 rounded-t-lg transition-colors duration-200"
+              >
+                <i class="fas fa-user"></i> Profile</a
+              >
+              <a
+                href="#"
+                class="flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-blue-50 rounded-b-lg transition-colors duration-200"
+              >
+                <i class="fas fa-sign-out-alt"></i> Logout</a
+              >
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-28 px-6 pb-6">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+          <h1 class="text-4xl font-bold text-gray-800">Agent Dashboard</h1>
+          <div class="flex items-center gap-4">
+            <button
+              class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200"
+            >
+              <i class="fas fa-plus"></i> Add Property
+            </button>
+            <div class="relative">
+              <button
+                class="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all duration-200"
+              >
+                <i class="fas fa-bell"></i> Notifications
+                <span
+                  class="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+                  >3</span
+                >
+              </button>
+              <div
+                class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform -translate-y-1 group-hover:translate-y-0"
+              >
+                <h4 class="text-sm font-semibold text-gray-800 mb-2">
+                  Notifications
+                </h4>
+                <ul class="space-y-2">
+                  <li class="text-sm text-gray-600">
+                    New client inquiry received.
+                  </li>
+                  <li class="text-sm text-gray-600">
+                    Property viewing scheduled for tomorrow.
+                  </li>
+                  <li class="text-sm text-gray-600">
+                    Monthly report is ready.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <!-- Property Listings -->
+          <div class="bg-white p-6 rounded-xl property-card-shadow">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+              Active Listings
+            </h3>
+            <p class="text-3xl font-bold text-blue-600">0</p>
+            <p class="text-sm text-gray-500 mt-1">Your listed properties</p>
+            <a
+              href="manage-properties.html"
+              class="text-sm text-blue-600 hover:underline mt-2 inline-block"
+              >View All</a
+            >
+          </div>
+          <!-- Monthly Revenue -->
+          <div class="bg-white p-6 rounded-xl property-card-shadow">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+              Monthly Revenue
+            </h3>
+            <p class="text-3xl font-bold text-blue-600">₦0</p>
+            <p class="text-sm text-gray-500 mt-1">Total property value</p>
+            <a
+              href="manage-properties.html"
+              class="text-sm text-blue-600 hover:underline mt-2 inline-block"
+              >View Details</a
+            >
+          </div>
+          <!-- Performance -->
+          <div class="bg-white p-6 rounded-xl property-card-shadow">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+              Total Value
+            </h3>
+            <p class="text-3xl font-bold text-blue-600">₦0</p>
+            <p class="text-sm text-gray-500 mt-1">Combined property value</p>
+            <a
+              href="manage-properties.html"
+              class="text-sm text-blue-600 hover:underline mt-2 inline-block"
+              >View Report</a
+            >
+          </div>
+        </div>
+
+        <!-- Recent Properties -->
+        <div class="bg-white p-6 rounded-xl property-card-shadow mb-8">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold text-gray-800">
+              Recent Properties
+            </h3>
+            <a
+              href="manage-properties.html"
+              class="text-sm text-blue-600 hover:underline"
+              >View All Properties</a
+            >
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Properties will be dynamically inserted here -->
+            <p class="col-span-3 text-center text-gray-500 py-4">
+              Loading properties...
+            </p>
+          </div>
+        </div>
+
+        <!-- Client Overview -->
+        <div class="bg-white p-6 rounded-xl property-card-shadow">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold text-gray-800">
+              Recent Inquiries
+            </h3>
+            <button class="text-sm text-blue-600 hover:underline">
+              View All
+            </button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm text-gray-700">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="py-2 px-4 text-left">Property</th>
+                  <th class="py-2 px-4 text-left">Client Name</th>
+                  <th class="py-2 px-4 text-left">Contact</th>
+                  <th class="py-2 px-4 text-left">Date</th>
+                  <th class="py-2 px-4 text-left">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Inquiries will be dynamically inserted here -->
+                <tr>
+                  <td colspan="5" class="py-4 text-center text-gray-500">
+                    No recent inquiries
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyBo5JRHCEmp3PftMAmHQxJspCPzX0RRPKY",
+        authDomain: "estatejs-7c477.firebaseapp.com",
+        projectId: "estatejs-7c477",
+        storageBucket: "estatejs-7c477.firebasestorage.app",
+        messagingSenderId: "156544193291",
+        appId: "1:156544193291:web:96e317eb953cf7194fc80e",
+        measurementId: "G-T5HCCR6C7M",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+    </script>
+
+    <script src="js/agentdashboard.js" type="module"></script>
+  </body>
+</html>

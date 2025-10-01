@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Admin Account - JustHome</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        body { font-family: "Poppins", sans-serif; }
+        .gradient-text {
+            background: linear-gradient(90deg, #1e40af, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded-xl shadow-lg max-w-md w-full">
+        <h1 class="text-3xl font-bold gradient-text mb-6">Create Admin Account</h1>
+        <p class="text-gray-600 mb-4">This will create a new admin account with proper Firestore permissions.</p>
+        
+        <form id="create-admin-form" class="space-y-4">
+            <div>
+                <label class="block text-sm text-gray-600">Full Name</label>
+                <input type="text" name="name" class="w-full p-2 border rounded-lg" value="Mubarak Oyewole" required />
+            </div>
+            <div>
+                <label class="block text-sm text-gray-600">Admin Email</label>
+                <input type="email" name="email" class="w-full p-2 border rounded-lg" value="oyestobi@gmail.com" required />
+            </div>
+            <div>
+                <label class="block text-sm text-gray-600">Password</label>
+                <input type="password" name="password" class="w-full p-2 border rounded-lg" placeholder="Enter a strong password" required />
+            </div>
+            <button type="submit" class="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                <i class="fas fa-user-plus mr-2"></i>
+                Create Admin Account
+            </button>
+        </form>
+        
+        <div id="status" class="mt-4 p-3 rounded-lg hidden"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword, 
+            updateProfile,
+            signOut 
+        } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+        import { 
+            getFirestore, 
+            doc, 
+            setDoc, 
+            getDoc, 
+            serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBo5JRHCEmp3PftMAmHQxJspCPzX0RRPKY",
+            authDomain: "estatejs-7c477.firebaseapp.com",
+            projectId: "estatejs-7c477",
+            storageBucket: "estatejs-7c477.appspot.com",
+            messagingSenderId: "156544193291",
+            appId: "1:156544193291:web:96e317eb953cf7194fc80e",
+            measurementId: "G-T5HCCR6C7M",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Clear any existing session
+        await auth.signOut();
+
+        document.getElementById('create-admin-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const statusDiv = document.getElementById('status');
+            const form = e.target;
+            
+            statusDiv.className = 'mt-4 p-3 rounded-lg bg-blue-100 text-blue-800';
+            statusDiv.textContent = 'Creating admin account...';
+            statusDiv.classList.remove('hidden');
+
+            try {
+                const name = form.name.value;
+                const email = form.email.value;
+                const password = form.password.value;
+
+                console.log('🔐 Creating Firebase Auth account...');
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                console.log('✅ Auth account created:', { uid: user.uid, email: user.email });
+
+                console.log('👤 Updating display name...');
+                await updateProfile(user, { displayName: name });
+                console.log('✅ Display name updated');
+
+                console.log('📄 Creating Firestore document...');
+                const userDocRef = doc(db, "users", user.uid);
+                const userData = {
+                    name,
+                    email,
+                    role: "admin",
+                    createdAt: serverTimestamp(),
+                    lastLogin: serverTimestamp(),
+                    propertiesManaged: 0,
+                };
+                
+                await setDoc(userDocRef, userData);
+                console.log('✅ User document created in Firestore');
+
+                console.log('🔍 Verifying document creation...');
+                const verifyDoc = await getDoc(userDocRef);
+                if (!verifyDoc.exists()) {
+                    throw new Error("Document verification failed - document does not exist");
+                }
+                
+                const verifiedUserData = verifyDoc.data();
+                if (verifiedUserData.role !== "admin") {
+                    throw new Error("Document verification failed - role is not admin: " + verifiedUserData.role);
+                }
+                
+                console.log('✅ Document verification successful - admin role confirmed');
+
+                console.log('🚪 Signing out...');
+                await auth.signOut();
+                console.log('✅ Signout complete');
+
+                statusDiv.className = 'mt-4 p-3 rounded-lg bg-green-100 text-green-800';
+                statusDiv.innerHTML = '✅ Admin account created successfully! <a href="admin/signin.html" class="text-blue-600 underline">Go to Sign In</a>';
+                
+            } catch (error) {
+                console.error('❌ Error creating admin account:', error);
+                statusDiv.className = 'mt-4 p-3 rounded-lg bg-red-100 text-red-800';
+                statusDiv.textContent = 'Error: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>

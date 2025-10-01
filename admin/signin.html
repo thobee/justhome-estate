@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Sign In - JustHome</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+      .gradient-text {
+        background: linear-gradient(90deg, #1e40af, #3b82f6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .admin-bg {
+        background-image: url("../images/pexels.jpg");
+        background-size: cover;
+        background-position: center;
+      }
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-out;
+      }
+      .animate-slide-up {
+        animation: slideUp 0.5s ease-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes slideUp {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      .input-focus-ring {
+        transition: all 0.2s ease;
+      }
+      .input-focus-ring:focus {
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+        border-color: #3b82f6;
+      }
+      .btn-hover-effect {
+        transition: all 0.2s ease;
+      }
+      .btn-hover-effect:hover {
+        transform: translateY(-1px);
+      }
+      .admin-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <div class="min-h-screen flex items-center justify-center p-8">
+      <!-- Centered Admin Sign In Form -->
+      <div class="w-full max-w-md animate-fade-in">
+        <div class="max-w-md w-full">
+          <!-- Top Navigation -->
+          <nav class="flex justify-between items-center mb-8">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl flex items-center justify-center">
+                <i class="fas fa-cog text-white"></i>
+              </div>
+              <div>
+                <h1 class="text-2xl font-bold gradient-text">JustHome</h1>
+                <p class="text-sm text-gray-500">Admin Panel</p>
+              </div>
+            </div>
+            <a
+              href="../index.html"
+              class="text-gray-600 hover:text-gray-900 transition-colors p-2 hover:bg-gray-100 rounded-lg"
+              title="Back to main site"
+            >
+              <i class="fas fa-home"></i>
+            </a>
+          </nav>
+
+          <!-- Admin Sign In Form -->
+          <div class="admin-card p-8 rounded-2xl shadow-xl animate-slide-up">
+            <div class="text-center mb-8">
+              <div class="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                <i class="fas fa-user-shield text-white text-2xl"></i>
+              </div>
+              <h2 class="text-2xl font-semibold text-gray-800">Admin Access</h2>
+              <p class="text-gray-600 mt-2">
+                Sign in to access the admin dashboard
+              </p>
+            </div>
+
+            <form id="admin-signin-form" class="space-y-6">
+              <!-- Email Input -->
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700"
+                  >Admin Email Address</label
+                >
+                <div class="relative">
+                  <div
+                    class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                  >
+                    <i class="fas fa-envelope text-gray-400"></i>
+                  </div>
+                  <input
+                    type="email"
+                    name="email"
+                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl text-gray-900 input-focus-ring"
+                    placeholder="admin@justhome.com"
+                    required
+                  />
+                </div>
+              </div>
+
+              <!-- Password Input -->
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700"
+                  >Password</label
+                >
+                <div class="relative">
+                  <div
+                    class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                  >
+                    <i class="fas fa-lock text-gray-400"></i>
+                  </div>
+                  <input
+                    type="password"
+                    name="password"
+                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl text-gray-900 input-focus-ring"
+                    placeholder="••••••••"
+                    required
+                  />
+                  <button
+                    type="button"
+                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                    onclick="togglePassword(this)"
+                  >
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Remember Me & Forgot Password -->
+              <div class="flex items-center justify-between">
+                <label class="flex items-center space-x-2 text-sm">
+                  <input
+                    type="checkbox"
+                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <span class="text-gray-600">Remember me</span>
+                </label>
+                <a href="#" class="text-sm text-blue-600 hover:text-blue-800"
+                  >Forgot password?</a
+                >
+              </div>
+
+              <!-- Sign In Button -->
+              <button
+                type="submit"
+                class="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all btn-hover-effect shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+              >
+                <i class="fas fa-sign-in-alt"></i>
+                <span>Access Admin Panel</span>
+              </button>
+            </form>
+
+            <!-- Sign Up Link -->
+            <p class="mt-6 text-center text-gray-600">
+              Need admin access?
+              <a
+                href="signup.html"
+                class="font-medium text-blue-600 hover:text-blue-800"
+                >Request Admin Account</a
+              >
+            </p>
+          </div>
+
+          <!-- Security Notice -->
+          <div class="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
+            <div class="flex items-start gap-3">
+              <div class="w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="fas fa-info text-white text-xs"></i>
+              </div>
+              <div>
+                <p class="text-sm text-blue-800 font-medium">Security Notice</p>
+                <p class="text-sm text-blue-600 mt-1">
+                  This portal is restricted to authorized administrators only.
+                  All activities are monitored and logged.
+                </p>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <!-- Password Toggle Script -->
+    <script>
+      function togglePassword(button) {
+        const input = button.parentElement.querySelector("input");
+        const icon = button.querySelector("i");
+
+        if (input.type === "password") {
+          input.type = "text";
+          icon.classList.remove("fa-eye");
+          icon.classList.add("fa-eye-slash");
+        } else {
+          input.type = "password";
+          icon.classList.remove("fa-eye-slash");
+          icon.classList.add("fa-eye");
+        }
+      }
+    </script>
+
+    <script src="../js/admin/admin-signin.js" type="module"></script>
+  </body>
+</html>
