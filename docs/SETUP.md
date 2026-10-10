@@ -25,9 +25,12 @@ In the Firebase console:
 | `properties`      | Public readable listings. Trusted agents/admins write; clients must not grant themselves those roles.                                                        |
 | `users/{uid}`     | Account name, email, role, savedProperties, recentViews. Users read/update their own permitted fields; role changes are trusted-only.                        |
 | `viewingRequests` | userId, propertyId, propertyTitle, name, email, date, message, status, createdAt. Users create/read their own requests; only trusted operators confirm them. |
+| `bookings`        | Legacy account activity. The refreshed dashboard reads this collection for compatibility while existing Firebase deployments migrate to `viewingRequests`. |
 | `messages`        | userId, name, email, message, status, createdAt. Signed-in users create messages; operators manage replies through a separately verified workflow.           |
 
 Authorization must be enforced in Firestore rules. UI redirects are convenience, not access control. No rules are automatically deployed by this repository.
+
+For signup/profile errors or a denied dashboard section, follow [Account troubleshooting](ACCOUNT-ACCESS.md). Deploy `js/account-flow.js` alongside the other shared JavaScript modules.
 
 ## Hosting
 

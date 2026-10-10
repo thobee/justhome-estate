@@ -1,4 +1,9 @@
 import {
+  timed as withTimeout,
+  registerAccount,
+  loadDashboardData,
+} from "./account-flow.js";
+import {
   SAMPLE_PROPERTIES,
   escapeHtml as e,
   normalizeProperty,
@@ -74,29 +79,18 @@ function readableError(error) {
     "auth/network-request-failed":
       "Check your internet connection and try again.",
     "permission-denied":
-      "This action is unavailable with the current database permissions.",
+      "Your account data could not load because database access was denied. Please contact support.",
     unavailable: "We could not reach the database. Please try again.",
+    timeout:
+      "This is taking longer than expected. Check your connection and try again.",
+    "auth/user-disabled": "This account is disabled. Contact support for help.",
+    "auth/operation-not-allowed":
+      "Email sign-in is not enabled yet. Please contact support.",
   };
   return (
     errors[error.code] ||
     "We could not complete this request. Please try again."
   );
-}
-async function withTimeout(promise, milliseconds = 12000) {
-  let timer;
-  try {
-    return await Promise.race([
-      promise,
-      new Promise((_, reject) => {
-        timer = setTimeout(
-          () => reject(new Error("Connection timed out")),
-          milliseconds,
-        );
-      }),
-    ]);
-  } finally {
-    clearTimeout(timer);
-  }
 }
 function renderShell() {
   const nav = [
@@ -110,14 +104,14 @@ function renderShell() {
     `<header class="site-header"><div class="container nav-row">
     <a class="brand" href="${href("index.html")}" aria-label="JustHome home">${icon("house")}JustHome<span style="color:var(--green)">.</span></a>
     <nav class="nav-links" id="main-nav" aria-label="Main navigation">${nav.map(([path, label]) => `<a href="${href(path)}" ${location.pathname.endsWith(path) || (path === "index.html" && location.pathname === "/") ? 'aria-current="page"' : ""}>${label}</a>`).join("")}</nav>
-    <div class="nav-actions" id="nav-account"><a class="text-link nav-signin" href="${href("signin.html")}">Sign in</a><a class="button secondary" href="${href("dashboard.html")}">My account</a></div>
+    <div class="nav-actions" id="nav-account"><a class="text-link nav-signup" href="${href("signup.html")}">Sign up</a><a class="button nav-signin" href="${href("signin.html")}">Sign in</a></div>
     <button class="icon-button mobile-toggle" id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="main-nav">${icon("menu")}</button>
   </div></header>`;
   document.getElementById("site-footer").innerHTML =
     `<footer class="site-footer"><div class="container"><div class="footer-top">
     <div><a class="brand" href="${href("index.html")}">${icon("house")}JustHome.</a><p>A clearer way to discover your next home. Browse, shortlist, and request a viewing in one place.</p></div>
     <div class="footer-links"><div><strong>Discover</strong><a href="${href("properties.html")}">Browse homes</a><a href="${href("properties.html?location=Lagos")}">Homes in Lagos</a><a href="${href("properties.html?location=Abuja")}">Homes in Abuja</a></div>
-    <div><strong>JustHome</strong><a href="${href("about.html")}">About us</a><a href="${href("contact.html")}">Contact</a><a href="${href("dashboard.html")}">Your shortlist</a></div>
+    <div><strong>JustHome</strong><a href="${href("about.html")}">About us</a><a href="${href("contact.html")}">Contact</a><a href="${href("dashboard.html")}">User dashboard</a></div>
     <div><strong>Good to know</strong><a href="${href("renting-guide.html")}">Renting guide</a><a href="${href("faq.html")}">Common questions</a><a href="${href("privacy.html")}">Privacy</a><a href="${href("terms.html")}">Terms</a><a href="${href("signin.html")}">Sign in</a></div></div>
     </div><div class="footer-bottom"><span>© ${new Date().getFullYear()} JustHome</span><span>Find your place. Make it home.</span></div></div></footer>`;
   const toggle = document.getElementById("menu-toggle");
@@ -278,30 +272,74 @@ async function renderDetails() {
   }
 }
 async function renderDashboard() {
-  {
-    const api = await withTimeout(backend());
-    if (!api.auth.currentUser) {
-      location.href = loginHref();
-      return;
-    }
+  const api = await withTimeout(backend());
+  const user = api.auth.currentUser;
+  if (!user) {
+    location.replace(loginHref());
+    return;
   }
-  const requests = await withTimeout(viewings());
-  main.innerHTML = `<div class="container"><div class="page-heading"><p class="eyebrow">Your next chapter</p><h1>Your home search, together.</h1><p>Keep your shortlist close and follow up on your viewing requests.</p></div><div class="account-grid"><section><div class="section-heading"><h2>Saved homes <small>(${saved.size})</small></h2><a class="text-link" href="${href("properties.html")}">Find more ${icon("arrow-right")}</a></div><div class="property-grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))">${
-    properties
-      .filter((item) => saved.has(item.id))
-      .map(card)
-      .join("") ||
-    gridState(
-      "Tap the heart on a listing to keep it here.",
-      "Your shortlist starts here",
-      `<a class="button" href="${href("properties.html")}">Explore homes</a>`,
-    )
-  }</div></section><section><h2>Viewing requests</h2>${requests.length ? requests.map((item) => `<div class="request-row"><h3>${e(item.propertyTitle)}</h3><p>${e(item.date)} · ${e(item.status)}</p><a class="text-link" href="${href("property-details.html?id=" + encodeURIComponent(item.propertyId))}">View home ${icon("arrow-up-right")}</a></div>`).join("") : '<p class="form-note">No viewing requests yet. Open a home you like and request a date.</p>'}</section></div></div><div style="height:70px"></div>`;
+  const heading = `<div class="page-heading"><p class="eyebrow">Your account</p><h1>Your dashboard</h1><p>Welcome${user.displayName ? ", " + e(user.displayName) : ""}. Keep your saved homes and viewing requests together.</p></div>`;
+  main.innerHTML = `<div class="container">${heading}<div class="notice" role="status">Loading your saved homes and viewings...</div><div class="account-grid section"><div class="skeleton"></div><div class="skeleton"></div></div></div>`;
+  const result = await loadDashboardData({ savedHomes, listings, viewings });
+  if (api.auth.currentUser?.uid !== user.uid) {
+    location.replace(loginHref());
+    return;
+  }
+  if (result.saved.status === "fulfilled") saved = result.saved.value;
+  if (result.homes.status === "fulfilled") properties = result.homes.value;
+  const failure = (label, error) =>
+    `<div class="notice error" role="alert"><strong>${e(label)}</strong><p>${e(readableError(error))}</p><button class="button secondary" data-retry-dashboard type="button">${icon("refresh-cw")}Try again</button></div>`;
+  let shortlist;
+  if (result.saved.status === "rejected") {
+    shortlist = failure("Saved homes could not load", result.saved.reason);
+  } else if (result.homes.status === "rejected" && saved.size) {
+    shortlist = failure(
+      "Your saved listings could not load",
+      result.homes.reason,
+    );
+  } else {
+    const matches = properties.filter((item) => saved.has(item.id));
+    shortlist = matches.length
+      ? `<div class="property-grid dashboard-homes">${matches.map(card).join("")}</div>`
+      : gridState(
+          saved.size
+            ? "Some saved listings may no longer be published. Browse homes to update your shortlist."
+            : "Tap the heart on any listing to save it here.",
+          saved.size
+            ? "No saved listings are available"
+            : "Start your shortlist",
+          `<a class="button secondary" href="properties.html">Browse homes ${icon("arrow-right")}</a>`,
+        );
+  }
+  const requests =
+    result.requests.status === "rejected"
+      ? failure("Viewing requests could not load", result.requests.reason)
+      : result.requests.value.length
+        ? result.requests.value
+            .map(
+              (item) =>
+                `<div class="request-row"><h3>${e(item.propertyTitle)}</h3><p>${e(item.date)} · ${e(item.status)}</p><a class="text-link" href="${href("property-details.html?id=" + encodeURIComponent(item.propertyId))}">View home ${icon("arrow-up-right")}</a></div>`,
+            )
+            .join("")
+        : '<p class="form-note">No viewing requests yet. Open an available home and request a preferred date.</p>';
+  const savedCount = result.saved.status === "fulfilled" ? saved.size : "--";
+  const requestCount =
+    result.requests.status === "fulfilled" ? result.requests.value.length : "--";
+  main.innerHTML = `<div class="container">${heading}<section class="dashboard-overview" aria-label="Account overview"><div class="dashboard-metric"><span>${icon("heart")}</span><div><strong>${savedCount}</strong><p>Saved homes</p></div></div><div class="dashboard-metric"><span>${icon("calendar-check")}</span><div><strong>${requestCount}</strong><p>Viewing requests</p></div></div><div class="dashboard-metric"><span>${icon("circle-check")}</span><div><strong>Active</strong><p>Account status</p></div></div></section><div class="dashboard-actions"><a class="button" href="properties.html">${icon("search")}Find a home</a><a class="button secondary" href="renting-guide.html">${icon("book-open")}Renting guide</a><a class="text-link" href="contact.html">Need help? ${icon("arrow-up-right")}</a></div><div class="account-grid dashboard-content"><section><div class="section-heading"><h2>Saved homes${result.saved.status === "fulfilled" ? " <small>(" + saved.size + ")</small>" : ""}</h2></div>${shortlist}</section><section><h2>Viewing requests</h2>${requests}</section></div></div>`;
+  icons();
+  document.querySelectorAll("[data-retry-dashboard]").forEach((button) =>
+    button.addEventListener("click", () => {
+      button.disabled = true;
+      renderDashboard().catch((error) => {
+        notice(readableError(error), true, button.closest(".notice"));
+      });
+    }),
+  );
 }
 function renderAuth() {
   const signup = page === "signup";
-  main.innerHTML = `<div class="auth-layout"><aside class="auth-aside"><img src="images/optimized/home.webp" alt=""><div><p class="eyebrow" style="color:var(--accent)">A place for your next chapter</p><h1>A home search that feels a little more human.</h1><p>Your favourite homes and viewing requests, all in one place.</p><a class="button secondary" style="color:white" href="index.html">Browse homes ${icon("arrow-up-right")}</a></div></aside>
-    <div class="auth-form-wrap"><div class="auth-form"><h1 style="font-size:28px;margin-bottom:8px">${signup ? "Make yourself at home." : "Welcome home."}</h1><p>${signup ? "Create an account to save homes and request viewings." : "Sign in to pick up your home search."}</p><form id="account-form" class="stack">
+  main.innerHTML = `<div class="auth-layout"><aside class="auth-aside"><img src="images/optimized/home.webp" alt=""><div><p class="eyebrow">A place for your next chapter</p><h2>A home search that feels more personal.</h2><p>Build a shortlist, request viewings, and return to your search from any device.</p><ul class="auth-benefits"><li>${icon("heart")}Save homes you love</li><li>${icon("calendar-check")}Keep viewing requests together</li><li>${icon("shield-check")}Secure account access</li></ul><a class="button secondary" href="index.html">Browse homes ${icon("arrow-up-right")}</a></div></aside>
+    <div class="auth-form-wrap"><div class="auth-form"><p class="eyebrow">${signup ? "Create your account" : "Welcome back"}</p><h1>${signup ? "Make yourself at home." : "Continue your home search."}</h1><p>${signup ? "Save promising homes and manage viewing requests in one place." : "Sign in to open your shortlist and account dashboard."}</p><form id="account-form" class="stack">
     ${signup ? '<div class="field"><label for="name">Full name</label><input id="name" name="name" autocomplete="name" required maxlength="100"></div>' : ""}
     <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="254"></div>
     <div class="field"><label for="password">Password</label><div class="password-wrap"><input id="password" name="password" type="password" autocomplete="${signup ? "new-password" : "current-password"}" required ${signup ? 'minlength="8"' : ""}><button type="button" id="toggle-password" aria-label="Show password">${icon("eye")}</button></div>${signup ? '<small class="form-note">Use at least 8 characters.</small>' : ""}</div>
@@ -348,43 +386,41 @@ function renderAuth() {
     const button = form.querySelector('[type="submit"]');
     button.disabled = true;
     button.textContent = signup ? "Creating account..." : "Signing in...";
-    let accountCreated = false;
     try {
       const api = await withTimeout(backend());
       const email = form.email.value.trim();
       if (signup) {
-        const result = await api.createUserWithEmailAndPassword(
-          api.auth,
+        const result = await registerAccount(api, {
+          name: form.elements.namedItem("name").value.trim(),
           email,
-          form.password.value,
-        );
-        accountCreated = true;
-        await api.updateProfile(result.user, {
-          displayName: form.elements.namedItem("name").value.trim(),
+          password: form.password.value,
         });
-        await api.setDoc(api.doc(api.db, "users", result.user.uid), {
-          name: result.user.displayName,
-          email,
-          role: "user",
-          createdAt: api.serverTimestamp(),
-          savedProperties: [],
-          recentViews: [],
-        });
-      } else
+        const failed = result.setup.find((item) => item.status === "rejected");
+        if (failed) {
+          notice(
+            "Your account is created and you are signed in. Profile setup could not finish. " +
+              readableError(failed.reason),
+            true,
+          );
+          const link = document.createElement("a");
+          link.className = "button secondary";
+          link.href = safeReturn(query.get("redirect"));
+          link.textContent = "Continue";
+          form.after(link);
+          button.textContent = "Account created";
+          return;
+        }
+      } else {
         await api.signInWithEmailAndPassword(
           api.auth,
           email,
           form.password.value,
         );
+      }
       notice("You are signed in. Opening your account...");
       location.href = safeReturn(query.get("redirect"));
     } catch (error) {
-      notice(
-        accountCreated
-          ? "Your account was created, but the profile could not be saved. Contact support or try signing in."
-          : readableError(error),
-        true,
-      );
+      notice(readableError(error), true);
       button.disabled = false;
       button.textContent = signup ? "Create account" : "Sign in";
     }
@@ -427,21 +463,27 @@ function renderContact() {
   });
 }
 async function updateAccountNav() {
-  if (["signin", "signup"].includes(page)) return;
   try {
     const api = await withTimeout(backend(), 8000);
     const user = api.auth.currentUser;
     if (!user) return;
     document.getElementById("nav-account").innerHTML =
-      `<a class="button secondary" href="dashboard.html">${icon("user-round")}My account</a><button class="icon-button" id="logout" aria-label="Sign out" title="Sign out">${icon("log-out")}</button>`;
-    document.getElementById("logout").addEventListener("click", async () => {
+      `<a class="button secondary account-link" href="dashboard.html">${icon("user-round")}My account</a><button class="icon-button" id="logout" aria-label="Sign out" title="Sign out">${icon("log-out")}</button>`;
+    const mobileLogout = document.createElement("button");
+    mobileLogout.className = "button secondary mobile-signout";
+    mobileLogout.textContent = "Sign out";
+    mobileLogout.type = "button";
+    document.getElementById("main-nav").append(mobileLogout);
+    const signOut = async () => {
       try {
         await api.signOut(api.auth);
         location.href = "index.html";
       } catch {
         toast("Could not sign out. Please try again.");
       }
-    });
+    };
+    document.getElementById("logout").addEventListener("click", signOut);
+    mobileLogout.addEventListener("click", signOut);
     icons();
   } catch {
     /* Public navigation remains usable when Firebase is offline. */
@@ -496,16 +538,7 @@ try {
   if (page === "details") await renderDetails();
   if (["home", "properties", "dashboard"].includes(page)) {
     if (page === "dashboard") {
-      const api = await withTimeout(backend());
-      if (!api.auth.currentUser) {
-        location.href = loginHref();
-      } else {
-        [saved, properties] = await Promise.all([
-          withTimeout(savedHomes()),
-          withTimeout(listings()),
-        ]);
-        await renderDashboard();
-      }
+      await renderDashboard();
     } else {
       const [savedResult, listingsResult] = await Promise.allSettled([
         withTimeout(savedHomes(), 8000),
@@ -532,11 +565,11 @@ try {
       if (page === "properties") updateCatalog();
     }
   }
-} catch {
+} catch (error) {
   main.innerHTML =
     '<div class="container section">' +
     gridState(
-      "Check your connection and try again.",
+      readableError(error),
       "We could not load this page",
       '<button class="button secondary" onclick="location.reload()">Try again</button> <a class="text-link" href="properties.html">Browse homes</a>',
     ) +

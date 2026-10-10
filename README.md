@@ -48,6 +48,7 @@ If published listings cannot load, the interface explains the connection problem
 Public HTML pages
   └─ js/platform-app.js       Layout, rendering, navigation, forms
        ├─ js/catalog-core.js  Search, normalization, URL checks, sample homes
+       ├─ js/account-flow.js  Signup setup and independent dashboard loading
        └─ js/platform.js      Firebase Auth + Firestore operations
 
 style/platform.css           Shared design tokens and responsive layouts
@@ -78,6 +79,8 @@ npm run check
 ```
 
 Tests cover composed filters, sorting, saved-only results, legacy listing fields, HTML escaping, image URLs, and sign-in continuations. Desktop/mobile browser checks also cover search, navigation, property details, empty states, and form controls.
+
+Account regression tests cover partial profile setup failures, rejected authentication, isolated dashboard query failures, and actionable timeout handling. Firestore ownership rules still require validation in the owner's Firebase project; see [Account troubleshooting](docs/ACCOUNT-ACCESS.md).
 
 SEO checks cover canonical URLs, structured data, visible FAQ answers, static homepage search, and public sitemap entries. The production URL is [justhome-estate.vercel.app](https://justhome-estate.vercel.app/). Local changes appear there only after deployment. Dynamic property-detail indexing still requires listing-specific metadata rendered at build time or on a server.
 

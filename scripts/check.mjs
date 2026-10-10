@@ -3,6 +3,7 @@ import fs from "node:fs";
 const files = [
   "js/catalog-core.js",
   "js/platform.js",
+  "js/account-flow.js",
   "js/platform-app.js",
   "scripts/serve.mjs",
 ];
