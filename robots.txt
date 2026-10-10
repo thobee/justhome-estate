@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard.html
+Disallow: /signin.html
+Disallow: /signup.html
+Disallow: /admin/
+Disallow: /admin
+Disallow: /agent
+Disallow: /payment.html
+Sitemap: https://justhome-estate.vercel.app/sitemap.xml

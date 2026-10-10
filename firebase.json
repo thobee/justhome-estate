@@ -1,0 +1,53 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "**/.*",
+      "node_modules/**",
+      "docs/**",
+      "tests/**",
+      "scripts/**",
+      "package*.json",
+      "README.md",
+      "firebase.json",
+      "admin/**",
+      "agent-dashboard.html",
+      "add-property.html",
+      "manage-properties.html",
+      "user-dashboard.html",
+      "create-admin-account.html",
+      "fix-admin-account.html",
+      "property-details-mobile-test*",
+      "js/admin/**",
+      "js/setupAdmin.js",
+      "js/auth.js",
+      "js/home.js",
+      "js/script.js",
+      "js/testimonials.js",
+      "js/welcome-modal.js",
+      "js/signin.js",
+      "js/signup.js",
+      "js/dashboard.js",
+      "js/properties.js",
+      "js/property-details.js",
+      "js/agentdashboard.js",
+      "js/admin-properties.js",
+      "js/add-property.js",
+      "js/manage-properties.js",
+      "style/style.css",
+      "style/properties.css"
+    ],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          { "key": "X-Content-Type-Options", "value": "nosniff" },
+          {
+            "key": "Referrer-Policy",
+            "value": "strict-origin-when-cross-origin"
+          }
+        ]
+      }
+    ]
+  }
+}
