@@ -10,7 +10,7 @@
   "private": true,
   "scripts": {
     "dev": "node scripts/serve.mjs",
-    "build": "node scripts/partials.mjs && npm run build:css",
+    "build:site": "node scripts/partials.mjs && npm run build:css",
     "build:css": "tailwindcss -i style/input.css -o style/main.css --minify",
     "watch:css": "tailwindcss -i style/input.css -o style/main.css --watch"
   }

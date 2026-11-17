@@ -1,5 +1,5 @@
 // Inlines partials/{head,header,footer}.html into each public page between marker comments,
-// e.g. <!-- header:start --> ... <!-- header:end -->. Run: npm run build
+// e.g. <!-- header:start --> ... <!-- header:end -->. Run: npm run build:site
 import { readFileSync, writeFileSync } from "node:fs";
 
 const pages = {
