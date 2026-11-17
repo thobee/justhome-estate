@@ -1,325 +1,97 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
+    <!-- head:start -->
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sign Up - JustHome Real Estate</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <style>
-      html, body { 
-        font-family: "Poppins", sans-serif;
-        min-height: 100%;
-        width: 100%;
-        overflow-x: hidden;
-        position: relative;
-      }
-      .signup-bg {
-        background-image: url('images/img1.png');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        width: 100%;
-        height: 100%;
-        z-index: -2;
-      }
-      @media (max-width: 768px) {
-        .signup-bg {
-          background-position: center;
-          background-attachment: scroll;
-        }
-      }
-      .glass-effect {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-      }
-      @media (max-width: 640px) {
-        .glass-effect {
-          background: rgba(255, 255, 255, 0.98);
-        }
-      }
-      .animate-fade-in {
-        animation: fadeIn 0.5s ease-out;
-      }
-      .animate-slide-up {
-        animation: slideUp 0.5s ease-out;
-      }
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
-      @keyframes slideUp {
-        from { 
-          transform: translateY(20px);
-          opacity: 0;
-        }
-        to { 
-          transform: translateY(0);
-          opacity: 1;
-        }
-      }
-      .input-focus-ring {
-        transition: all 0.2s ease;
-      }
-      .input-focus-ring:focus {
-        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
-        border-color: #3b82f6;
-      }
-      .btn-hover-effect {
-        transition: all 0.2s ease;
-      }
-      .btn-hover-effect:hover {
-        transform: translateY(-1px);
-      }
-      .password-strength {
-        height: 4px;
-        transition: all 0.3s ease;
-      }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" type="image/webp" href="images/opt/logo-96.webp" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style/main.css" />
+    <script>if(matchMedia("(prefers-reduced-motion: no-preference)").matches)document.documentElement.classList.add("js-motion")</script>
+    <!-- head:end -->
+    <title>Create an account – JustHome Real Estate</title>
+    <meta name="description" content="Create a free JustHome account to save homes and book viewings." />
+    <meta name="robots" content="noindex" />
   </head>
-  <body>
-    <!-- Success Notification -->
-    <div id="success-notification" class="fixed top-4 right-4 z-50 hidden">
-      <div class="bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg flex items-center space-x-3 max-w-sm">
-        <i class="fas fa-check-circle text-xl"></i>
-        <div>
-          <p class="font-semibold">Registration Successful!</p>
-          <p class="text-sm opacity-90">Welcome to JustHome! Your account has been created.</p>
+  <body class="bg-white">
+    <a href="#main" class="sr-only z-[60] rounded-full bg-white px-4 py-3 text-sm font-semibold shadow-lift focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to content</a>
+    <div class="grid min-h-[100svh] lg:grid-cols-2">
+      <aside class="relative isolate hidden overflow-hidden bg-ink-950 lg:block">
+        <img src="images/opt/interior-1200.webp" srcset="images/opt/interior-800.webp 800w, images/opt/interior-1200.webp 1200w" sizes="50vw" width="1200" height="1800" alt="" class="absolute inset-0 -z-10 h-full w-full object-cover" />
+        <div class="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950/85 via-ink-950/25 to-transparent" aria-hidden="true"></div>
+        <div class="flex h-full flex-col justify-end p-12 text-white">
+          <h2 class="max-w-md text-4xl font-bold leading-tight text-white">Join our community of property seekers</h2>
+          <p class="mt-4 max-w-md text-lg leading-relaxed text-white/80">Save homes you love and book viewings from one account.</p>
         </div>
-        <button onclick="hideNotification()" class="text-white hover:text-green-200 ml-2">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-    </div>
+      </aside>
 
-    <!-- Background Container -->
-    <div class="fixed inset-0 signup-bg">
-      <!-- Dark Overlay -->
-      <div class="absolute inset-0 bg-black/70"></div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="relative min-h-screen flex items-center justify-center p-4 sm:p-6 md:p-8">
-      <div class="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl animate-fade-in mx-auto">
-        <!-- Top Navigation -->
-        <nav class="flex justify-between items-center mb-6 sm:mb-8">
-          <h1 class="text-3xl sm:text-4xl font-bold text-white">JustHome</h1>
-          <a href="index.html" class="text-white/80 hover:text-white transition-colors p-2">
-            <i class="fas fa-times"></i>
+      <main id="main" class="flex flex-col px-4 py-6 sm:px-8">
+        <nav class="flex items-center justify-between" aria-label="Site">
+          <a href="index.html" class="-ml-2 flex min-h-[44px] items-center gap-2.5 rounded-full px-2" aria-label="JustHome, home">
+            <img src="images/opt/logo-96.webp" width="38" height="28" alt="" class="h-7 w-auto" />
+            <span class="text-lg font-extrabold tracking-tight">Just<span class="text-brand-700">Home</span></span>
           </a>
+          <a href="index.html" class="icon-btn" aria-label="Close and go to the homepage"><i class="fas fa-xmark text-lg" aria-hidden="true"></i></a>
         </nav>
 
-          <!-- Sign Up Form -->
-          <div class="glass-effect p-6 sm:p-8 md:p-10 rounded-2xl shadow-2xl animate-slide-up mx-auto">
-            <div class="text-center mb-6 sm:mb-8">
-              <h2 class="text-xl sm:text-2xl font-semibold text-gray-800">Create an Account</h2>
-              <p class="text-sm sm:text-base text-gray-600 mt-2">Join our community of property seekers</p>
-            </div>
+        <div class="mx-auto flex w-full max-w-md flex-1 flex-col justify-center py-10">
+          <h1 class="hero-in text-3xl font-extrabold sm:text-4xl">Create an account</h1>
+          <p class="hero-in mt-2 text-ink-600" style="--d: 60ms">Join our community of property seekers.</p>
 
-            <form id="signup-form" class="space-y-6">
-              <!-- Name Input -->
-              <div class="space-y-2">
-                <label class="block text-sm font-medium text-gray-700">Full Name</label>
-                <div class="relative">
-                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <i class="fas fa-user text-gray-400"></i>
-                  </div>
-                  <input 
-                    type="text" 
-                    name="name" 
-                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl text-gray-900 input-focus-ring" 
-                    placeholder="Enter your full name"
-                    required 
-                  />
-                </div>
-              </div>
-
-              <!-- Email Input -->
-              <div class="space-y-2">
-                <label class="block text-sm font-medium text-gray-700">Email address</label>
-                <div class="relative">
-                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <i class="fas fa-envelope text-gray-400"></i>
-                  </div>
-                  <input 
-                    type="email" 
-                    name="email" 
-                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl text-gray-900 input-focus-ring" 
-                    placeholder="Enter your email"
-                    required 
-                  />
-                </div>
-              </div>
-
-              <!-- Password Input -->
-              <div class="space-y-2">
-                <label class="block text-sm font-medium text-gray-700">Password</label>
-                <div class="relative">
-                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <i class="fas fa-lock text-gray-400"></i>
-                  </div>
-                  <input 
-                    type="password" 
-                    name="password" 
-                    id="password"
-                    class="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-xl text-gray-900 input-focus-ring" 
-                    placeholder="Create a strong password"
-                    required 
-                    minlength="8"
-                  />
-                  <button 
-                    type="button" 
-                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
-                    onclick="togglePassword(this)"
-                  >
-                    <i class="fas fa-eye"></i>
-                  </button>
-                </div>
-                <!-- Password Strength Indicator -->
-                <div class="space-y-2">
-                  <div class="flex gap-1">
-                    <div class="password-strength flex-1 rounded bg-gray-200" data-strength="1"></div>
-                    <div class="password-strength flex-1 rounded bg-gray-200" data-strength="2"></div>
-                    <div class="password-strength flex-1 rounded bg-gray-200" data-strength="3"></div>
-                    <div class="password-strength flex-1 rounded bg-gray-200" data-strength="4"></div>
-                  </div>
-                  <p class="text-xs text-gray-500" id="password-strength-text">Password strength: Make it strong!</p>
-                </div>
-              </div>
-
-              <!-- Terms Checkbox -->
-              <div class="flex items-start">
-                <div class="flex items-center h-5">
-                  <input
-                    id="terms"
-                    name="terms"
-                    type="checkbox"
-                    required
-                    class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                  />
-                </div>
-                <div class="ml-3">
-                  <label for="terms" class="text-sm text-gray-600">
-                    I agree to the 
-                    <a href="#" class="text-blue-600 hover:text-blue-800">Terms of Service</a>
-                    and
-                    <a href="#" class="text-blue-600 hover:text-blue-800">Privacy Policy</a>
-                  </label>
-                </div>
-              </div>
-
-              <!-- Sign Up Button -->
-              <button 
-                type="submit" 
-                class="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all btn-hover-effect"
-              >
-                <span class="inline-flex items-center">
-                  <span>Create Account</span>
-                  <i class="fas fa-arrow-right ml-2"></i>
-                </span>
-              </button>
-
-              <!-- Divider -->
-              <div class="relative my-6">
-                <div class="absolute inset-0 flex items-center">
-                  <div class="w-full border-t border-gray-200"></div>
-                </div>
-                <div class="relative flex justify-center text-sm">
-               
-
-            <!-- Sign In Link -->
-            <p class="mt-6 text-center text-gray-600">
-              Already have an account? 
-              <a href="signin.html" class="font-medium text-blue-600 hover:text-blue-800">Sign in</a>
-            </p>
+          <div id="signup-error" class="mt-6 flex items-start gap-3 rounded-2xl bg-red-50 p-4 text-sm font-medium text-red-800 ring-1 ring-inset ring-red-200" role="alert" tabindex="-1" hidden>
+            <i class="fas fa-circle-exclamation mt-0.5" aria-hidden="true"></i><span></span>
           </div>
+
+          <form id="signup-form" class="hero-in mt-8 space-y-5" style="--d: 120ms" data-validate novalidate>
+            <div>
+              <label for="name" class="field-label">Full name</label>
+              <input id="name" type="text" name="name" autocomplete="name" required data-label="Full name" class="field" />
+            </div>
+            <div>
+              <label for="email" class="field-label">Email address</label>
+              <input id="email" type="email" name="email" autocomplete="email" inputmode="email" spellcheck="false" required data-label="Email address" class="field" placeholder="name@example.com" />
+            </div>
+            <div>
+              <label for="password" class="field-label">Password</label>
+              <div class="relative" data-field>
+                <input id="password" type="password" name="password" autocomplete="new-password" required minlength="6" data-label="Password" data-strength-input aria-describedby="password-strength-text" class="field pr-12" />
+                <button type="button" class="absolute inset-y-0 right-0 flex w-12 items-center justify-center rounded-r-xl text-ink-500 hover:text-ink-900" onclick="togglePassword(this)" aria-label="Show password" aria-pressed="false">
+                  <i class="fas fa-eye" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="mt-3 flex gap-1.5" aria-hidden="true">
+                <div class="password-strength h-1.5 flex-1 rounded-full bg-ink-200"></div>
+                <div class="password-strength h-1.5 flex-1 rounded-full bg-ink-200"></div>
+                <div class="password-strength h-1.5 flex-1 rounded-full bg-ink-200"></div>
+                <div class="password-strength h-1.5 flex-1 rounded-full bg-ink-200"></div>
+              </div>
+              <p id="password-strength-text" class="mt-2 text-xs text-ink-500" aria-live="polite">Use 8+ characters with a number and a symbol.</p>
+            </div>
+            <div>
+              <div class="flex items-start gap-3" data-field>
+                <input id="terms" name="terms" type="checkbox" required class="mt-0.5 h-5 w-5 shrink-0 cursor-pointer rounded accent-brand-700" />
+                <label for="terms" class="cursor-pointer text-sm text-ink-600">I agree to the Terms of Service and Privacy Policy.</label>
+              </div>
+            </div>
+            <button type="submit" class="btn-primary min-h-[52px] w-full text-base">
+              <span class="inline-flex items-center gap-2">Create account<i class="fas fa-arrow-right text-xs" aria-hidden="true"></i></span>
+            </button>
+          </form>
+
+          <p class="mt-8 text-center text-ink-600">
+            Already have an account?
+            <a href="signin.html" class="inline-flex min-h-[44px] items-center font-semibold text-brand-700 hover:text-brand-800">Sign in</a>
+          </p>
         </div>
-      </div>
+      </main>
     </div>
 
-    <!-- Scripts -->
-    <script>
-      // Notification functions
-      function showNotification() {
-        const notification = document.getElementById('success-notification');
-        notification.classList.remove('hidden');
-        notification.classList.add('animate-fade-in');
-
-        // Auto-hide after 5 seconds
-        setTimeout(() => {
-          hideNotification();
-        }, 5000);
-      }
-
-      function hideNotification() {
-        const notification = document.getElementById('success-notification');
-        notification.classList.add('hidden');
-        notification.classList.remove('animate-fade-in');
-      }
-
-      // Expose to window for external scripts
-      window.showNotification = showNotification;
-      window.hideNotification = hideNotification;
-
-      // Password visibility toggle
-      function togglePassword(button) {
-        const input = button.parentElement.querySelector('input');
-        const icon = button.querySelector('i');
-
-        if (input.type === 'password') {
-          input.type = 'text';
-          icon.classList.remove('fa-eye');
-          icon.classList.add('fa-eye-slash');
-        } else {
-          input.type = 'password';
-          icon.classList.remove('fa-eye-slash');
-          icon.classList.add('fa-eye');
-        }
-      }
-
-      // Password strength checker
-      document.getElementById('password').addEventListener('input', function(e) {
-        const password = e.target.value;
-        let strength = 0;
-        
-        // Length check
-        if (password.length >= 8) strength++;
-        // Contains number
-        if (/\d/.test(password)) strength++;
-        // Contains letter
-        if (/[a-zA-Z]/.test(password)) strength++;
-        // Contains special character
-        if (/[^A-Za-z0-9]/.test(password)) strength++;
-
-        // Update strength indicators
-        const indicators = document.querySelectorAll('.password-strength');
-        const strengthText = document.getElementById('password-strength-text');
-        
-        indicators.forEach((indicator, index) => {
-          if (index < strength) {
-            indicator.classList.add('bg-blue-500');
-            indicator.classList.remove('bg-gray-200');
-          } else {
-            indicator.classList.remove('bg-blue-500');
-            indicator.classList.add('bg-gray-200');
-          }
-        });
-
-        // Update strength text
-        const strengthMessages = [
-          'Very weak',
-          'Weak',
-          'Medium',
-          'Strong',
-          'Very strong'
-        ];
-        strengthText.textContent = `Password strength: ${strengthMessages[strength]}`;
-      });
-    </script>
-
+    <script src="js/ui.js" defer></script>
+    <script src="js/auth-forms.js" defer></script>
     <script src="js/signup.js" type="module"></script>
   </body>
 </html>

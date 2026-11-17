@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- head:start -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" type="image/webp" href="images/opt/logo-96.webp" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style/main.css" />
+    <script>if(matchMedia("(prefers-reduced-motion: no-preference)").matches)document.documentElement.classList.add("js-motion")</script>
+    <!-- head:end -->
+    <title>Contact us – JustHome Real Estate</title>
+    <meta name="description" content="Talk to a JustHome agent about buying, renting, selling or managing property." />
+  </head>
+  <body>
+    <!-- header:start -->
+    <a href="#main" class="sr-only z-[60] rounded-full bg-white px-4 py-3 text-sm font-semibold text-ink-900 shadow-lift focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to content</a>
+    <header class="site-header is-solid" data-header>
+      <div class="container-site flex h-[var(--header-h)] items-center justify-between gap-3">
+        <a href="index.html" class="-ml-2 flex min-h-[44px] items-center gap-2.5 rounded-full px-2" aria-label="JustHome, home">
+          <img src="images/opt/logo-96.webp" srcset="images/opt/logo-96.webp 1x, images/opt/logo-192.webp 2x" width="38" height="28" alt="" class="h-7 w-auto" />
+          <span class="text-lg font-extrabold tracking-tight text-ink-950">Just<span class="text-brand-700">Home</span></span>
+        </a>
+
+        <nav aria-label="Main" class="hidden lg:block">
+          <ul class="flex items-center gap-1">
+            <li><a href="index.html" class="nav-link" data-nav="home">Home</a></li>
+            <li><a href="properties.html" class="nav-link" data-nav="properties">Properties</a></li>
+            <li><a href="about.html" class="nav-link" data-nav="about">About</a></li>
+            <li><a href="contact.html" class="nav-link" data-nav="contact" aria-current="page">Contact</a></li>
+          </ul>
+        </nav>
+
+        <div class="flex items-center gap-1.5">
+          <div id="userSection" class="relative hidden">
+            <button id="user-profile-btn" type="button" class="btn-ghost px-2 sm:px-3" aria-haspopup="menu" aria-expanded="false" aria-controls="user-dropdown">
+              <span class="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-brand-100 text-brand-800">
+                <i id="profile-icon" class="fas fa-user text-xs" aria-hidden="true"></i>
+                <img id="profile-image" alt="" class="absolute inset-0 hidden h-full w-full object-cover" />
+              </span>
+              <span class="hidden sm:inline">My account</span>
+              <i class="fas fa-chevron-down text-[10px] text-ink-500" aria-hidden="true"></i>
+            </button>
+            <div id="user-dropdown" role="menu" aria-label="Account" class="invisible absolute right-0 top-full mt-2 w-60 origin-top-right scale-95 rounded-2xl bg-white p-1.5 opacity-0 shadow-lift ring-1 ring-ink-900/5 transition duration-150 ease-out">
+              <div class="px-3 pb-2 pt-2.5">
+                <p id="profile-name" class="truncate text-sm font-semibold text-ink-950">Guest User</p>
+                <p id="profile-email" class="truncate text-xs text-ink-500"></p>
+              </div>
+              <div class="my-1 h-px bg-ink-100"></div>
+              <a role="menuitem" href="dashboard.html" class="flex min-h-[44px] items-center gap-3 rounded-xl px-3 text-sm text-ink-700 hover:bg-ink-100 hover:text-ink-950"><i class="fas fa-gauge w-4 text-ink-400" aria-hidden="true"></i>Dashboard</a>
+              <a role="menuitem" href="dashboard.html#saved" class="flex min-h-[44px] items-center gap-3 rounded-xl px-3 text-sm text-ink-700 hover:bg-ink-100 hover:text-ink-950"><i class="fas fa-heart w-4 text-ink-400" aria-hidden="true"></i>Saved homes</a>
+              <a role="menuitem" href="admin/dashboard.html" id="admin-dashboard-link" class="flex hidden min-h-[44px] items-center gap-3 rounded-xl px-3 text-sm text-ink-700 hover:bg-ink-100 hover:text-ink-950"><i class="fas fa-sliders w-4 text-ink-400" aria-hidden="true"></i>Admin dashboard</a>
+              <button role="menuitem" type="button" onclick="handleLogout()" class="flex min-h-[44px] w-full items-center gap-3 rounded-xl px-3 text-left text-sm text-red-700 hover:bg-red-50"><i class="fas fa-arrow-right-from-bracket w-4" aria-hidden="true"></i>Log out</button>
+            </div>
+          </div>
+
+          <div class="hidden sm:block">
+            <div id="guestSection" class="flex items-center gap-1.5">
+              <a href="signin.html" class="btn-ghost">Log in</a>
+              <a href="signup.html" class="btn-primary">Sign up</a>
+            </div>
+          </div>
+
+          <button id="mobile-menu-button" type="button" class="icon-btn lg:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+            <i class="fas fa-bars text-lg" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <div id="mobile-menu" class="hidden max-h-[calc(100dvh-var(--header-h))] overflow-y-auto border-t border-ink-100 bg-white lg:hidden">
+        <nav aria-label="Mobile" class="container-site flex flex-col gap-1 py-4">
+          <a href="index.html" class="nav-link text-base" data-nav="home">Home</a>
+          <a href="properties.html" class="nav-link text-base" data-nav="properties">Properties</a>
+          <a href="about.html" class="nav-link text-base" data-nav="about">About</a>
+          <a href="contact.html" class="nav-link text-base" data-nav="contact" aria-current="page">Contact</a>
+          <div class="mt-3 grid grid-cols-2 gap-2 sm:hidden" data-guest-only>
+            <a href="signin.html" class="btn-secondary">Log in</a>
+            <a href="signup.html" class="btn-primary">Sign up</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!-- header:end -->
+
+    <main id="main" class="pt-[var(--header-h)]">
+      <section class="section" aria-labelledby="page-title">
+        <div class="container-site grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
+          <div>
+            <p class="eyebrow hero-in">Contact us</p>
+            <h1 id="page-title" class="hero-in mt-3 text-4xl font-extrabold leading-[1.05] sm:text-5xl" style="--d: 60ms">Talk to an agent</h1>
+            <p class="hero-in mt-5 max-w-md text-base leading-relaxed text-ink-600 sm:text-lg" style="--d: 120ms">Questions about a listing, selling your property or property management? Send us a message and our team will get back to you.</p>
+
+            <ul class="hero-in mt-10 space-y-3" style="--d: 180ms" role="list">
+              <li><a href="tel:5551234567" class="group flex min-h-[64px] items-center gap-4 rounded-2xl bg-white p-4 shadow-soft ring-1 ring-ink-900/5 transition hover:-translate-y-0.5 hover:shadow-lift"><span class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-700"><i class="fas fa-phone" aria-hidden="true"></i></span><span><span class="block text-sm text-ink-500">Call us</span><span class="block font-semibold text-ink-950">(555) 123-4567</span></span></a></li>
+              <li><a href="mailto:info@justhome.com" class="group flex min-h-[64px] items-center gap-4 rounded-2xl bg-white p-4 shadow-soft ring-1 ring-ink-900/5 transition hover:-translate-y-0.5 hover:shadow-lift"><span class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-700"><i class="fas fa-envelope" aria-hidden="true"></i></span><span><span class="block text-sm text-ink-500">Email us</span><span class="block font-semibold text-ink-950">info@justhome.com</span></span></a></li>
+              <li class="flex min-h-[64px] items-center gap-4 rounded-2xl bg-white p-4 shadow-soft ring-1 ring-ink-900/5"><span class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-700"><i class="fas fa-location-dot" aria-hidden="true"></i></span><span><span class="block text-sm text-ink-500">Visit us</span><span class="block font-semibold text-ink-950">123 Main St, City</span></span></li>
+            </ul>
+          </div>
+
+          <div class="card hero-in p-6 sm:p-10" style="--d: 120ms">
+            <h2 class="text-xl font-bold">Send a message</h2>
+            <p class="mt-1 text-sm text-ink-600">This opens your email app with your message ready to send.</p>
+            <form id="contact-form" class="mt-8 grid gap-5 sm:grid-cols-2" data-validate novalidate>
+              <div>
+                <label for="c-name" class="field-label">Full name</label>
+                <input id="c-name" name="name" type="text" autocomplete="name" required data-label="Full name" class="field" />
+              </div>
+              <div>
+                <label for="c-email" class="field-label">Email address</label>
+                <input id="c-email" name="email" type="email" autocomplete="email" inputmode="email" spellcheck="false" required data-label="Email address" class="field" />
+              </div>
+              <div>
+                <label for="c-phone" class="field-label">Phone <span class="font-normal text-ink-500">(optional)</span></label>
+                <input id="c-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" class="field" />
+              </div>
+              <div>
+                <label for="c-topic" class="field-label">Topic</label>
+                <select id="c-topic" name="topic" required data-label="Topic" class="field">
+                  <option value="">Choose a topic</option>
+                  <option value="buying">Buying property</option>
+                  <option value="renting">Renting</option>
+                  <option value="selling">Selling or listing a property</option>
+                  <option value="management">Property management</option>
+                  <option value="other">Something else</option>
+                </select>
+              </div>
+              <div class="sm:col-span-2">
+                <label for="c-message" class="field-label">Message</label>
+                <textarea id="c-message" name="message" rows="5" required minlength="10" data-label="Message" class="field min-h-[140px] py-3"></textarea>
+              </div>
+              <div class="sm:col-span-2">
+                <button type="submit" class="btn-primary min-h-[52px] w-full text-base sm:w-auto sm:px-8"><i class="fas fa-paper-plane text-xs" aria-hidden="true"></i>Send message</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- footer:start -->
+    <footer class="bg-ink-950 text-ink-300">
+      <div class="container-site grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.2fr_1fr]">
+        <div>
+          <a href="index.html" class="-ml-2 inline-flex min-h-[44px] items-center gap-2.5 rounded-full px-2 focus-visible:ring-offset-ink-950">
+            <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-white"><img src="images/opt/logo-96.webp" width="24" height="18" alt="" class="h-[18px] w-auto" loading="lazy" /></span>
+            <span class="text-lg font-extrabold tracking-tight text-white">JustHome</span>
+          </a>
+          <p class="mt-4 max-w-xs text-sm leading-relaxed text-ink-400">Finding your perfect home has never been easier.</p>
+        </div>
+        <div>
+          <h2 class="text-sm font-semibold text-white">Quick links</h2>
+          <ul class="mt-3 text-sm">
+            <li><a class="inline-flex min-h-[44px] items-center transition-colors hover:text-white" href="properties.html">Properties</a></li>
+            <li><a class="inline-flex min-h-[44px] items-center transition-colors hover:text-white" href="about.html">About us</a></li>
+            <li><a class="inline-flex min-h-[44px] items-center transition-colors hover:text-white" href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-sm font-semibold text-white">Contact us</h2>
+          <ul class="mt-3 text-sm">
+            <li class="flex min-h-[44px] items-center gap-3"><i class="fas fa-location-dot w-4 text-ink-500" aria-hidden="true"></i>123 Main St, City</li>
+            <li><a class="inline-flex min-h-[44px] items-center gap-3 transition-colors hover:text-white" href="tel:5551234567"><i class="fas fa-phone w-4 text-ink-500" aria-hidden="true"></i>(555) 123-4567</a></li>
+            <li><a class="inline-flex min-h-[44px] items-center gap-3 transition-colors hover:text-white" href="mailto:info@justhome.com"><i class="fas fa-envelope w-4 text-ink-500" aria-hidden="true"></i>info@justhome.com</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-sm font-semibold text-white">Follow us</h2>
+          <ul class="-ml-3 mt-3 flex flex-wrap">
+            <li><a href="#" class="icon-btn text-ink-300 hover:bg-white/10 hover:text-white" aria-label="JustHome on Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
+            <li><a href="#" class="icon-btn text-ink-300 hover:bg-white/10 hover:text-white" aria-label="JustHome on X"><i class="fab fa-x-twitter" aria-hidden="true"></i></a></li>
+            <li><a href="#" class="icon-btn text-ink-300 hover:bg-white/10 hover:text-white" aria-label="JustHome on Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+            <li><a href="#" class="icon-btn text-ink-300 hover:bg-white/10 hover:text-white" aria-label="JustHome on LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-white/10">
+        <div class="container-site flex flex-col gap-1 py-6 text-xs text-ink-400 sm:flex-row sm:items-center sm:justify-between">
+          <p>&copy; <span data-year>2026</span> JustHome Real Estate. All rights reserved.</p>
+          <p>Photography from Unsplash and Pexels.</p>
+        </div>
+      </div>
+    </footer>
+    <!-- footer:end -->
+
+    <script src="js/ui.js" defer></script>
+    <script type="module" src="js/auth.js"></script>
+    <script src="js/contact.js" defer></script>
+  </body>
+</html>

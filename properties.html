@@ -1,615 +1,207 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
+    <!-- head:start -->
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Properties - JustHome Real Estate</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      body {
-        font-family: "Poppins", sans-serif;
-      }
-
-      ::-webkit-scrollbar {
-        width: 6px;
-      }
-
-      ::-webkit-scrollbar-track {
-        background: #f1f5f9;
-      }
-
-      ::-webkit-scrollbar-thumb {
-        background: #3b82f6;
-        border-radius: 3px;
-      }
-
-      .glass-effect {
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-      }
-
-      .gradient-text {
-        background: linear-gradient(90deg, #1e40af, #3b82f6);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-
-      .gradient-hover {
-        background-size: 200% auto;
-        transition: background-position 0.3s ease;
-      }
-
-      .gradient-hover:hover {
-        background-position: right center;
-      }
-
-      .property-card-shadow {
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-      }
-
-      /* Professional animations */
-      @keyframes heartbeat {
-        0% {
-          transform: scale(1);
-        }
-        25% {
-          transform: scale(1.1);
-        }
-        50% {
-          transform: scale(1.2);
-        }
-        75% {
-          transform: scale(1.1);
-        }
-        100% {
-          transform: scale(1);
-        }
-      }
-
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(18px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes shimmer {
-        0% {
-          background-position: -200px 0;
-        }
-        100% {
-          background-position: calc(200px + 100%) 0;
-        }
-      }
-
-      .animate-fade-in-up {
-        animation: fadeInUp 0.6s ease-out forwards;
-      }
-
-      .shimmer {
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.4),
-          transparent
-        );
-        background-size: 200px 100%;
-        animation: shimmer 1.5s infinite;
-      }
-
-      /* Enhanced property card hover effects */
-      .property-card {
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
-      .property-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-      }
-
-      .property-card:hover .property-image {
-        transform: scale(1.05);
-      }
-
-      /* Improved button styles */
-      .btn-primary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        transition: all 0.3s ease;
-      }
-
-      .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-      }
-
-      /* Status badge improvements */
-      .status-badge {
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-      }
-
-      /* Loading skeleton */
-      .skeleton {
-        background: linear-gradient(
-          90deg,
-          #f0f0f0 25%,
-          #e0e0e0 50%,
-          #f0f0f0 75%
-        );
-        background-size: 200% 100%;
-        animation: shimmer 1.5s infinite;
-      }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" type="image/webp" href="images/opt/logo-96.webp" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style/main.css" />
+    <script>if(matchMedia("(prefers-reduced-motion: no-preference)").matches)document.documentElement.classList.add("js-motion")</script>
+    <!-- head:end -->
+    <title>Properties – JustHome Real Estate</title>
+    <meta name="description" content="Browse apartments, duplexes and villas for rent on JustHome. Filter by location, property type and budget." />
   </head>
-  <body class="bg-gray-50">
-    <!-- Header -->
-    <header
-      class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-lg shadow-sm border-b border-gray-100/20"
-    >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center py-2.5">
-          <!-- Logo and Brand -->
-          <div class="flex items-center gap-2">
-            <img
-              src="images/1logo.png"
-              alt="JustHome Logo"
-              class="h-8 w-auto transition-transform duration-300 hover:scale-105"
-            />
-            <span class="text-xl font-bold">
-              <span
-                class="bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent"
-                >Just</span
-              >
-              <span class="text-blue-600">Home</span>
-            </span>
-          </div>
+  <body>
+    <!-- header:start -->
+    <a href="#main" class="sr-only z-[60] rounded-full bg-white px-4 py-3 text-sm font-semibold text-ink-900 shadow-lift focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to content</a>
+    <header class="site-header is-solid" data-header>
+      <div class="container-site flex h-[var(--header-h)] items-center justify-between gap-3">
+        <a href="index.html" class="-ml-2 flex min-h-[44px] items-center gap-2.5 rounded-full px-2" aria-label="JustHome, home">
+          <img src="images/opt/logo-96.webp" srcset="images/opt/logo-96.webp 1x, images/opt/logo-192.webp 2x" width="38" height="28" alt="" class="h-7 w-auto" />
+          <span class="text-lg font-extrabold tracking-tight text-ink-950">Just<span class="text-brand-700">Home</span></span>
+        </a>
 
-          <!-- Desktop Navigation -->
-          <nav aria-label="Main navigation" class="hidden lg:flex">
-            <ul class="flex gap-6">
-              <li>
-                <a
-                  href="index.html"
-                  class="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-blue-600/0 after:rounded-full hover:after:bg-blue-600/80 after:transition-all after:duration-200"
-                  ><i class="fas fa-home text-[13px]"></i> Home</a
-                >
-              </li>
-              <li>
-                <a
-                  href="properties.html"
-                  class="flex items-center gap-1.5 text-sm font-medium text-blue-600 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-blue-600/80 after:rounded-full"
-                  ><i class="fas fa-building text-[13px]"></i> Properties</a
-                >
-              </li>
-              <li>
-                <a
-                  href="about.html"
-                  class="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-blue-600/0 after:rounded-full hover:after:bg-blue-600/80 after:transition-all after:duration-200"
-                  ><i class="fas fa-info-circle text-[13px]"></i> About</a
-                >
-              </li>
-              <li>
-                <a
-                  href="contact.html"
-                  class="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-blue-600/0 after:rounded-full hover:after:bg-blue-600/80 after:transition-all after:duration-200"
-                  ><i class="fas fa-envelope text-[13px]"></i> Contact</a
-                >
-              </li>
-            </ul>
-          </nav>
+        <nav aria-label="Main" class="hidden lg:block">
+          <ul class="flex items-center gap-1">
+            <li><a href="index.html" class="nav-link" data-nav="home">Home</a></li>
+            <li><a href="properties.html" class="nav-link" data-nav="properties" aria-current="page">Properties</a></li>
+            <li><a href="about.html" class="nav-link" data-nav="about">About</a></li>
+            <li><a href="contact.html" class="nav-link" data-nav="contact">Contact</a></li>
+          </ul>
+        </nav>
 
-          <!-- Right Side Actions -->
-          <div class="flex items-center gap-4">
-            <!-- User Profile / Auth Buttons -->
-            <div id="userSection" class="relative group hidden">
-              <button
-                id="user-profile-btn"
-                class="flex items-center gap-2 p-2 rounded-full hover:bg-gray-100 text-gray-800 transition-all duration-200 hover:shadow-sm"
-                aria-label="User profile"
-              >
-                <i class="fas fa-user-circle text-xl"></i>
-                <span class="text-sm font-medium">My Account</span>
-                <i class="fas fa-chevron-down text-xs"></i>
-              </button>
-              <div
-                id="user-dropdown"
-                class="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform -translate-y-1 group-hover:translate-y-0"
-              >
-                <a
-                  href="dashboard.html"
-                  class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 rounded-t-xl transition-colors duration-200"
-                >
-                  <i class="fas fa-user w-4"></i> Profile</a
-                >
-                <a
-                  href="#"
-                  class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 transition-colors duration-200"
-                >
-                  <i class="fas fa-heart w-4"></i> Favorites</a
-                >
-                <a
-                  href="admin/dashboard.html"
-                  id="admin-dashboard-link"
-                  class="hidden flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 transition-colors duration-200"
-                >
-                  <i class="fas fa-cogs w-4"></i> Admin Dashboard</a
-                >
-                <a
-                  href="#"
-                  class="flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 rounded-b-xl transition-colors duration-200"
-                  onclick="handleLogout()"
-                >
-                  <i class="fas fa-sign-out-alt w-4"></i> Logout</a
-                >
-              </div>
-            </div>
-
-            <!-- Guest Auth Buttons -->
-            <div id="guestSection" class="flex items-center gap-2">
-              <button
-                onclick="handleLogin()"
-                class="px-4 py-1.5 text-blue-600 hover:text-blue-700 text-sm font-medium transition-all duration-200 hover:bg-blue-50/50 rounded-full border border-transparent hover:border-blue-100"
-              >
-                Login
-              </button>
-              <button
-                onclick="handleSignup()"
-                class="px-4 py-1.5 bg-blue-600/90 hover:bg-blue-600 text-white rounded-full text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md hover:shadow-blue-200"
-              >
-                Sign Up
-              </button>
-            </div>
-
-            <!-- Mobile Menu Button -->
-            <button
-              class="lg:hidden p-1.5 rounded-full hover:bg-gray-100/80 text-gray-700 transition-all duration-200 border border-transparent hover:border-gray-200"
-              id="mobile-menu-button"
-            >
-              <i class="fas fa-bars text-lg"></i>
+        <div class="flex items-center gap-1.5">
+          <div id="userSection" class="relative hidden">
+            <button id="user-profile-btn" type="button" class="btn-ghost px-2 sm:px-3" aria-haspopup="menu" aria-expanded="false" aria-controls="user-dropdown">
+              <span class="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-brand-100 text-brand-800">
+                <i id="profile-icon" class="fas fa-user text-xs" aria-hidden="true"></i>
+                <img id="profile-image" alt="" class="absolute inset-0 hidden h-full w-full object-cover" />
+              </span>
+              <span class="hidden sm:inline">My account</span>
+              <i class="fas fa-chevron-down text-[10px] text-ink-500" aria-hidden="true"></i>
             </button>
+            <div id="user-dropdown" role="menu" aria-label="Account" class="invisible absolute right-0 top-full mt-2 w-60 origin-top-right scale-95 rounded-2xl bg-white p-1.5 opacity-0 shadow-lift ring-1 ring-ink-900/5 transition duration-150 ease-out">
+              <div class="px-3 pb-2 pt-2.5">
+                <p id="profile-name" class="truncate text-sm font-semibold text-ink-950">Guest User</p>
+                <p id="profile-email" class="truncate text-xs text-ink-500"></p>
+              </div>
+              <div class="my-1 h-px bg-ink-100"></div>
+              <a role="menuitem" href="dashboard.html" class="flex min-h-[44px] items-center gap-3 rounded-xl px-3 text-sm text-ink-700 hover:bg-ink-100 hover:text-ink-950"><i class="fas fa-gauge w-4 text-ink-400" aria-hidden="true"></i>Dashboard</a>
+              <a role="menuitem" href="dashboard.html#saved" class="flex min-h-[44px] items-center gap-3 rounded-xl px-3 text-sm text-ink-700 hover:bg-ink-100 hover:text-ink-950"><i class="fas fa-heart w-4 text-ink-400" aria-hidden="true"></i>Saved homes</a>
+              <a role="menuitem" href="admin/dashboard.html" id="admin-dashboard-link" class="flex hidden min-h-[44px] items-center gap-3 rounded-xl px-3 text-sm text-ink-700 hover:bg-ink-100 hover:text-ink-950"><i class="fas fa-sliders w-4 text-ink-400" aria-hidden="true"></i>Admin dashboard</a>
+              <button role="menuitem" type="button" onclick="handleLogout()" class="flex min-h-[44px] w-full items-center gap-3 rounded-xl px-3 text-left text-sm text-red-700 hover:bg-red-50"><i class="fas fa-arrow-right-from-bracket w-4" aria-hidden="true"></i>Log out</button>
+            </div>
           </div>
-        </div>
 
-        <!-- Mobile Navigation Menu -->
-        <div
-          class="lg:hidden hidden bg-white/95 backdrop-blur-lg border-t border-gray-100/20 mt-2.5 -mx-4 px-4 py-3"
-          id="mobile-menu"
-        >
-          <nav class="space-y-1.5">
-            <a
-              href="index.html"
-              class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:bg-blue-50/50 hover:text-blue-600 text-sm font-medium transition-colors duration-200"
-            >
-              <i class="fas fa-home text-[13px]"></i> Home</a
-            >
-            <a
-              href="properties.html"
-              class="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-50/80 text-blue-600 text-sm font-medium backdrop-blur-sm"
-            >
-              <i class="fas fa-building text-[13px]"></i> Properties</a
-            >
-            <a
-              href="about.html"
-              class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:bg-blue-50/50 hover:text-blue-600 text-sm font-medium transition-colors duration-200"
-            >
-              <i class="fas fa-info-circle text-[13px]"></i> About</a
-            >
-            <a
-              href="contact.html"
-              class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-600 hover:bg-blue-50/50 hover:text-blue-600 text-sm font-medium transition-colors duration-200"
-            >
-              <i class="fas fa-envelope text-[13px]"></i> Contact</a
-            >
-          </nav>
+          <div class="hidden sm:block">
+            <div id="guestSection" class="flex items-center gap-1.5">
+              <a href="signin.html" class="btn-ghost">Log in</a>
+              <a href="signup.html" class="btn-primary">Sign up</a>
+            </div>
+          </div>
+
+          <button id="mobile-menu-button" type="button" class="icon-btn lg:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+            <i class="fas fa-bars text-lg" aria-hidden="true"></i>
+          </button>
         </div>
       </div>
+
+      <div id="mobile-menu" class="hidden max-h-[calc(100dvh-var(--header-h))] overflow-y-auto border-t border-ink-100 bg-white lg:hidden">
+        <nav aria-label="Mobile" class="container-site flex flex-col gap-1 py-4">
+          <a href="index.html" class="nav-link text-base" data-nav="home">Home</a>
+          <a href="properties.html" class="nav-link text-base" data-nav="properties" aria-current="page">Properties</a>
+          <a href="about.html" class="nav-link text-base" data-nav="about">About</a>
+          <a href="contact.html" class="nav-link text-base" data-nav="contact">Contact</a>
+          <div class="mt-3 grid grid-cols-2 gap-2 sm:hidden" data-guest-only>
+            <a href="signin.html" class="btn-secondary">Log in</a>
+            <a href="signup.html" class="btn-primary">Sign up</a>
+          </div>
+        </nav>
+      </div>
     </header>
+    <!-- header:end -->
 
-    <!-- Filter Section -->
-    <section
-      class="pt-24 px-6 pb-8 bg-gradient-to-br from-blue-50 via-white to-indigo-50"
-    >
-      <div class="max-w-7xl mx-auto">
-        <!-- Header -->
-        <div class="text-center mb-8">
-          <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-            Discover Your Perfect <span class="text-blue-600">Home</span>
-          </h1>
-          <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-            Browse through our curated collection of premium properties. Find
-            your dream home with our advanced search filters.
-          </p>
-        </div>
+    <main id="main" class="pt-[var(--header-h)]">
+      <section class="border-b border-ink-200/70 bg-white" aria-labelledby="page-title">
+        <div class="container-site pb-8 pt-12 sm:pt-16">
+          <p class="eyebrow hero-in">Properties</p>
+          <h1 id="page-title" class="hero-in mt-3 max-w-3xl text-4xl font-extrabold leading-[1.05] sm:text-5xl" style="--d: 60ms">Discover your perfect home</h1>
+          <p class="hero-in mt-4 max-w-2xl text-base leading-relaxed text-ink-600 sm:text-lg" style="--d: 120ms">Browse through our curated collection of premium properties. Find your dream home with our advanced search filters.</p>
 
-        <!-- Filter Cards -->
-        <div
-          class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 mb-8"
-        >
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Location Filter -->
-            <div class="space-y-2">
-              <label class="block text-sm font-semibold text-gray-700">
-                <i class="fas fa-map-marker-alt text-blue-500 mr-2"></i>
-                Location
-              </label>
-              <select
-                aria-label="Location"
-                class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50 text-sm font-medium cursor-pointer focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 focus:bg-white transition-all duration-200"
-                id="location-filter"
-              >
-                <option value="">All Locations</option>
+          <form class="hero-in mt-8 grid gap-4 rounded-3xl bg-ink-50 p-4 ring-1 ring-ink-900/5 sm:grid-cols-2 sm:p-5 lg:grid-cols-[1fr_1fr_1.3fr_auto] lg:items-end" style="--d: 180ms" onsubmit="event.preventDefault(); filterProperties()" aria-label="Filter properties">
+            <div>
+              <label for="location-filter" class="field-label">Location</label>
+              <select id="location-filter" class="field">
+                <option value="">All locations</option>
+                <option value="ibadan">Ibadan, Nigeria</option>
                 <option value="lagos">Lagos, Nigeria</option>
                 <option value="abuja">Abuja, Nigeria</option>
                 <option value="port-harcourt">Port Harcourt, Nigeria</option>
                 <option value="kano">Kano, Nigeria</option>
               </select>
             </div>
-
-            <!-- Property Type Filter -->
-            <div class="space-y-2">
-              <label class="block text-sm font-semibold text-gray-700">
-                <i class="fas fa-home text-blue-500 mr-2"></i>
-                Property Type
-              </label>
-              <select
-                aria-label="Property type"
-                class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50 text-sm font-medium cursor-pointer focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 focus:bg-white transition-all duration-200"
-                id="type-filter"
-              >
-                <option value="">All Types</option>
+            <div>
+              <label for="type-filter" class="field-label">Property type</label>
+              <select id="type-filter" class="field">
+                <option value="">All types</option>
                 <option value="apartment">Apartment</option>
                 <option value="house">House</option>
                 <option value="villa">Villa</option>
                 <option value="duplex">Duplex</option>
               </select>
             </div>
-
-            <!-- Price Range Filter -->
-            <div class="space-y-2">
-              <label class="block text-sm font-semibold text-gray-700">
-                <i class="fas fa-dollar-sign text-blue-500 mr-2"></i>
-                Price Range
-              </label>
-              <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
-                <input
-                  type="range"
-                  id="price-range"
-                  min="0"
-                  max="5000000"
-                  value="5000000"
-                  step="50000"
-                  class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                  oninput="updatePriceRange()"
-                />
-                <div class="flex justify-between items-center mt-3">
-                  <span
-                    id="min-price"
-                    class="text-sm font-semibold text-gray-700"
-                    >₦0</span
-                  >
-                  <span
-                    id="max-price"
-                    class="text-sm font-semibold text-gray-700"
-                    >₦5M+</span
-                  >
-                </div>
+            <div>
+              <div class="flex items-baseline justify-between">
+                <label for="price-range" class="field-label">Max price</label>
+                <span class="text-sm font-semibold text-ink-900"><span id="min-price" class="sr-only">₦0</span><span id="max-price" class="tabular">₦5M+</span></span>
+              </div>
+              <div class="flex min-h-[48px] items-center rounded-xl bg-white px-4 ring-1 ring-inset ring-ink-200">
+                <input type="range" id="price-range" min="0" max="5000000" value="5000000" step="10000" class="h-11 w-full cursor-pointer accent-brand-700" />
               </div>
             </div>
-
-            <!-- Action Buttons -->
-            <div class="flex flex-col gap-3 justify-end">
-              <button
-                class="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
-                aria-label="Apply filters"
-                onclick="filterProperties()"
-              >
-                <i class="fas fa-search"></i>
-                <span>Search Properties</span>
-              </button>
-              <button
-                class="flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-all duration-200"
-                aria-label="Clear filters"
-                onclick="resetFilters()"
-              >
-                <i class="fas fa-times"></i>
-                <span>Clear Filters</span>
-              </button>
+            <div class="flex gap-2 sm:col-span-2 lg:col-span-1">
+              <button type="submit" class="btn-primary flex-1 lg:flex-none"><i class="fas fa-magnifying-glass text-xs" aria-hidden="true"></i>Search</button>
+              <button type="button" class="btn-secondary flex-1 lg:flex-none" onclick="resetFilters()">Clear filters</button>
             </div>
-          </div>
+          </form>
         </div>
+      </section>
 
-        <!-- Results Summary -->
-        <div
-          class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6"
-        >
-          <div>
-            <h2 class="text-2xl font-bold text-gray-900">
-              Available Properties
-            </h2>
-            <p class="text-gray-600 mt-1" id="results-count">
-              Loading properties...
-            </p>
-          </div>
-          <div class="flex items-center gap-4">
-            <div class="flex items-center gap-2">
-              <label class="text-sm font-medium text-gray-700">Sort by:</label>
-              <select
-                aria-label="Sort by"
-                class="px-4 py-2 border border-gray-200 rounded-lg bg-white text-sm font-medium cursor-pointer focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition-all duration-200"
-                onchange="handleSort(this.value)"
-                id="sort-select"
-              >
-                <option value="newest">Newest First</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-                <option value="name">Name A-Z</option>
+      <section class="pb-24 pt-10" aria-labelledby="results-title">
+        <div class="container-site">
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 id="results-title" class="text-2xl font-bold">Available properties</h2>
+              <p id="results-count" class="mt-1 text-sm text-ink-600" aria-live="polite">Loading properties…</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <label for="sort-select" class="text-sm font-medium text-ink-700">Sort by</label>
+              <select id="sort-select" class="field w-auto min-w-[12rem]" onchange="handleSort(this.value)">
+                <option value="newest">Newest first</option>
+                <option value="price-low">Price: low to high</option>
+                <option value="price-high">Price: high to low</option>
+                <option value="name">Name A–Z</option>
               </select>
             </div>
           </div>
+
+          <ul id="property-grid" class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" role="list"></ul>
+        </div>
+      </section>
+    </main>
+
+    <!-- footer:start -->
+    <footer class="bg-ink-950 text-ink-300">
+      <div class="container-site grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.2fr_1fr]">
+        <div>
+          <a href="index.html" class="-ml-2 inline-flex min-h-[44px] items-center gap-2.5 rounded-full px-2 focus-visible:ring-offset-ink-950">
+            <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-white"><img src="images/opt/logo-96.webp" width="24" height="18" alt="" class="h-[18px] w-auto" loading="lazy" /></span>
+            <span class="text-lg font-extrabold tracking-tight text-white">JustHome</span>
+          </a>
+          <p class="mt-4 max-w-xs text-sm leading-relaxed text-ink-400">Finding your perfect home has never been easier.</p>
+        </div>
+        <div>
+          <h2 class="text-sm font-semibold text-white">Quick links</h2>
+          <ul class="mt-3 text-sm">
+            <li><a class="inline-flex min-h-[44px] items-center transition-colors hover:text-white" href="properties.html">Properties</a></li>
+            <li><a class="inline-flex min-h-[44px] items-center transition-colors hover:text-white" href="about.html">About us</a></li>
+            <li><a class="inline-flex min-h-[44px] items-center transition-colors hover:text-white" href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-sm font-semibold text-white">Contact us</h2>
+          <ul class="mt-3 text-sm">
+            <li class="flex min-h-[44px] items-center gap-3"><i class="fas fa-location-dot w-4 text-ink-500" aria-hidden="true"></i>123 Main St, City</li>
+            <li><a class="inline-flex min-h-[44px] items-center gap-3 transition-colors hover:text-white" href="tel:5551234567"><i class="fas fa-phone w-4 text-ink-500" aria-hidden="true"></i>(555) 123-4567</a></li>
+            <li><a class="inline-flex min-h-[44px] items-center gap-3 transition-colors hover:text-white" href="mailto:info@justhome.com"><i class="fas fa-envelope w-4 text-ink-500" aria-hidden="true"></i>info@justhome.com</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-sm font-semibold text-white">Follow us</h2>
+          <ul class="-ml-3 mt-3 flex flex-wrap">
+            <li><a href="#" class="icon-btn text-ink-300 hover:bg-white/10 hover:text-white" aria-label="JustHome on Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
+            <li><a href="#" class="icon-btn text-ink-300 hover:bg-white/10 hover:text-white" aria-label="JustHome on X"><i class="fab fa-x-twitter" aria-hidden="true"></i></a></li>
+            <li><a href="#" class="icon-btn text-ink-300 hover:bg-white/10 hover:text-white" aria-label="JustHome on Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+            <li><a href="#" class="icon-btn text-ink-300 hover:bg-white/10 hover:text-white" aria-label="JustHome on LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a></li>
+          </ul>
         </div>
       </div>
-    </section>
-
-    <!-- Properties Section -->
-    <section class="bg-gray-50 px-6 py-12">
-      <div class="max-w-7xl mx-auto">
-        <!-- Properties Grid -->
-        <div
-          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
-          id="property-grid"
-        >
-          <!-- Properties will be loaded here dynamically -->
-        </div>
-
-        <!-- Load More Button -->
-        <div class="text-center mt-12" id="load-more-container">
-          <button
-            class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-            aria-label="Load more properties"
-            id="load-more-btn"
-            onclick="loadMoreProperties()"
-          >
-            <span>Load More Properties</span>
-            <i class="fas fa-arrow-down"></i>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- <footer></footer> -->
-    <footer class="bg-gray-800 text-white py-12">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
-            <h3 class="text-lg font-semibold mb-4">JustHome</h3>
-            <p class="text-gray-400">
-              Finding your perfect home has never been easier.
-            </p>
-          </div>
-          <div>
-            <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul class="space-y-2">
-              <li>
-                <a href="#" class="text-gray-400 hover:text-white"
-                  >Properties</a
-                >
-              </li>
-              <li>
-                <a href="#" class="text-gray-400 hover:text-white"
-                  >About Us</a
-                >
-              </li>
-              <li>
-                <a href="#" class="text-gray-400 hover:text-white"
-                  >Contact</a
-                >
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
-            <ul class="space-y-2">
-              <li class="text-gray-400">
-                <i class="fas fa-map-marker-alt mr-2"></i> 123 Main St, City
-              </li>
-              <li class="text-gray-400">
-                <i class="fas fa-phone mr-2"></i> (555) 123-4567
-              </li>
-              <li class="text-gray-400">
-                <i class="fas fa-envelope mr-2"></i> info@justhome.com
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 class="text-lg font-semibold mb-4">Follow Us</h3>
-            <div class="flex gap-4">
-              <a href="#" class="text-gray-400 hover:text-white">
-                <i class="fab fa-facebook text-xl"></i>
-              </a>
-              <a href="#" class="text-gray-400 hover:text-white">
-                <i class="fab fa-twitter text-xl"></i>
-              </a>
-              <a href="#" class="text-gray-400 hover:text-white">
-                <i class="fab fa-instagram text-xl"></i>
-              </a>
-              <a href="#" class="text-gray-400 hover:text-white">
-                <i class="fab fa-linkedin text-xl"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="border-t border-gray-700 mt-8 pt-8 text-center">
-          <p class="text-gray-400">
-            © 2025 JustHome Real Estate. All rights reserved.
-          </p>
+      <div class="border-t border-white/10">
+        <div class="container-site flex flex-col gap-1 py-6 text-xs text-ink-400 sm:flex-row sm:items-center sm:justify-between">
+          <p>&copy; <span data-year>2026</span> JustHome Real Estate. All rights reserved.</p>
+          <p>Photography from Unsplash and Pexels.</p>
         </div>
       </div>
     </footer>
+    <!-- footer:end -->
 
-    <!-- Floating Action Button -->
-    <button
-      class="fixed bottom-4 right-4 w-10 h-10 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-full flex items-center justify-center text-lg shadow-lg transition-all duration-300 transform hover:-translate-y-1 hover:from-amber-600 hover:to-amber-700"
-      aria-label="Chat with us"
-    >
-      <i class="fas fa-comments"></i>
-    </button>
-
-    <script src="js/script.js"></script>
+    <script src="js/ui.js" defer></script>
     <script type="module" src="js/auth.js"></script>
     <script type="module" src="js/properties.js"></script>
-
-    <script>
-      // User Profile Dropdown Toggle (Mobile & Desktop)
-      (function() {
-        const profileBtn = document.getElementById('user-profile-btn');
-        const dropdown = document.getElementById('user-dropdown');
-
-        if (!profileBtn || !dropdown) return;
-
-        // Toggle dropdown on click/tap
-        profileBtn.addEventListener('click', function(e) {
-          e.stopPropagation();
-
-          // Toggle visibility
-          const isVisible = dropdown.classList.contains('opacity-100');
-
-          if (isVisible) {
-            dropdown.classList.remove('opacity-100', 'visible');
-            dropdown.classList.add('opacity-0', 'invisible');
-          } else {
-            dropdown.classList.remove('opacity-0', 'invisible');
-            dropdown.classList.add('opacity-100', 'visible');
-          }
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(e) {
-          if (!profileBtn.contains(e.target) && !dropdown.contains(e.target)) {
-            dropdown.classList.remove('opacity-100', 'visible');
-            dropdown.classList.add('opacity-0', 'invisible');
-          }
-        });
-
-        // Close dropdown when clicking a link inside
-        dropdown.querySelectorAll('a').forEach(function(link) {
-          link.addEventListener('click', function() {
-            dropdown.classList.remove('opacity-100', 'visible');
-            dropdown.classList.add('opacity-0', 'invisible');
-          });
-        });
-      })();
-    </script>
   </body>
 </html>

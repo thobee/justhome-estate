@@ -69,29 +69,14 @@ async function loadProperties() {
     isLoading = true;
     showLoadingState();
 
-    console.log("Initializing Firestore query");
     const propertiesQuery = query(collection(db, "properties"));
-    console.log("Fetching properties from Firestore...");
     const querySnapshot = await getDocs(propertiesQuery);
-    console.log("Properties found:", querySnapshot.size);
-    console.log("Query snapshot:", querySnapshot);
 
     if (querySnapshot.empty) {
       properties = [];
-      console.log("No properties found in database");
     } else {
       properties = querySnapshot.docs.map((doc) => {
         const data = doc.data();
-        console.log("Property Data:", {
-          id: doc.id,
-          title: data.title,
-          status: data.status,
-          imageFields: {
-            image: data.image,
-            imageUrl: data.imageUrl,
-            images: data.images,
-          },
-        });
         const property = {
           id: doc.id,
           ...data,
@@ -101,9 +86,8 @@ async function loadProperties() {
     }
 
     isLoading = false;
-    console.log("Rendering properties:", properties.length);
-    await renderProperties(properties);
-    updateResultsCount(properties.length);
+    applyUrlFilters();
+    await filterProperties();
   } catch (error) {
     console.error("Error loading properties:", error);
     console.error("Error code:", error.code);
@@ -117,24 +101,19 @@ async function loadProperties() {
 // Show loading state
 function showLoadingState() {
   propertyGrid.innerHTML = `
-    <div class="col-span-full flex flex-col items-center justify-center py-16">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-      <p class="text-gray-600 text-lg">Loading properties...</p>
-    </div>
+    ${Array.from({ length: 6 }, () => `<li class="card p-2" aria-hidden="true"><div class="aspect-[4/3] animate-pulse rounded-2xl bg-ink-100"></div><div class="space-y-3 px-3 pb-4 pt-5"><div class="h-6 w-1/3 animate-pulse rounded bg-ink-100"></div><div class="h-4 w-2/3 animate-pulse rounded bg-ink-100"></div><div class="h-4 w-1/2 animate-pulse rounded bg-ink-100"></div></div></li>`).join("")}
   `;
 }
 
 // Show error state
 function showErrorState() {
   propertyGrid.innerHTML = `
-    <div class="col-span-full flex flex-col items-center justify-center py-16">
-      <i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i>
-      <p class="text-gray-600 text-lg mb-2">Failed to load properties</p>
-      <p class="text-gray-500 text-sm">Please try again later</p>
-      <button onclick="loadProperties()" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-        Try Again
-      </button>
-    </div>
+    <li class="col-span-full flex flex-col items-center justify-center rounded-3xl bg-white px-6 py-16 text-center shadow-soft">
+      <span class="flex h-14 w-14 items-center justify-center rounded-full bg-red-50 text-red-600"><i class="fas fa-triangle-exclamation text-xl" aria-hidden="true"></i></span>
+      <p class="mt-4 text-lg font-semibold text-ink-950">We couldn't load properties</p>
+      <p class="mt-1 text-sm text-ink-600">Check your connection and try again.</p>
+      <button type="button" onclick="loadProperties()" class="btn-primary mt-6">Try again</button>
+    </li>
   `;
 }
 
@@ -155,10 +134,6 @@ function getStatusInfo(status) {
     sold: { color: "bg-gray-500", text: "Sold" },
   };
 
-  console.log("Status check:", {
-    original: status,
-    normalized: normalizedStatus,
-  });
   return (
     statusMap[normalizedStatus] || { color: "bg-blue-500", text: "Available" }
   );
@@ -173,13 +148,12 @@ async function renderProperties(propertiesToRender) {
 
   if (propertiesToRender.length === 0) {
     propertyGrid.innerHTML = `
-      <div class="col-span-full flex flex-col items-center justify-center py-20">
-        <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6">
-          <i class="fas fa-home text-3xl text-gray-400"></i>
-        </div>
-        <h3 class="text-xl font-semibold text-gray-800 mb-2">No properties found</h3>
-        <p class="text-gray-600 text-center max-w-md">We couldn't find any properties matching your criteria. Try adjusting your filters or check back later for new listings.</p>
-      </div>
+      <li class="col-span-full flex flex-col items-center justify-center rounded-3xl bg-white px-6 py-16 text-center shadow-soft">
+        <span class="flex h-14 w-14 items-center justify-center rounded-full bg-ink-100 text-ink-500"><i class="fas fa-house text-xl" aria-hidden="true"></i></span>
+        <h3 class="mt-4 text-lg font-semibold">No properties found</h3>
+        <p class="mt-1 max-w-md text-sm text-ink-600">We couldn't find any properties matching your criteria. Try adjusting your filters or check back later for new listings.</p>
+        <button type="button" onclick="resetFilters()" class="btn-secondary mt-6">Clear filters</button>
+      </li>
     `;
     return;
   }
@@ -191,7 +165,6 @@ async function renderProperties(propertiesToRender) {
   let userBookings = [];
   if (currentUser) {
     try {
-      console.log("Fetching user bookings for:", currentUser.uid);
       const userBookingsQuery = query(
         collection(db, "bookings"),
         where("userId", "==", currentUser.uid),
@@ -199,7 +172,6 @@ async function renderProperties(propertiesToRender) {
       );
       const userBookingsSnapshot = await getDocs(userBookingsQuery);
       userBookings = userBookingsSnapshot.docs.map(doc => doc.data());
-      console.log("User bookings found:", userBookings.length);
     } catch (error) {
       console.warn("Could not fetch user bookings:", error);
       console.warn("Booking fetch error code:", error.code);
@@ -247,147 +219,51 @@ async function renderProperties(propertiesToRender) {
       statusInfo = getStatusInfo(property.status || "available");
     }
 
+    const img =
+      property.image ||
+      property.imageUrl ||
+      (property.images && property.images[0]) ||
+      "images/opt/photo-unavailable.svg";
+    const typeLabel = property.type
+      ? property.type.charAt(0).toUpperCase() + property.type.slice(1)
+      : "Property";
+    const dot = statusInfo.text === "Available" ? "bg-emerald-500" : statusInfo.text === "Unavailable" ? "bg-red-500" : "bg-ink-400";
     const propertyCard = `
-      <article class="property-card group bg-white rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 max-w-xs animate-fade-in-up" style="animation-delay: ${
-        index * 0.1
-      }s">
-        <div class="relative overflow-hidden">
-          <!-- Image with zoom effect -->
-          <div class="aspect-w-16 aspect-h-12 overflow-hidden">
-            <img src="${
-              property.image ||
-              property.imageUrl ||
-              (property.images && property.images[0]) ||
-              "images/img1.png"
-            }" 
-                 alt="${property.title}"
-                 class="property-image w-full h-60 object-cover transition-transform duration-700 group-hover:scale-110"/>
+      <li>
+      <article class="property-card group card relative flex h-full flex-col overflow-hidden p-2 transition duration-300 hover:-translate-y-0.5 hover:shadow-lift">
+        <div class="relative aspect-[4/3] overflow-hidden rounded-2xl bg-ink-100">
+          <img src="${img}" alt="${escapeHtml(property.title || "Property")}" loading="${index < 3 ? "eager" : "lazy"}" decoding="async" width="800" height="600"
+               onerror="this.onerror=null;this.src='images/opt/photo-unavailable.svg'"
+               class="property-image h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"/>
+          <div class="absolute left-3 top-3 flex flex-wrap gap-1.5">
+            <span class="status-badge chip bg-white/95 text-ink-900 shadow-soft"><span class="h-1.5 w-1.5 rounded-full ${dot}" aria-hidden="true"></span>${statusInfo.text}</span>
+            ${property.featured ? `<span class="chip bg-brand-700 text-white"><i class="fas fa-star text-[10px]" aria-hidden="true"></i>Featured</span>` : ""}
           </div>
-          <!-- Gradient overlays -->
-          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-80"></div>
-          <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent"></div>
-  
-          <!-- Status tags with glass effect -->
-          <div class="absolute top-4 left-4 flex flex-col gap-2">
-            <span class="status-badge ${
-              statusInfo.color
-            } bg-opacity-90 backdrop-blur-md text-white text-xs font-medium px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5">
-              <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
-              ${statusInfo.text}
-            </span>
-            ${
-              property.type === "rent"
-                ? `
-              <span class="px-3 py-1.5 text-xs rounded-full bg-green-500 bg-opacity-90 backdrop-blur-md text-white font-medium shadow-lg flex items-center gap-1.5">
-                <i class="fas fa-key text-[10px]"></i> FOR RENT
-              </span>`
-                : ""
-            }
-            ${
-              property.featured
-                ? `
-              <span class="px-3 py-1.5 text-xs rounded-full bg-amber-400 bg-opacity-90 backdrop-blur-md text-gray-900 font-medium shadow-lg flex items-center gap-1.5">
-                <i class="fas fa-star text-[10px]"></i> FEATURED
-              </span>`
-                : ""
-            }
-          </div>
-  
-          <!-- Action Buttons with glass effect -->
-          <div class="absolute top-4 right-4 flex gap-2">
-            <button onclick="shareProperty('${property.id}')"
-                    class="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
-                    title="Share property">
-              <i class="fas fa-share-alt text-gray-700 group-hover:text-blue-600 transition-colors duration-300"></i>
+          <div class="absolute right-2 top-2 z-10 flex gap-1">
+            <button type="button" onclick="shareProperty('${property.id}')" aria-label="Share ${escapeHtml(property.title || "property")}"
+                    class="flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-ink-700 shadow-soft backdrop-blur transition hover:bg-white hover:text-ink-950 active:scale-95">
+              <i class="fas fa-share-nodes text-sm" aria-hidden="true"></i>
             </button>
-            <button onclick="toggleFavorite('${property.id}')"
-                    class="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
-                    title="${
-                      isFavorited ? "Remove from favorites" : "Add to favorites"
-                    }">
-              <i class="fas fa-heart transition-all duration-300 ${
-                isFavorited
-                  ? "text-red-500 scale-110"
-                  : "text-gray-700 group-hover:text-red-500"
-              }"></i>
+            <button type="button" data-fav="${property.id}" onclick="toggleFavorite('${property.id}')" aria-pressed="${isFavorited}" aria-label="Save ${escapeHtml(property.title || "property")}"
+                    class="flex h-11 w-11 items-center justify-center rounded-full bg-white/90 shadow-soft backdrop-blur transition hover:bg-white active:scale-95">
+              <i class="${isFavorited ? "fas text-red-600" : "far text-ink-700"} fa-heart text-sm transition" aria-hidden="true"></i>
             </button>
-          </div>
-
-          <!-- Price tag with glass effect -->
-          <div class="absolute bottom-4 left-4">
-            <div class="bg-blue-600/90 backdrop-blur-md text-white font-bold px-4 py-2 rounded-xl shadow-lg flex items-center gap-1">
-              <i class="fas fa-tag text-xs"></i>
-              <span>${
-                property.price ? "₦" + property.price.toLocaleString() : "₦0"
-              }</span>
-            </div>
           </div>
         </div>
-  
-        <div class="p-6">
-          <!-- Property Info -->
-          <div class="mb-4">
-            <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors duration-200">
-              ${property.title}
-            </h3>
-            <div class="flex items-center gap-2 text-gray-600">
-              <div class="flex items-center gap-1.5 bg-blue-50 px-2 py-1 rounded-lg">
-                <i class="fas fa-map-marker-alt text-blue-500 text-xs"></i>
-                <span class="text-sm font-medium line-clamp-1">${
-                  property.location || "Unknown"
-                }</span>
-              </div>
-            </div>
-            ${
-              (property.status === "rented" ||
-                property.status === "unavailable") &&
-              availabilityDate &&
-              !isBookedByUser
-                ? `
-              <div class="flex items-center gap-2 mt-2 bg-orange-50 text-orange-600 text-xs px-2 py-1 rounded-lg">
-                <i class="fas fa-clock"></i>
-                <span class="font-medium">Available from ${availabilityDate.toLocaleDateString()}</span>
-              </div>
-            `
-                : ""
-            }
-          </div>
-  
-          <!-- Property Features with enhanced design -->
-          <div class="grid grid-cols-3 gap-2 py-4 border-t border-b border-gray-100">
-            <div class="flex flex-col items-center p-2 bg-gray-50 rounded-xl hover:bg-blue-50 transition-colors duration-200">
-              <i class="fas fa-bed text-blue-500 mb-1"></i>
-              <span class="text-sm font-medium text-gray-700">${
-                property.bedrooms || 0
-              } Beds</span>
-            </div>
-            <div class="flex flex-col items-center p-2 bg-gray-50 rounded-xl hover:bg-blue-50 transition-colors duration-200">
-              <i class="fas fa-bath text-blue-500 mb-1"></i>
-              <span class="text-sm font-medium text-gray-700">${
-                property.bathrooms || 0
-              } Baths</span>
-            </div>
-            <div class="flex flex-col items-center p-2 bg-gray-50 rounded-xl hover:bg-blue-50 transition-colors duration-200">
-              <i class="fas fa-home text-blue-500 mb-1"></i>
-              <span class="text-sm font-medium text-gray-700">${
-                property.type
-                  ? property.type.charAt(0).toUpperCase() +
-                    property.type.slice(1)
-                  : "N/A"
-              }</span>
-            </div>
-          </div>
-  
-          <!-- Action Buttons with enhanced design -->
-          <div class="flex justify-center items-center mt-4">
-            <a href="property-details.html?id=${property.id}" 
-               class="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-sm font-medium rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5">
-              <i class="fas fa-search text-xs"></i>
-              View Details
-            </a>
-          </div>
+        <div class="flex flex-1 flex-col px-3 pb-3 pt-4">
+          <p class="tabular text-2xl font-bold text-ink-950">${property.price ? "₦" + Number(property.price).toLocaleString() : "Price on request"}</p>
+          <h3 class="mt-1 line-clamp-2 text-lg font-semibold">
+            <a href="property-details.html?id=${property.id}" class="after:absolute after:inset-0 after:rounded-3xl">${escapeHtml(property.title || "Untitled property")}</a>
+          </h3>
+          <p class="mt-1 flex items-center gap-2 text-sm text-ink-600"><i class="fas fa-location-dot text-xs text-ink-400" aria-hidden="true"></i><span class="line-clamp-1">${escapeHtml(property.location || "Location not set")}</span></p>
+          <ul class="mt-4 flex flex-wrap gap-x-5 gap-y-2 border-t border-ink-100 pt-4 text-sm text-ink-700" role="list">
+            <li class="flex items-center gap-2"><i class="fas fa-bed text-ink-400" aria-hidden="true"></i>${property.bedrooms || 0} beds</li>
+            <li class="flex items-center gap-2"><i class="fas fa-bath text-ink-400" aria-hidden="true"></i>${property.bathrooms || 0} baths</li>
+            <li class="flex items-center gap-2"><i class="fas fa-building text-ink-400" aria-hidden="true"></i>${typeLabel}</li>
+          </ul>
         </div>
       </article>
+      </li>
     `;
     propertyCardsHTML += propertyCard;
   });
@@ -396,22 +272,53 @@ async function renderProperties(propertiesToRender) {
   propertyGrid.innerHTML = propertyCardsHTML;
 }
 
-// Filter properties
+// Filter and sort properties together
+function sortList(list, sortValue) {
+  const sorted = [...list];
+  const time = (p) => (p.createdAt?.seconds ? p.createdAt.seconds * 1000 : new Date(p.createdAt || 0).getTime());
+  switch (sortValue) {
+    case "price-low": return sorted.sort((a, b) => (a.price || 0) - (b.price || 0));
+    case "price-high": return sorted.sort((a, b) => (b.price || 0) - (a.price || 0));
+    case "name": return sorted.sort((a, b) => (a.title || "").localeCompare(b.title || ""));
+    default: return sorted.sort((a, b) => time(b) - time(a));
+  }
+}
+
 async function filterProperties() {
-  const location = locationFilter.value.toLowerCase();
-  const type = typeFilter.value.toLowerCase();
-  const maxPrice = parseInt(priceRange.value);
+  const location = (locationFilter?.value || "").toLowerCase().replace("-", " ");
+  const type = (typeFilter?.value || "").toLowerCase();
+  const maxPrice = parseInt(priceRange?.value || "0", 10);
+  const atMax = priceRange && priceRange.value === priceRange.max;
 
   const filtered = properties.filter((property) => {
-    const matchesLocation =
-      !location || property.location.toLowerCase().includes(location);
-    const matchesType = !type || property.type.toLowerCase() === type;
-    const matchesPrice = !maxPrice || property.price <= maxPrice;
+    const matchesLocation = !location || (property.location || "").toLowerCase().includes(location);
+    const matchesType = !type || (property.type || "").toLowerCase() === type;
+    const matchesPrice = atMax || !maxPrice || (property.price || 0) <= maxPrice;
     return matchesLocation && matchesType && matchesPrice;
   });
 
-  await renderProperties(filtered);
-  updateResultsCount(filtered.length);
+  const sorted = sortList(filtered, document.getElementById("sort-select")?.value);
+  await renderProperties(sorted);
+  updateResultsCount(sorted.length);
+}
+
+// Pre-fill filters from the homepage search (?location=&type=&price=)
+function applyUrlFilters() {
+  const params = new URLSearchParams(window.location.search);
+  const setIf = (el, v) => {
+    if (el && v && [...el.options].some((o) => o.value === v)) el.value = v;
+  };
+  setIf(locationFilter, params.get("location"));
+  setIf(typeFilter, params.get("type"));
+  const price = parseInt(params.get("price") || "", 10);
+  if (priceRange && price > 0) {
+    priceRange.value = String(Math.min(price, Number(priceRange.max)));
+    updatePriceRange();
+  }
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 }
 
 // Toggle favorite with enhanced visual feedback
@@ -425,10 +332,8 @@ async function toggleFavorite(propertyId) {
     return;
   }
 
-  const heartButton = document.querySelector(
-    `button[onclick*="${propertyId}"]`
-  );
-  const heartIcon = heartButton.querySelector("i.fa-heart");
+  const heartButton = document.querySelector(`button[data-fav="${propertyId}"]`);
+  const heartIcon = heartButton?.querySelector("i.fa-heart");
 
   if (!heartButton || !heartIcon) return;
 
@@ -508,6 +413,7 @@ async function toggleFavorite(propertyId) {
 
 // Show notification
 function showNotification(message, type = "info") {
+  if (window.showToast) return window.showToast(message, type === "error" ? "error" : "success");
   // Remove existing notifications
   const existingNotifications = document.querySelectorAll(
     ".notification-toast"
@@ -562,14 +468,18 @@ function showNotification(message, type = "info") {
 function shareProperty(propertyId) {
   const property = properties.find((p) => p.id === propertyId);
   if (property) {
+    const url = new URL(`property-details.html?id=${propertyId}`, window.location.href).href;
     if (navigator.share) {
       navigator.share({
         title: property.title,
         text: `Check out this property: ${property.title} in ${property.location}`,
-        url: window.location.href,
-      });
-    } else {
-      alert("Property link copied to clipboard!");
+        url,
+      }).catch(() => {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(
+        () => showNotification("Property link copied to clipboard!", "success"),
+        () => showNotification("Couldn't copy the link", "error")
+      );
     }
   }
 }
@@ -578,9 +488,11 @@ function shareProperty(propertyId) {
 function updatePriceRange() {
   const range = document.getElementById("price-range");
   const maxPrice = document.getElementById("max-price");
-  maxPrice.textContent = `₦${range.value}${
-    range.value == range.max ? "+" : ""
-  }`;
+  if (!range || !maxPrice) return;
+  const v = Number(range.value);
+  const label = v >= 1e6 ? `₦${(v / 1e6).toFixed(v % 1e6 ? 1 : 0)}M` : `₦${v.toLocaleString()}`;
+  maxPrice.textContent = range.value == range.max ? `${label}+` : label;
+  range.setAttribute("aria-valuetext", maxPrice.textContent);
 }
 
 // Event listeners
@@ -642,29 +554,8 @@ window.loadProperties = loadProperties;
 window.loadMoreProperties = loadMoreProperties;
 
 // Handle sort functionality
-async function handleSort(sortValue) {
-  if (!properties.length) return;
-
-  const sortedProperties = [...properties];
-
-  switch (sortValue) {
-    case "newest":
-      sortedProperties.sort(
-        (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
-      );
-      break;
-    case "price-low":
-      sortedProperties.sort((a, b) => (a.price || 0) - (b.price || 0));
-      break;
-    case "price-high":
-      sortedProperties.sort((a, b) => (b.price || 0) - (a.price || 0));
-      break;
-    case "name":
-      sortedProperties.sort((a, b) => a.title.localeCompare(b.title));
-      break;
-  }
-
-  await renderProperties(sortedProperties);
+async function handleSort() {
+  await filterProperties();
 }
 
 // Reset all filters
@@ -675,11 +566,8 @@ async function resetFilters() {
   document.getElementById("sort-select").value = "newest";
 
   updatePriceRange();
-  await renderProperties(properties);
-  updateResultsCount(properties.length);
-
-  // Show success notification
-  showNotification("Filters have been reset", "success");
+  history.replaceState(null, "", window.location.pathname);
+  await filterProperties();
 }
 
 // Make additional functions globally available
@@ -875,7 +763,6 @@ function handleSessionTimeout() {
 
 // Initialize everything when page loads
 document.addEventListener("DOMContentLoaded", () => {
-  loadProperties();
   initializeSessionTimeout();
 });
 

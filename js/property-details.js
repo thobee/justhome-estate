@@ -193,8 +193,9 @@ async function loadPropertyDetails() {
           <img 
             src="${img}" 
             alt="${property.title}" 
-            class="rounded-lg transition-transform duration-300 hover:scale-105"
+            class="rounded-lg"
             loading="lazy"
+            onerror="this.onerror=null;this.src='images/opt/photo-unavailable.svg'"
             onload="this.style.opacity='1'"
             style="opacity: 0; transition: opacity 0.3s ease-in-out;"
           />
@@ -212,7 +213,8 @@ async function loadPropertyDetails() {
               src="${img}" 
               alt="${property.title}"
               loading="lazy"
-              class="w-full h-full transition-transform duration-300 hover:scale-110"
+              onerror="this.onerror=null;this.src='images/opt/photo-unavailable.svg'"
+              class="w-full h-full"
             />
             <div class="absolute inset-0 bg-black bg-opacity-10 hover:bg-opacity-0 transition-opacity"></div>
           </div>
@@ -439,7 +441,7 @@ async function loadSimilarProperties(currentProperty) {
                       src="${propertyImage}" 
                       alt="${property.title || "Property"}" 
                       class="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-                      onerror="this.onerror=null; this.src='images/img1.png'; this.classList.add('opacity-50')"
+                      onerror="this.onerror=null; this.src='images/opt/photo-unavailable.svg'; this.classList.add('opacity-50')"
                       loading="lazy"
                     />
                   </div>
@@ -1648,8 +1650,15 @@ async function initiatePaystackPayment(bookingData, propertyPrice) {
     // Note: Replace 'pk_test_xxxxxxxxxxxxxxxxxx' with your actual Paystack public key
     const paystackKey = "pk_test_e20719ec2ffe957dd0cf7b6012b8b9f2260489f7"; // Get this from your Paystack dashboard
 
-    console.log("Paystack key:", paystackKey);
-    console.log("PaystackPop available:", typeof PaystackPop);
+    // Paystack is loaded on demand so its assets don't slow down every page view.
+    if (typeof PaystackPop === "undefined") {
+      await new Promise((resolve) => {
+        const s = document.createElement("script");
+        s.src = "https://js.paystack.co/v1/inline.js";
+        s.onload = s.onerror = resolve;
+        document.head.appendChild(s);
+      });
+    }
 
     if (typeof PaystackPop === "undefined") {
       console.error("PaystackPop is undefined");

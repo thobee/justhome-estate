@@ -1,18 +1,19 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
+    <!-- head:start -->
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" type="image/webp" href="images/opt/logo-96.webp" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style/main.css" />
+    <script>if(matchMedia("(prefers-reduced-motion: no-preference)").matches)document.documentElement.classList.add("js-motion")</script>
+    <!-- head:end -->
     <title>Property Details - JustHome Real Estate</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
     <!-- Add Swiper's CSS -->
     <link
       rel="stylesheet"
@@ -23,11 +24,8 @@
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
     <style>
-      body {
-        font-family: "Poppins", sans-serif;
-      }
       .gradient-text {
-        background: linear-gradient(90deg, #1e40af, #3b82f6);
+        background: linear-gradient(90deg, #1b369b, #2150e0);
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -57,7 +55,7 @@
         width: 100%;
         height: 100%;
         object-fit: contain;
-        background-color: rgb(249, 250, 251);
+        background-color: #f1efea;
       }
       .gallery-thumbs {
         height: 60px; /* Reduced height for smaller thumbnails */
@@ -85,7 +83,7 @@
       }
       .gallery-thumbs .swiper-slide-thumb-active {
         opacity: 1;
-        border-color: #3b82f6;
+        border-color: #2150e0;
       }
       .swiper-button-next,
       .swiper-button-prev {
@@ -123,18 +121,18 @@
         gap: 0.75rem;
         padding: 1rem;
         border-radius: 0.5rem;
-        background-color: #f9fafb;
+        background-color: #f8f7f4;
         transition: background-color 0.2s;
       }
       .feature-card:hover {
-        background-color: #f3f4f6;
+        background-color: #f1efea;
       }
       .feature-icon {
         width: 2.5rem;
         height: 2.5rem;
         border-radius: 9999px;
-        background-color: #dbeafe;
-        color: #2563eb;
+        background-color: #dae6ff;
+        color: #1a3fbf;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -143,7 +141,7 @@
         width: 30px;
         height: 30px;
         border-radius: 50% 50% 50% 0;
-        background: #3b82f6;
+        background: #2150e0;
         position: absolute;
         transform: rotate(-45deg);
         left: 50%;
@@ -219,12 +217,12 @@
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
       }
       .btn-gradient {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #2150e0 0%, #1a3fbf 100%);
         transition: all 0.3s ease;
       }
       .btn-gradient:hover {
         transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 10px 25px rgba(26, 63, 191, 0.3);
       }
       .loading-overlay {
         position: fixed;
@@ -243,172 +241,99 @@
       }
     </style>
   </head>
-  <body class="bg-gray-50">
+  <body class="bg-ink-50">
     <!-- Loading Overlay -->
-    <div id="loading-overlay" class="loading-overlay">
+    <div id="loading-overlay" class="loading-overlay" role="status" aria-live="polite">
       <div class="text-center">
         <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
         <p class="text-gray-600 text-lg">Loading property details...</p>
       </div>
     </div>
 
-    <!-- Header -->
-    <header class="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center py-2.5">
-          <!-- Logo and Brand -->
-          <div class="flex items-center gap-2">
-            <img
-              src="images/1logo.png"
-              alt="JustHome Logo"
-              class="h-8 w-auto transition-transform duration-300 hover:scale-105"
-            />
-            <span class="text-xl font-bold">
-              <span class="bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">Just</span>
-              <span class="text-blue-600">Home</span>
-            </span>
-          </div>
+    <!-- header:start -->
+    <a href="#main" class="sr-only z-[60] rounded-full bg-white px-4 py-3 text-sm font-semibold text-ink-900 shadow-lift focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to content</a>
+    <header class="site-header is-solid" data-header>
+      <div class="container-site flex h-[var(--header-h)] items-center justify-between gap-3">
+        <a href="index.html" class="-ml-2 flex min-h-[44px] items-center gap-2.5 rounded-full px-2" aria-label="JustHome, home">
+          <img src="images/opt/logo-96.webp" srcset="images/opt/logo-96.webp 1x, images/opt/logo-192.webp 2x" width="38" height="28" alt="" class="h-7 w-auto" />
+          <span class="text-lg font-extrabold tracking-tight text-ink-950">Just<span class="text-brand-700">Home</span></span>
+        </a>
 
-          <!-- Desktop Navigation -->
-          <nav aria-label="Main navigation" class="hidden lg:flex">
-            <ul class="flex gap-1">
-              <li>
-                <a
-                  href="index.html"
-                  class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 font-medium transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 hover:shadow-sm"
-                  ><i class="fas fa-home text-xs"></i> Home</a
-                >
-              </li>
-              <li>
-                <a
-                  href="properties.html"
-                  class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 font-medium transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 hover:shadow-sm"
-                  ><i class="fas fa-building text-xs"></i> Properties</a
-                >
-              </li>
-              <li>
-                <a
-                  href="about.html"
-                  class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 font-medium transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 hover:shadow-sm"
-                  ><i class="fas fa-info-circle text-xs"></i> About</a
-                >
-              </li>
-              <li>
-                <a
-                  href="contact.html"
-                  class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 font-medium transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 hover:shadow-sm"
-                  ><i class="fas fa-envelope text-xs"></i> Contact</a
-                >
-              </li>
-            </ul>
-          </nav>
+        <nav aria-label="Main" class="hidden lg:block">
+          <ul class="flex items-center gap-1">
+            <li><a href="index.html" class="nav-link" data-nav="home">Home</a></li>
+            <li><a href="properties.html" class="nav-link" data-nav="properties" aria-current="page">Properties</a></li>
+            <li><a href="about.html" class="nav-link" data-nav="about">About</a></li>
+            <li><a href="contact.html" class="nav-link" data-nav="contact">Contact</a></li>
+          </ul>
+        </nav>
 
-          <!-- Right Side Actions -->
-          <div class="flex items-center gap-3">
-            <!-- User Profile / Auth Buttons -->
-            <div id="userSection" class="relative group hidden">
-              <button
-                id="user-profile-btn"
-                class="flex items-center gap-1.5 p-1.5 rounded-full hover:bg-gray-100 text-gray-800 transition-all duration-200 hover:shadow-sm"
-                aria-label="User profile"
-              >
-                <i class="fas fa-user-circle text-lg"></i>
-                <span class="text-xs font-medium hidden sm:inline">My Account</span>
-                <i class="fas fa-chevron-down text-xs"></i>
-              </button>
-              <div
-                id="user-dropdown"
-                class="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform -translate-y-1 group-hover:translate-y-0"
-              >
-                <a
-                  href="dashboard.html"
-                  class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 rounded-t-xl transition-colors duration-200"
-                >
-                  <i class="fas fa-user w-4"></i> Profile</a
-                >
-                <a
-                  href="#"
-                  class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 transition-colors duration-200"
-                >
-                  <i class="fas fa-heart w-4"></i> Favorites</a
-                >
-                <a
-                  href="admin/dashboard.html"
-                  id="admin-dashboard-link"
-                  class="hidden flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 transition-colors duration-200"
-                >
-                  <i class="fas fa-cogs w-4"></i> Admin Dashboard</a
-                >
-                <a
-                  href="#"
-                  class="flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 rounded-b-xl transition-colors duration-200"
-                  onclick="handleLogout()"
-                >
-                  <i class="fas fa-sign-out-alt w-4"></i> Logout</a
-                >
-              </div>
-            </div>
-
-            <!-- Guest Auth Buttons -->
-            <div id="guestSection" class="flex items-center gap-2">
-              <button
-                onclick="handleLogin()"
-                class="px-3 py-1.5 text-blue-600 hover:text-blue-700 text-xs font-medium transition-all duration-200 hover:bg-blue-50 rounded-md"
-              >
-                Login
-              </button>
-              <button
-                onclick="handleSignup()"
-                class="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-md text-xs font-medium transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-lg"
-              >
-                Sign Up
-              </button>
-            </div>
-
-            <!-- Mobile Menu Button -->
-            <button
-              class="lg:hidden p-1.5 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors duration-200 "
-              id="mobile-menu-button"
-            >
-              <i class="fas fa-bars text-base"></i>
+        <div class="flex items-center gap-1.5">
+          <div id="userSection" class="relative hidden">
+            <button id="user-profile-btn" type="button" class="btn-ghost px-2 sm:px-3" aria-haspopup="menu" aria-expanded="false" aria-controls="user-dropdown">
+              <span class="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-brand-100 text-brand-800">
+                <i id="profile-icon" class="fas fa-user text-xs" aria-hidden="true"></i>
+                <img id="profile-image" alt="" class="absolute inset-0 hidden h-full w-full object-cover" />
+              </span>
+              <span class="hidden sm:inline">My account</span>
+              <i class="fas fa-chevron-down text-[10px] text-ink-500" aria-hidden="true"></i>
             </button>
+            <div id="user-dropdown" role="menu" aria-label="Account" class="invisible absolute right-0 top-full mt-2 w-60 origin-top-right scale-95 rounded-2xl bg-white p-1.5 opacity-0 shadow-lift ring-1 ring-ink-900/5 transition duration-150 ease-out">
+              <div class="px-3 pb-2 pt-2.5">
+                <p id="profile-name" class="truncate text-sm font-semibold text-ink-950">Guest User</p>
+                <p id="profile-email" class="truncate text-xs text-ink-500"></p>
+              </div>
+              <div class="my-1 h-px bg-ink-100"></div>
+              <a role="menuitem" href="dashboard.html" class="flex min-h-[44px] items-center gap-3 rounded-xl px-3 text-sm text-ink-700 hover:bg-ink-100 hover:text-ink-950"><i class="fas fa-gauge w-4 text-ink-400" aria-hidden="true"></i>Dashboard</a>
+              <a role="menuitem" href="dashboard.html#saved" class="flex min-h-[44px] items-center gap-3 rounded-xl px-3 text-sm text-ink-700 hover:bg-ink-100 hover:text-ink-950"><i class="fas fa-heart w-4 text-ink-400" aria-hidden="true"></i>Saved homes</a>
+              <a role="menuitem" href="admin/dashboard.html" id="admin-dashboard-link" class="flex hidden min-h-[44px] items-center gap-3 rounded-xl px-3 text-sm text-ink-700 hover:bg-ink-100 hover:text-ink-950"><i class="fas fa-sliders w-4 text-ink-400" aria-hidden="true"></i>Admin dashboard</a>
+              <button role="menuitem" type="button" onclick="handleLogout()" class="flex min-h-[44px] w-full items-center gap-3 rounded-xl px-3 text-left text-sm text-red-700 hover:bg-red-50"><i class="fas fa-arrow-right-from-bracket w-4" aria-hidden="true"></i>Log out</button>
+            </div>
           </div>
-        </div>
 
-        <!-- Mobile Navigation Menu -->
-        <div
-        class="lg:hidden mobile-menu bg-white border-t border-gray-100 -mx-4 px-4"
-        id="mobile-menu"
-      >
-        <nav class="space-y-2 py-4">
-            <a href="index.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
-              <i class="fas fa-home"></i> Home</a>
-            <a href="properties.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
-              <i class="fas fa-building"></i> Properties</a>
-            <a href="about.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
-              <i class="fas fa-info-circle"></i> About</a>
-            <a href="contact.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
-              <i class="fas fa-envelope"></i> Contact</a>
-          </nav>
+          <div class="hidden sm:block">
+            <div id="guestSection" class="flex items-center gap-1.5">
+              <a href="signin.html" class="btn-ghost">Log in</a>
+              <a href="signup.html" class="btn-primary">Sign up</a>
+            </div>
+          </div>
+
+          <button id="mobile-menu-button" type="button" class="icon-btn lg:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+            <i class="fas fa-bars text-lg" aria-hidden="true"></i>
+          </button>
         </div>
       </div>
+
+      <div id="mobile-menu" class="hidden max-h-[calc(100dvh-var(--header-h))] overflow-y-auto border-t border-ink-100 bg-white lg:hidden">
+        <nav aria-label="Mobile" class="container-site flex flex-col gap-1 py-4">
+          <a href="index.html" class="nav-link text-base" data-nav="home">Home</a>
+          <a href="properties.html" class="nav-link text-base" data-nav="properties" aria-current="page">Properties</a>
+          <a href="about.html" class="nav-link text-base" data-nav="about">About</a>
+          <a href="contact.html" class="nav-link text-base" data-nav="contact">Contact</a>
+          <div class="mt-3 grid grid-cols-2 gap-2 sm:hidden" data-guest-only>
+            <a href="signin.html" class="btn-secondary">Log in</a>
+            <a href="signup.html" class="btn-primary">Sign up</a>
+          </div>
+        </nav>
+      </div>
     </header>
+    <!-- header:end -->
 
     <!-- Main Content -->
-    <main class="pt-20 px-6 pb-12 fade-in-up">
-      <div class="max-w-7xl mx-auto">
+    <main id="main" class="pb-20 pt-[calc(var(--header-h)+1.5rem)]">
+      <div class="container-site">
         <!-- Breadcrumb Navigation -->
         <nav class="mb-6" aria-label="Breadcrumb">
-          <ol class="flex items-center space-x-2 text-sm text-gray-600">
+          <ol class="flex flex-wrap items-center gap-y-1 text-sm text-ink-600">
             <li>
-              <a href="index.html" class="hover:text-blue-600 transition-colors flex items-center">
+              <a href="index.html" class="inline-flex min-h-[44px] items-center hover:text-brand-700">
                 <i class="fas fa-home mr-1"></i>
                 <span>Home</span>
               </a>
             </li>
             <li class="flex items-center">
               <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
-              <a href="properties.html" class="hover:text-blue-600 transition-colors">
+              <a href="properties.html" class="inline-flex min-h-[44px] items-center hover:text-brand-700">
                 Properties
               </a>
             </li>
@@ -421,10 +346,10 @@
 
         <!-- Property Title and Quick Info -->
         <div class="mb-6">
-          <h1 id="property-title" class="text-3xl font-bold text-gray-800 mb-2">
+          <h1 id="property-title" class="mb-3 text-3xl font-extrabold leading-tight sm:text-4xl">
             Loading...
           </h1>
-          <div class="flex items-center gap-4 text-gray-600">
+          <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-ink-600">
             <span class="flex items-center gap-1">
               <i class="fas fa-map-marker-alt text-blue-600"></i>
               <span id="property-location">Loading...</span>
@@ -437,7 +362,7 @@
         </div>
 
         <!-- Image Gallery -->
-        <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-8 p-4 property-card">
+        <div class="card mb-8 overflow-hidden p-2 sm:p-3">
           <div class="gallery-container">
             <!-- Main Slider -->
             <div class="swiper gallery-top">
@@ -461,46 +386,46 @@
           <!-- Main Content -->
           <div class="lg:col-span-2 space-y-8">
             <!-- Quick Stats -->
-            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-8">
-              <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+            <div class="card p-6 sm:p-8">
+              <h2 class="mb-6 flex items-center gap-3 text-xl font-bold sm:text-2xl">
                 <i class="fas fa-chart-pie text-blue-600"></i>
                 Property Overview
               </h2>
               <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div class="text-center p-6 bg-blue-50 rounded-2xl hover:bg-blue-100 transition-colors duration-300">
-                  <div class="bg-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3 shadow-md">
+                <div class="rounded-2xl bg-ink-50 p-5 text-center ring-1 ring-ink-900/5">
+                  <div class="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-white text-brand-700 shadow-soft">
                     <i class="fas fa-bed text-blue-600 text-xl"></i>
                   </div>
-                  <p class="text-sm font-medium text-gray-600 mb-1">Bedrooms</p>
-                  <p id="property-bedrooms" class="text-2xl font-bold text-gray-800">-</p>
+                  <p class="mb-1 text-xs font-medium text-gray-600 sm:text-sm">Bedrooms</p>
+                  <p id="property-bedrooms" class="break-words text-xl font-bold text-gray-800 sm:text-2xl">-</p>
                 </div>
-                <div class="text-center p-6 bg-blue-50 rounded-2xl hover:bg-blue-100 transition-colors duration-300">
-                  <div class="bg-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3 shadow-md">
+                <div class="rounded-2xl bg-ink-50 p-5 text-center ring-1 ring-ink-900/5">
+                  <div class="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-white text-brand-700 shadow-soft">
                     <i class="fas fa-bath text-blue-600 text-xl"></i>
                   </div>
-                  <p class="text-sm font-medium text-gray-600 mb-1">Bathrooms</p>
-                  <p id="property-bathrooms" class="text-2xl font-bold text-gray-800">-</p>
+                  <p class="mb-1 text-xs font-medium text-gray-600 sm:text-sm">Bathrooms</p>
+                  <p id="property-bathrooms" class="break-words text-xl font-bold text-gray-800 sm:text-2xl">-</p>
                 </div>
-                <div class="text-center p-6 bg-blue-50 rounded-2xl hover:bg-blue-100 transition-colors duration-300">
-                  <div class="bg-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3 shadow-md">
+                <div class="rounded-2xl bg-ink-50 p-5 text-center ring-1 ring-ink-900/5">
+                  <div class="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-white text-brand-700 shadow-soft">
                     <i class="fas fa-car text-blue-600 text-xl"></i>
                   </div>
-                  <p class="text-sm font-medium text-gray-600 mb-1">Parking</p>
-                  <p id="property-parking" class="text-2xl font-bold text-gray-800">-</p>
+                  <p class="mb-1 text-xs font-medium text-gray-600 sm:text-sm">Parking</p>
+                  <p id="property-parking" class="break-words text-xl font-bold text-gray-800 sm:text-2xl">-</p>
                 </div>
-                <div class="text-center p-6 bg-blue-50 rounded-2xl hover:bg-blue-100 transition-colors duration-300">
-                  <div class="bg-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3 shadow-md">
+                <div class="rounded-2xl bg-ink-50 p-5 text-center ring-1 ring-ink-900/5">
+                  <div class="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-white text-brand-700 shadow-soft">
                     <i class="fas fa-ruler-combined text-blue-600 text-xl"></i>
                   </div>
-                  <p class="text-sm font-medium text-gray-600 mb-1">Property Type</p>
-                  <p id="property-type" class="text-2xl font-bold text-gray-800">-</p>
+                  <p class="mb-1 text-xs font-medium text-gray-600 sm:text-sm">Property Type</p>
+                  <p id="property-type" class="break-words text-xl font-bold text-gray-800 sm:text-2xl">-</p>
                 </div>
               </div>
             </div>
 
             <!-- Description -->
-            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-8">
-              <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+            <div class="card p-6 sm:p-8">
+              <h2 class="mb-6 flex items-center gap-3 text-xl font-bold sm:text-2xl">
                 <i class="fas fa-align-left text-blue-600"></i>
                 Description
               </h2>
@@ -512,14 +437,14 @@
             </div>
 
             <!-- Features -->
-            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-8">
-              <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+            <div class="card p-6 sm:p-8">
+              <h2 class="mb-6 flex items-center gap-3 text-xl font-bold sm:text-2xl">
                 <i class="fas fa-star text-blue-600"></i>
                 Property Features
               </h2>
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-blue-50 rounded-xl p-6 transform hover:scale-105 transition-all duration-300">
-                  <div class="bg-white rounded-full w-12 h-12 flex items-center justify-center mb-4 shadow-md">
+                <div class="rounded-2xl bg-ink-50 p-5 ring-1 ring-ink-900/5">
+                  <div class="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-white text-brand-700 shadow-soft">
                     <i class="fas fa-couch text-blue-600 text-xl"></i>
                   </div>
                   <h3 class="font-bold text-gray-800 mb-2">Furnishing</h3>
@@ -527,15 +452,15 @@
                     Furnished/Unfurnished
                   </p>
                 </div>
-                <div class="bg-blue-50 rounded-xl p-6 transform hover:scale-105 transition-all duration-300">
-                  <div class="bg-white rounded-full w-12 h-12 flex items-center justify-center mb-4 shadow-md">
+                <div class="rounded-2xl bg-ink-50 p-5 ring-1 ring-ink-900/5">
+                  <div class="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-white text-brand-700 shadow-soft">
                     <i class="fas fa-wifi text-blue-600 text-xl"></i>
                   </div>
                   <h3 class="font-bold text-gray-800 mb-2">Internet</h3>
                   <p class="text-gray-600">High-speed fiber optic</p>
                 </div>
-                <div class="bg-blue-50 rounded-xl p-6 transform hover:scale-105 transition-all duration-300">
-                  <div class="bg-white rounded-full w-12 h-12 flex items-center justify-center mb-4 shadow-md">
+                <div class="rounded-2xl bg-ink-50 p-5 ring-1 ring-ink-900/5">
+                  <div class="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-white text-brand-700 shadow-soft">
                     <i class="fas fa-car text-blue-600 text-xl"></i>
                   </div>
                   <h3 class="font-bold text-gray-800 mb-2">Parking</h3>
@@ -543,8 +468,8 @@
                     Available
                   </p>
                 </div>
-                <div class="bg-blue-50 rounded-xl p-6 transform hover:scale-105 transition-all duration-300">
-                  <div class="bg-white rounded-full w-12 h-12 flex items-center justify-center mb-4 shadow-md">
+                <div class="rounded-2xl bg-ink-50 p-5 ring-1 ring-ink-900/5">
+                  <div class="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-white text-brand-700 shadow-soft">
                     <i class="fas fa-bolt text-blue-600 text-xl"></i>
                   </div>
                   <h3 class="font-bold text-gray-800 mb-2">Utilities</h3>
@@ -552,15 +477,15 @@
                     Electricity & Water included
                   </p>
                 </div>
-                <div class="bg-blue-50 rounded-xl p-6 transform hover:scale-105 transition-all duration-300">
-                  <div class="bg-white rounded-full w-12 h-12 flex items-center justify-center mb-4 shadow-md">
+                <div class="rounded-2xl bg-ink-50 p-5 ring-1 ring-ink-900/5">
+                  <div class="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-white text-brand-700 shadow-soft">
                     <i class="fas fa-shield-alt text-blue-600 text-xl"></i>
                   </div>
                   <h3 class="font-bold text-gray-800 mb-2">Security</h3>
                   <p class="text-gray-600">24/7 surveillance</p>
                 </div>
-                <div class="bg-blue-50 rounded-xl p-6 transform hover:scale-105 transition-all duration-300">
-                  <div class="bg-white rounded-full w-12 h-12 flex items-center justify-center mb-4 shadow-md">
+                <div class="rounded-2xl bg-ink-50 p-5 ring-1 ring-ink-900/5">
+                  <div class="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-white text-brand-700 shadow-soft">
                     <i class="fas fa-temperature-low text-blue-600 text-xl"></i>
                   </div>
                   <h3 class="font-bold text-gray-800 mb-2">Air Conditioning</h3>
@@ -570,8 +495,8 @@
             </div>
 
             <!-- Location -->
-            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-8">
-              <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+            <div class="card p-6 sm:p-8">
+              <h2 class="mb-6 flex items-center gap-3 text-xl font-bold sm:text-2xl">
                 <i class="fas fa-map-marker-alt text-blue-600"></i>
                 Location & Nearby
               </h2>
@@ -587,29 +512,29 @@
                 <!-- Map will be loaded here -->
               </div>
               <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div class="bg-blue-50 p-4 rounded-xl text-center transform hover:scale-105 transition-transform duration-300">
-                  <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-md">
+                <div class="rounded-2xl bg-ink-50 p-4 text-center ring-1 ring-ink-900/5">
+                  <div class="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-white text-brand-700 shadow-soft">
                     <i class="fas fa-shopping-cart text-blue-600 text-xl"></i>
                   </div>
                   <p class="font-medium text-gray-800 mb-1">Shopping Mall</p>
                   <p class="text-blue-600 font-bold">0.5 km</p>
                 </div>
-                <div class="bg-blue-50 p-4 rounded-xl text-center transform hover:scale-105 transition-transform duration-300">
-                  <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-md">
+                <div class="rounded-2xl bg-ink-50 p-4 text-center ring-1 ring-ink-900/5">
+                  <div class="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-white text-brand-700 shadow-soft">
                     <i class="fas fa-hospital text-blue-600 text-xl"></i>
                   </div>
                   <p class="font-medium text-gray-800 mb-1">Hospital</p>
                   <p class="text-blue-600 font-bold">1.2 km</p>
                 </div>
-                <div class="bg-blue-50 p-4 rounded-xl text-center transform hover:scale-105 transition-transform duration-300">
-                  <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-md">
+                <div class="rounded-2xl bg-ink-50 p-4 text-center ring-1 ring-ink-900/5">
+                  <div class="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-white text-brand-700 shadow-soft">
                     <i class="fas fa-graduation-cap text-blue-600 text-xl"></i>
                   </div>
                   <p class="font-medium text-gray-800 mb-1">School</p>
                   <p class="text-blue-600 font-bold">0.8 km</p>
                 </div>
-                <div class="bg-blue-50 p-4 rounded-xl text-center transform hover:scale-105 transition-transform duration-300">
-                  <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-md">
+                <div class="rounded-2xl bg-ink-50 p-4 text-center ring-1 ring-ink-900/5">
+                  <div class="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-white text-brand-700 shadow-soft">
                     <i class="fas fa-bus text-blue-600 text-xl"></i>
                   </div>
                   <p class="font-medium text-gray-800 mb-1">Bus Stop</p>
@@ -622,20 +547,20 @@
           <!-- Sidebar -->
           <div class="space-y-6 lg:sticky lg:top-24">
             <!-- Price Card -->
-            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-8">
+            <div class="card p-6 sm:p-8">
               <div class="text-center mb-6">
                 <p class="text-lg font-medium text-gray-600 mb-2">Monthly Rent</p>
-                <p id="property-price" class="text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent"></p>
+                <p id="property-price" class="tabular break-words text-3xl font-extrabold text-ink-950 sm:text-4xl"></p>
               </div>
               <div class="space-y-3">
                 <button
-                  class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-4 rounded-xl font-medium text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+                  class="btn-primary min-h-[52px] w-full text-base"
                   data-action="book-now"
                 >
                   <i class="fas fa-calendar-check mr-2"></i> Book Now
                 </button>
                 <button
-                  class="w-full bg-white border-2 border-blue-600 text-blue-600 py-4 rounded-xl font-medium text-lg hover:bg-blue-50 hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-300"
+                  class="btn-secondary min-h-[52px] w-full text-base"
                   data-action="contact-agent"
                 >
                   <i class="fas fa-comment-alt mr-2"></i> Contact Agent
@@ -644,7 +569,7 @@
             </div>
 
             <!-- Agent Card -->
-            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-8">
+            <div class="card p-6 sm:p-8">
               <div class="text-center">
                 <div class="relative inline-block">
                   <img
@@ -681,173 +606,57 @@
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-12">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
-            <h3 class="text-lg font-semibold mb-4">JustHome</h3>
-            <p class="text-gray-400">
-              Finding your perfect home has never been easier.
-            </p>
-          </div>
-          <div>
-            <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul class="space-y-2">
-              <li>
-                <a href="properties.html" class="text-gray-400 hover:text-white"
-                  >Properties</a
-                >
-              </li>
-              <li>
-                <a href="about.html" class="text-gray-400 hover:text-white"
-                  >About Us</a
-                >
-              </li>
-              <li>
-                <a href="contact.html" class="text-gray-400 hover:text-white"
-                  >Contact</a
-                >
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
-            <ul class="space-y-2">
-              <li class="text-gray-400">
-                <i class="fas fa-map-marker-alt mr-2"></i> 123 Main St, City
-              </li>
-              <li class="text-gray-400">
-                <i class="fas fa-phone mr-2"></i> (555) 123-4567
-              </li>
-              <li class="text-gray-400">
-                <i class="fas fa-envelope mr-2"></i> info@justhome.com
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 class="text-lg font-semibold mb-4">Follow Us</h3>
-            <div class="flex gap-4">
-              <a href="#" class="text-gray-400 hover:text-white">
-                <i class="fab fa-facebook text-xl"></i>
-              </a>
-              <a href="#" class="text-gray-400 hover:text-white">
-                <i class="fab fa-twitter text-xl"></i>
-              </a>
-              <a href="#" class="text-gray-400 hover:text-white">
-                <i class="fab fa-instagram text-xl"></i>
-              </a>
-              <a href="#" class="text-gray-400 hover:text-white">
-                <i class="fab fa-linkedin text-xl"></i>
-              </a>
-            </div>
-          </div>
+    <!-- footer:start -->
+    <footer class="bg-ink-950 text-ink-300">
+      <div class="container-site grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.2fr_1fr]">
+        <div>
+          <a href="index.html" class="-ml-2 inline-flex min-h-[44px] items-center gap-2.5 rounded-full px-2 focus-visible:ring-offset-ink-950">
+            <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-white"><img src="images/opt/logo-96.webp" width="24" height="18" alt="" class="h-[18px] w-auto" loading="lazy" /></span>
+            <span class="text-lg font-extrabold tracking-tight text-white">JustHome</span>
+          </a>
+          <p class="mt-4 max-w-xs text-sm leading-relaxed text-ink-400">Finding your perfect home has never been easier.</p>
         </div>
-        <div class="border-t border-gray-700 mt-8 pt-8 text-center">
-          <p class="text-gray-400">
-            © 2025 JustHome Real Estate. All rights reserved.
-          </p>
+        <div>
+          <h2 class="text-sm font-semibold text-white">Quick links</h2>
+          <ul class="mt-3 text-sm">
+            <li><a class="inline-flex min-h-[44px] items-center transition-colors hover:text-white" href="properties.html">Properties</a></li>
+            <li><a class="inline-flex min-h-[44px] items-center transition-colors hover:text-white" href="about.html">About us</a></li>
+            <li><a class="inline-flex min-h-[44px] items-center transition-colors hover:text-white" href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-sm font-semibold text-white">Contact us</h2>
+          <ul class="mt-3 text-sm">
+            <li class="flex min-h-[44px] items-center gap-3"><i class="fas fa-location-dot w-4 text-ink-500" aria-hidden="true"></i>123 Main St, City</li>
+            <li><a class="inline-flex min-h-[44px] items-center gap-3 transition-colors hover:text-white" href="tel:5551234567"><i class="fas fa-phone w-4 text-ink-500" aria-hidden="true"></i>(555) 123-4567</a></li>
+            <li><a class="inline-flex min-h-[44px] items-center gap-3 transition-colors hover:text-white" href="mailto:info@justhome.com"><i class="fas fa-envelope w-4 text-ink-500" aria-hidden="true"></i>info@justhome.com</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-sm font-semibold text-white">Follow us</h2>
+          <ul class="-ml-3 mt-3 flex flex-wrap">
+            <li><a href="#" class="icon-btn text-ink-300 hover:bg-white/10 hover:text-white" aria-label="JustHome on Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
+            <li><a href="#" class="icon-btn text-ink-300 hover:bg-white/10 hover:text-white" aria-label="JustHome on X"><i class="fab fa-x-twitter" aria-hidden="true"></i></a></li>
+            <li><a href="#" class="icon-btn text-ink-300 hover:bg-white/10 hover:text-white" aria-label="JustHome on Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+            <li><a href="#" class="icon-btn text-ink-300 hover:bg-white/10 hover:text-white" aria-label="JustHome on LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-white/10">
+        <div class="container-site flex flex-col gap-1 py-6 text-xs text-ink-400 sm:flex-row sm:items-center sm:justify-between">
+          <p>&copy; <span data-year>2026</span> JustHome Real Estate. All rights reserved.</p>
+          <p>Photography from Unsplash and Pexels.</p>
         </div>
       </div>
     </footer>
+    <!-- footer:end -->
 
-    <script>
-      // Mobile Menu Toggle
-      (function() {
-        const btn = document.getElementById('mobile-menu-button');
-        const menu = document.getElementById('mobile-menu');
-    
-        if (!btn || !menu) return;
-    
-        // Initially hide the menu
-        menu.style.maxHeight = '0';
-        menu.style.opacity = '0';
-    
-        btn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          
-          // Toggle menu visibility
-          if (menu.style.maxHeight === '0px' || menu.style.maxHeight === '') {
-            menu.style.maxHeight = '600px';
-            menu.style.opacity = '1';
-          } else {
-            menu.style.maxHeight = '0';
-            menu.style.opacity = '0';
-          }
-        });
-    
-        // Close menu when clicking a link
-        menu.querySelectorAll('a, button').forEach(function(link) {
-          link.addEventListener('click', function() {
-            menu.style.maxHeight = '0';
-            menu.style.opacity = '0';
-          });
-        });
-    
-        // Close menu when clicking outside
-        document.addEventListener('click', function(e) {
-          if (!menu.contains(e.target) && !btn.contains(e.target)) {
-            menu.style.maxHeight = '0';
-            menu.style.opacity = '0';
-          }
-        });
-    
-        // Reset on window resize (desktop)
-        window.addEventListener('resize', function() {
-          if (window.innerWidth >= 1024) {
-            menu.style.maxHeight = '0';
-            menu.style.opacity = '0';
-          }
-        });
-      })();
-
-      // User Profile Dropdown Toggle (Mobile & Desktop)
-      (function() {
-        const profileBtn = document.getElementById('user-profile-btn');
-        const dropdown = document.getElementById('user-dropdown');
-
-        if (!profileBtn || !dropdown) return;
-
-        // Toggle dropdown on click/tap
-        profileBtn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          
-          // Toggle visibility
-          const isVisible = dropdown.classList.contains('opacity-100');
-          
-          if (isVisible) {
-            dropdown.classList.remove('opacity-100', 'visible');
-            dropdown.classList.add('opacity-0', 'invisible');
-          } else {
-            dropdown.classList.remove('opacity-0', 'invisible');
-            dropdown.classList.add('opacity-100', 'visible');
-          }
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(e) {
-          if (!profileBtn.contains(e.target) && !dropdown.contains(e.target)) {
-            dropdown.classList.remove('opacity-100', 'visible');
-            dropdown.classList.add('opacity-0', 'invisible');
-          }
-        });
-
-        // Close dropdown when clicking a link inside
-        dropdown.querySelectorAll('a').forEach(function(link) {
-          link.addEventListener('click', function() {
-            dropdown.classList.remove('opacity-100', 'visible');
-            dropdown.classList.add('opacity-0', 'invisible');
-          });
-        });
-      })();
-    </script> 
 
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- Paystack SDK -->
-    <script src="https://js.paystack.co/v1/inline.js"></script>
     <script type="module" src="js/auth.js"></script>
     <script src="js/property-details.js" type="module"></script>
+      <script src="js/ui.js" defer></script>
   </body>
 </html>

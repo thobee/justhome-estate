@@ -33,7 +33,7 @@ const provider = new GoogleAuthProvider();
 
 // Get redirect URL from query params
 const params = new URLSearchParams(window.location.search);
-const redirectUrl = params.get("redirect") || "dashboard.html";
+const redirectUrl = safeRedirect(params.get("redirect"), "dashboard.html");
 
 // Sign out any existing user when the page loads
 await auth.signOut();
@@ -41,6 +41,8 @@ await auth.signOut();
 const form = document.getElementById("signin-form");
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  document.getElementById("signin-error").hidden = true;
+  if (window.validateForm && !window.validateForm(form)) return;
 
   const submitBtn = form.querySelector('button[type="submit"]');
   const originalText = submitBtn.innerHTML;
@@ -66,11 +68,9 @@ form.addEventListener("submit", async (e) => {
       await updateDoc(userRef, {
         lastLogin: serverTimestamp(),
       });
-      console.log("User document updated with last login");
     } catch (updateError) {
       // If document doesn't exist, create it
       if (updateError.code === 'not-found' || updateError.message.includes('No document to update')) {
-        console.log("User document not found, creating it during signin");
         await setDoc(userRef, {
           name: user.displayName || user.email.split('@')[0], // Fallback name
           email: user.email,
@@ -81,7 +81,6 @@ form.addEventListener("submit", async (e) => {
           recentViews: [],
           profileComplete: false,
         });
-        console.log("User document created during signin");
       } else {
         // Re-throw other errors
         throw updateError;
@@ -94,10 +93,10 @@ form.addEventListener("submit", async (e) => {
     // Redirect after showing notification
     setTimeout(() => {
       window.location.href = redirectUrl;
-    }, 2000);
+    }, 900);
   } catch (error) {
-    console.error("Signin error:", error);
-    alert(error.message);
+    console.warn("Signin error:", error.code);
+    showFormError("signin-error", friendlyAuthError(error));
     submitBtn.disabled = false;
     submitBtn.innerHTML = originalText;
   }
@@ -149,6 +148,7 @@ document
 
 // Function to show signin success notification
 function showSigninSuccessNotification() {
+  if (window.showToast) return window.showToast("Successfully signed in!");
   // Remove any existing notifications
   const existingNotifications = document.querySelectorAll(".signin-notification");
   existingNotifications.forEach((notification) => notification.remove());
@@ -184,15 +184,14 @@ function showSigninSuccessNotification() {
 // Forgot Password functionality
 document.getElementById("forgot-password-link").addEventListener("click", (e) => {
   e.preventDefault();
-  console.log("Forgot password link clicked");
   showForgotPasswordModal();
 });
 
 // Function to show forgot password modal
 function showForgotPasswordModal() {
   const modalHTML = `
-    <div id="forgot-password-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" role="dialog" aria-modal="true" aria-labelledby="forgot-password-title">
-      <div class="bg-white rounded-xl p-6 w-full max-w-md mx-auto shadow-2xl">
+    <div id="forgot-password-modal" class="fixed inset-0 z-[80] flex items-center justify-center bg-ink-950/60 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="forgot-password-title">
+      <div class="mx-auto w-full max-w-md rounded-3xl bg-white p-6 shadow-lift sm:p-8">
         <div class="text-center mb-6">
           <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <i class="fas fa-envelope text-2xl text-blue-600"></i>
@@ -208,7 +207,7 @@ function showForgotPasswordModal() {
               type="email"
               id="reset-email"
               required
-              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition-all"
+              class="field"
               placeholder="Enter your email"
             />
           </div>
@@ -217,13 +216,13 @@ function showForgotPasswordModal() {
             <button
               type="button"
               id="cancel-reset"
-              class="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 font-medium transition-colors"
+              class="btn-secondary flex-1"
             >
               Cancel
             </button>
             <button
               type="submit"
-              class="flex-1 px-4 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-medium transition-colors"
+              class="btn-primary flex-1"
             >
               Send Reset Link
             </button>
@@ -254,13 +253,10 @@ function showForgotPasswordModal() {
   // Handle form submission
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    console.log("Forgot password form submitted");
 
     const email = document.getElementById("reset-email").value.trim();
-    console.log("Email entered:", email);
 
     if (!email) {
-      console.log("No email entered");
       showNotification("Please enter your email address", "error");
       return;
     }
@@ -270,12 +266,9 @@ function showForgotPasswordModal() {
     submitBtn.disabled = true;
     submitBtn.textContent = "Sending...";
 
-    console.log("Attempting to send password reset email to:", email);
 
     try {
-      console.log("Calling sendPasswordResetEmail...");
       await sendPasswordResetEmail(auth, email);
-      console.log("Password reset email sent successfully");
       modal.remove();
       showNotification("Password reset email sent! Check your inbox.", "success");
     } catch (error) {
@@ -346,4 +339,33 @@ function showNotification(message, type = "info") {
       }
     }, 300);
   }, 5000);
+}
+
+// Plain-language messages for common Firebase auth errors, shown under the form.
+function friendlyAuthError(error) {
+  const map = {
+    "auth/invalid-credential": "That email and password don't match. Check them and try again.",
+    "auth/wrong-password": "That email and password don't match. Check them and try again.",
+    "auth/user-not-found": "We couldn't find an account with that email.",
+    "auth/invalid-email": "Enter a valid email address, like name@example.com.",
+    "auth/too-many-requests": "Too many attempts. Wait a moment, then try again.",
+    "auth/network-request-failed": "You seem to be offline. Check your connection and try again.",
+    "auth/email-already-in-use": "An account with that email already exists. Try logging in instead.",
+    "auth/weak-password": "Choose a stronger password with at least 6 characters.",
+  };
+  return map[error?.code] || "Something went wrong. Please try again.";
+}
+
+function showFormError(id, message) {
+  const box = document.getElementById(id);
+  if (!box) return alert(message);
+  box.querySelector("span").textContent = message;
+  box.hidden = false;
+  box.focus();
+}
+
+// Only allow same-site relative redirects (blocks javascript: and off-site URLs).
+function safeRedirect(value, fallback) {
+  if (!value || /^(?:[a-z][a-z0-9+.-]*:|\/\/|\\)/i.test(value.trim())) return fallback;
+  return value;
 }
